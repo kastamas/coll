@@ -1,6 +1,9 @@
-<h2><span><a href="#/">< Назад </a></span> Список текстов</h2>
+<h2><span><a href="#/">< Назад </a></span> {{ title}}</h2>
 
     <!----------------- filters ------------------->
+<div class="text-message"  ng-show="$ctrl.list.length == '0'">
+    <p>Нет записей в базе данных</p>
+</div>
 
     <!----------------- table --------------------->
 
@@ -9,17 +12,23 @@
     <th>Название</th>
     <th>Статус</th>
     <th></th>
-    <th>Название</th>
+    <th>Дата создания</th>
+    <th class="s-last"></th>
 </tr>
-<tr data-ng-if="">
-    Нет записей.
+</thead>
+
+<tbody>
+<tr data-ng-repeat="item in $ctrl.list">
+    <td>{{item.title}}</td>
+    <!--Todo:Crutch-->
+    <td ng-if="item.status == 'u'">-</td>
+    <td ng-if="item.status == 'd'">+</td>
+    <td><a href="#/texts/{{item.id}}">Проанализировать</a></td>
+    <td>{{item.created_at}}</td>
+    <td class="s-last"></td>
 </tr>
-</thead><tbody>
-<tr data-ng-repeat="">
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-</tr>
-</tbody></table><br>
+</tbody></table>
+<hr>
+<br>
     <!----------------- footer --------------------->
+<span>Количество: {{$ctrl.list.length}}</span>
