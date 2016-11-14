@@ -6,7 +6,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 $collCRUD = new collCRUD();
 switch ($route[2]) {
     case 'texts':
-        if ($route[3] && !$route[4]) {
+        if ($route[3]) {
             if (is_numeric($route[3])) {
                 if ($method === 'GET') {
                     $result = $collCRUD->getText($route[3]);
@@ -17,7 +17,18 @@ switch ($route[2]) {
                     echo json_encode($result);
                 }
                 if ($method === 'PUT') {
-                    
+                    $data = json_decode(file_get_contents('php://input'), true);
+                    if ($data === null) {
+                        header('HTTP/ 400 INCORRECT_INPUT');
+                        exit();
+                    } else {
+                        $result = $collCRUD->updateText($data);
+                        if (!$result) {
+                            header('HTTP/ 400 UPDATE_ERROR');
+                            exit();
+                        }
+                        echo json_encode($result);
+                    }
                 }
             }
             else {
@@ -26,11 +37,7 @@ switch ($route[2]) {
             }
         } else {
             if ($method === 'GET') {
-                $data = null;
-                if ($route[3] && $route[3] === 'filter' && $route[4]) {
-                    $data = json_decode(urldecode($route[4]));
-                }
-                $result = $collCRUD->queryTexts($data);
+                $result = $collCRUD->queryTexts();
                 if (!$result) {
                     header('HTTP/ 400 GET_ERROR');
                     exit();
@@ -58,10 +65,25 @@ switch ($route[2]) {
             if (is_numeric($route[3])) {
                 if ($method === 'GET') {
                     $result = $collCRUD->getCollocation($route[3]);
+                    if (!$result) {
+                        header('HTTP/ 404 NOT_FOUND');
+                        exit();
+                    }
                     echo json_encode($result);
                 }
                 if ($method === 'PUT') {
-
+                    $data = json_decode(file_get_contents('php://input'), true);
+                    if ($data === null) {
+                        header('HTTP/ 400 INCORRECT_INPUT');
+                        exit();
+                    } else {
+                        $result = $collCRUD->updateCollocation($data);
+                        if (!$result) {
+                            header('HTTP/ 400 UPDATE_ERROR');
+                            exit();
+                        }
+                        echo json_encode($result);
+                    }
                 }
             }
             else {
@@ -70,10 +92,25 @@ switch ($route[2]) {
         } else {
             if ($method === 'GET') {
                 $result = $collCRUD->queryCollocations();
+                if (!$result) {
+                    header('HTTP/ 400 GET_ERROR');
+                    exit();
+                }
                 echo json_encode($result);
             }
             if ($method === 'POST') {
-                echo json_encode(array("result" => 'POST'));
+                $data = json_decode(file_get_contents('php://input'), true);
+                if ($data === null) {
+                    header('HTTP/ 400 INCORRECT_INPUT');
+                    exit();
+                } else {
+                    $result = $collCRUD->createCollocation($data);
+                    if (!$result) {
+                        header('HTTP/ 400 CREATE_ERROR');
+                        exit();
+                    }
+                    echo json_encode($result);
+                }
             }
         }
         break;
