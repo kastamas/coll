@@ -18,14 +18,14 @@ class collCRUD
     }
 
     public function queryTexts() {
-        $query_str = "SELECT id, title, status, created_at, updated_at FROM " . self::$texts . "ORDER BY created_at DESC";
+        $query_str = "SELECT id, title, status, created_at, updated_at FROM " . self::$texts . " ORDER BY created_at DESC";
         $query = $this->pdo->prepare($query_str);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function queryCollocations() {
-        $query_str = "SELECT id, collocation, charact_1, charact_2, status, created_at, updated_at, text_id FROM " . self::$collocations . "ORDER BY created_at DESC";
+        $query_str = "SELECT id, collocation, charact_1, charact_2, status, created_at, updated_at, text_id FROM " . self::$collocations . " ORDER BY created_at DESC";
         $query = $this->pdo->prepare($query_str);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -42,7 +42,7 @@ class collCRUD
     }
 
     public  function  getCollocation($id) {
-        $query_str = "SELECT c.id, c.collocation, t.title as text_name, c.status, c.charact_1, c.charact_2, c.created_at, c.updated_at FROM " . self::$collocations . " c INNER JOIN texts t ON c.text_id = t.id WHERE id = :id LIMIT 1";
+        $query_str = "SELECT c.id, c.collocation, t.title as text_name, c.status, c.charact_1, c.charact_2, c.created_at, c.updated_at FROM " . self::$collocations . " c INNER JOIN texts t ON c.text_id = t.id WHERE c.id = :id LIMIT 1";
         $params = array(
             "id" => $id
         );

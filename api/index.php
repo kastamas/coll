@@ -10,7 +10,7 @@ switch ($route[2]) {
             if (is_numeric($route[3])) {
                 if ($method === 'GET') {
                     $result = $collCRUD->getText($route[3]);
-                    if (!$result) {
+                    if ($result === false) {
                         header('HTTP/ 404 NOT_FOUND');
                         exit();
                     }
@@ -23,7 +23,7 @@ switch ($route[2]) {
                         exit();
                     } else {
                         $result = $collCRUD->updateText($data);
-                        if (!$result) {
+                        if ($result === false) {
                             header('HTTP/ 400 UPDATE_ERROR');
                             exit();
                         }
@@ -38,7 +38,7 @@ switch ($route[2]) {
         } else {
             if ($method === 'GET') {
                 $result = $collCRUD->queryTexts();
-                if (!$result) {
+                if ($result === false) {
                     header('HTTP/ 400 GET_ERROR');
                     exit();
                 }
@@ -51,7 +51,7 @@ switch ($route[2]) {
                     exit();
                 } else {
                     $result = $collCRUD->createText($data);
-                    if (!$result) {
+                    if ($result === false) {
                         header('HTTP/ 400 CREATE_ERROR');
                         exit();
                     }
@@ -65,7 +65,7 @@ switch ($route[2]) {
             if (is_numeric($route[3])) {
                 if ($method === 'GET') {
                     $result = $collCRUD->getCollocation($route[3]);
-                    if (!$result) {
+                    if ($result === false) {
                         header('HTTP/ 404 NOT_FOUND');
                         exit();
                     }
@@ -78,7 +78,7 @@ switch ($route[2]) {
                         exit();
                     } else {
                         $result = $collCRUD->updateCollocation($data);
-                        if (!$result) {
+                        if ($result === false) {
                             header('HTTP/ 400 UPDATE_ERROR');
                             exit();
                         }
@@ -92,7 +92,7 @@ switch ($route[2]) {
         } else {
             if ($method === 'GET') {
                 $result = $collCRUD->queryCollocations();
-                if (!$result) {
+                if ($result === false) {
                     header('HTTP/ 400 GET_ERROR');
                     exit();
                 }
@@ -105,7 +105,7 @@ switch ($route[2]) {
                     exit();
                 } else {
                     $result = $collCRUD->createCollocation($data);
-                    if (!$result) {
+                    if ($result === false) {
                         header('HTTP/ 400 CREATE_ERROR');
                         exit();
                     }
