@@ -42,7 +42,7 @@ class collCRUD
     }
 
     public  function  getCollocation($id) {
-        $query_str = "SELECT * FROM " . self::$collocations . " WHERE id = :id LIMIT 1";
+        $query_str = "SELECT c.id, c.collocation, t.title as text_name, c.status, c.charact_1, c.charact_2, c.created_at, c.updated_at FROM " . self::$collocations . " c INNER JOIN texts t ON c.text_id = t.id WHERE id = :id LIMIT 1";
         $params = array(
             "id" => $id
         );
