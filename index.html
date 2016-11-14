@@ -1,13 +1,30 @@
 <!DOCTYPE html>
-<html lang="en" ng-app>
+<html lang="en" data-ng-app="collApp">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap-theme.css" />
+    <link rel="stylesheet" href="app.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
+
+    <script src="app.module.js"></script>
+    <script src="app.config.js"></script>
+    <script src="texts-list/texts-list.module.js"></script>
+    <script src="texts-list/texts-list.component.js"></script>
+    <script src="text-item/text-item.module.js"></script>
+    <script src="text-item/text-item.component.js"></script>
+    <script src="text-new/text-new.module.js"></script>
+    <script src="text-new/text-new.component.js"></script>
+
+    <script src="main-page/main-page.module.js"></script>
+    <script src="main-page/main-page.component.js"></script>
 </head>
 <body>
-<p>{{'Сосни' + ' хуйца'}}</p>
+
+    <div ng-view ></div>
+
 </body>
 </html>
