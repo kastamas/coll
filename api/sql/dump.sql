@@ -21,7 +21,7 @@ CREATE TYPE enum_texts_status AS ENUM (
 
 CREATE TABLE IF NOT EXISTS texts (
     id integer DEFAULT nextval('texts_ids'::regclass) NOT NULL,
-    text character(250000) NOT NULL,
+    text character(250000) ,
 	  title character(256) NOT NULL,
     status enum_texts_status DEFAULT 'u'::enum_texts_status NOT NULL,
     created_at timestamp with time zone,
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS collocations (
     status enum_texts_status DEFAULT 'u'::enum_texts_status NOT NULL,
 	collocation character(100) NOT NULL,
     charact_1 enum_collocations_charact_1 DEFAULT NULL,
-	charact_2 integer[] DEFAULT ARRAY[]::integer[] NOT NULL,
+	charact_2 integer[] DEFAULT ARRAY[]::integer[],
     created_at timestamp with time zone,
     updated_at timestamp with time zone,
     text_id integer
