@@ -1,0 +1,53 @@
+<h2><span><a href="#/">< Назад </a></span> {{ title}}</h2>
+
+<!----------------- filters ------------------->
+
+
+<!----------------- message if empty ------------------->
+<div class="text-message"  ng-show="$ctrl.list.length == '0'">
+    <p>Пусто</p>
+</div>
+
+<div ng-show="$ctrl.list.length != '0'">
+<!----------------- table --------------------->
+<table class="table"><thead>
+<tr>
+    <th>Словосочетание</th>
+    <th>Статус</th>
+    <th>Относится к тексту</th>
+    <th>Характеристика 1</th>
+    <th>Характеристика 2</th>
+    <th></th>
+    <th>Добавлено</th>
+    <th class="s-last"></th>
+</tr>
+</thead>
+
+    <tbody>
+    <tr data-ng-repeat="item in $ctrl.list">
+        <td>{{item.collocation}}</td>
+        <!--Todo:Crutch-->
+        <td ng-if="item.status == 'u'">-</td>
+        <td ng-if="item.status == 'd'">+</td>
+        <td ng-if="item.status == 'a'">\</td>
+        <td>{{item.text_name}}</td>
+        <!--Todo:Crutch-->
+        <!--<td>{{item.charact_1}}</td>-->
+        <td ng-if="item.charact_1 =='3xmem'">3х член</td>
+        <td ng-if="item.charact_1 =='distant'">дистантное</td>
+        <td ng-if="item.charact_1 =='interpos'">интерпозиция</td>
+        <td ng-if="item.charact_1 =='postpos'">постпозиция</td>
+        <td ng-if="item.charact_1 =='prepos'">препозиция</td>
+        <td ng-if="item.charact_1 =='attach'">приложение</td>
+
+        <td>{{item.charact_2}}</td>
+        <td><a href="#/colls/{{item.id}}">Проанализировать</a></td>
+        <td>{{item.created_at }}</td>
+        <td class="s-last"></td>
+    </tr>
+    </tbody></table>
+<hr>
+<br>
+<!----------------- footer --------------------->
+<span>Количество: {{$ctrl.list.length}}</span>
+</div>

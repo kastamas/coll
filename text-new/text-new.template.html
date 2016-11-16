@@ -1,29 +1,21 @@
 <h2><span><a href="#/texts/">< Назад </a></span> Добавление текста</h2>
 
-<!----------------- filters ------------------->
+<form novalidate ng-submit="$ctrl.sending()">
+    <label for="textName">Название</label>  <br>
+    <input class="text" ng-model="$ctrl.entity.title" name="title" id="textName" type="text" required/> <br>
 
-<!----------------- table --------------------->
+    <label for="textName">Текст</label>    <br>
+    <textarea id="textText" ng-model="$ctrl.entity.text" name="text" class="">
 
-<!--<table class="table"><thead>
-<tr>
-    <th>Название</th>
-    <th>Статус</th>
-    <th></th>
-    <th>Дата создания</th>
-    <th class="s-last"></th>
-</tr> &lt;!&ndash;ng-if="!$ctrl.filter.entities.length&ndash;&gt;
-<tr data-ng-if="!$ctrl.list.length">
-    Нет записей.
-</tr>
-</thead><tbody>
-<tr data-ng-repeat="item in $ctrl.list">
-    <td>{{item.title}}</td>
-    <td>{{item.status}}</td>
-    <td>Проанализировать</td>
-    <td>{{item.created_at}}</td>
-    <td class="s-last"></td>
-</tr>
-</tbody></table><br>-->
-<!----------------- footer --------------------->
-<!--
-<span>Количество:</span>-->
+    </textarea> <br>
+
+    <label for="textStatus">Текущий статус</label>  <br>
+    <select id="textStatus" ng-model="$ctrl.entity.status">
+        <option value="u">Неразобран</option>
+        <option value="d">Разобран</option>
+        <option value="a">Разобран не до конца</option>
+    </select>  <br><br>
+
+    <button type="submit" value="добавить">добавить</button>
+    <div class="notification" ng-style="" >{{$ctrl.notificationMessage}}</div>
+</form>

@@ -4,17 +4,26 @@ angular.module('textNew')
 
     .controller('TextNewCtrl', [
         '$scope','$http', '$location', '$routeParams', function ($scope, $http, $location,$routeParams) {
-           /* const ctrl = this;
-            $scope.title = 'Текст c id = ';
-            $scope.textId = $routeParams.textId;
-            console.log($routeParams);*/
-            //запрос к бд
-            /*$http.get('/api/texts').success(function (data, status, headers, config) {
-             console.log('This is Data:', data,'\n\n This is Status:',status,'\n\nTHIS is headers:',headers,'\n\nThisIs Config:',config,'\n\n');
-             ctrl.list = data;
-             }).error(function () {
+           const ctrl = this;
 
-             });*/
+            ctrl.entity = {};
+            $scope.title = 'Новый текст';
+
+            ctrl.sending = function () {
+                $http.post('/api/texts', ctrl.entity).success(function (data,status,headers,config){
+                     ctrl.notificationMessage ="текст добавлен ;)";
+                     console.log("Connect is here!");
+                }).error(function  (data, status, header, config) {
+                    ctrl.notificationMessage = "во время запроса произошла ошибка " + status;
+                    console.log("Smth wrong");
+                });
+
+
+                console.log(ctrl.entity);
+            };
+           /* $http.post('/api/texts/', entity)*/
+
+
         }])
 
     .component('textNew', {

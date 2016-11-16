@@ -2,11 +2,11 @@
 
     <!----------------- filters ------------------->
 <div class="text-message"  ng-show="$ctrl.list.length == '0'">
-    <p>Нет записей в базе данных</p>
+    <p>Пусто. <a href="#/texts/new">добавить текст</a></p>
 </div>
 
-    <!----------------- table --------------------->
-
+<div ng-show="$ctrl.list.length != '0'">
+<!----------------- table --------------------->
 <table class="table"><thead>
 <tr>
     <th>Название</th>
@@ -23,8 +23,9 @@
     <!--Todo:Crutch-->
     <td ng-if="item.status == 'u'">-</td>
     <td ng-if="item.status == 'd'">+</td>
+    <td ng-if="item.status == 'a'">\</td>
     <td><a href="#/texts/{{item.id}}">Проанализировать</a></td>
-    <td>{{item.created_at}}</td>
+    <td>{{item.created_at }}</td>
     <td class="s-last"></td>
 </tr>
 </tbody></table>
@@ -32,3 +33,4 @@
 <br>
     <!----------------- footer --------------------->
 <span>Количество: {{$ctrl.list.length}}</span>
+</div>

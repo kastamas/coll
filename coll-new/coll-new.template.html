@@ -1,0 +1,44 @@
+<h2><span><a href="#/texts/">< Назад </a></span> Добавление словосочетаний</h2>
+
+<form novalidate ng-submit="$ctrl.onCreate()">
+
+    <!--TODO: texts selector-->
+    <label for="collText_id">Текст</label>  <br>
+    <select id="collText_id" ng-model="$ctrl.entity.text_id">
+        <option value="1">Тест1</option>
+        <option value="2">Тест2</option>
+    </select> <br> <br>
+
+    <label for="collName">Словосочетание:</label>  <br>
+    <input class="text" ng-model="$ctrl.entity.title" name="title" id="collName" type="text" required/> <br><br>
+
+    <label for="collCharact1">Характеристика 1</label>  <br>
+    <select id="collCharact1" ng-model="$ctrl.entity.charact_1">
+        <option value="3xmem">3х член</option>
+        <option value="distant">дистантное</option>
+        <option value="interpos">интерпозиция</option>
+        <option value="postpos">постпозиция</option>
+        <option value="prepos">препозиция</option>
+        <option value="attach">приложение</option>
+    </select> <br><br>
+
+    <!--TODO:charact2-->
+    <label for="collCharact2">Характеристика 2</label>  <br>
+    <select id="collCharact2" ng-model="$ctrl.entity.charact_2">
+        <option value="1">Тест1</option>
+        <option value="2">Тест2</option>
+    </select> <br><br>
+
+    <label for="collStatus">Текущий статус:</label>  <br>
+    <select id="collStatus" ng-model="$ctrl.entity.status">
+        <option value="u">Неразобрано</option>
+        <option value="d">Разобрано</option>
+        <option value="a">Разобрано не до конца</option>
+    </select>  <br><br>
+
+    <!--Todo: fixes stuff-->
+    <button type="submit" value="добавить">добавить</button>
+
+    <!--ToDo: improve Notifies-->
+    <div class="notification" ng-style="" >{{$ctrl.notificationMessage}}</div>
+</form>

@@ -2,7 +2,7 @@
 <html lang="en" data-ng-app="collApp">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Анализ Словосочетаний</title>
 
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="/bootstrap/css/bootstrap-theme.css" />
@@ -12,6 +12,7 @@
 
     <script src="app.module.js"></script>
     <script src="app.config.js"></script>
+
     <script src="texts-list/texts-list.module.js"></script>
     <script src="texts-list/texts-list.component.js"></script>
     <script src="text-item/text-item.module.js"></script>
@@ -19,12 +20,17 @@
     <script src="text-new/text-new.module.js"></script>
     <script src="text-new/text-new.component.js"></script>
 
+    <script src="colls-list/colls-list.module.js"></script>
+    <script src="colls-list/colls-list.component.js"></script>
+    <script src="coll-new/coll-new.module.js"></script>
+    <script src="coll-new/coll-new.component.js"></script>
+
     <script src="main-page/main-page.module.js"></script>
     <script src="main-page/main-page.component.js"></script>
 </head>
 <body>
 
-    <div ng-view ></div>
+    <div ng-view ng-cloak></div>
 
 </body>
 </html>
