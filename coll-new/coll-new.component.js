@@ -15,23 +15,32 @@ angular.module('collNew')
 
             ctrl.onCreate = function () {
                 /*преобразовываю массив объектов в массив*/
-                console.log("МАССИВ ОБЪЕКТОВ!",ctrl.entity.charact_2);
+                /*console.log("МАССИВ ОБЪЕКТОВ!",ctrl.entity.charact_2);*/
+
                 ctrl.entity.characteristics.forEach(function (item) {
                    /* console.log(item);*/
                     console.log(item.id);
                     ctrl.entity.charact_2.push(item.id);
                 });
 
-                console.log("РЕЗУЛЬТАТ", ctrl.entity.charact_2);
+                console.log("МАССИВ!",ctrl.entity.charact_2);
+
+               /* ctrl.entity.characteristics.length=0;*/
+
 
                 $http.post('/api/collocations', ctrl.entity).success(function (data,status,headers,config){
                     ctrl.notificationMessage ="добавлено ;)";
                     console.log("Connect is here!");
+                    ctrl.entity.charact_2.length=0;
                 }).error(function  (data, status, header, config) {
                     ctrl.notificationMessage = "во время отпавки произошла ошибка " + status + ":(";
                     console.log("Smth wrong");
+                    ctrl.entity.charact_2.length=0;
                 });
-                console.log(ctrl.entity);
+
+
+
+                console.log("НА ВЫХОДЕ",ctrl.entity.charact_2);
             };
 
             /*list of texts*/

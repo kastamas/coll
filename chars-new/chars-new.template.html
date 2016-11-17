@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+
+<h2 class="page-header">Добавление характеристики</h2>
+
+<form novalidate ng-submit="$ctrl.onCreate()">
+    <label for="textName">Название*</label>  <br>
+    <input class="text form-control" ng-model="$ctrl.entity.characteristic" name="title" id="textName" type="text" required/> <br>
+
+    <button type="submit" value="добавить" class="btn btn-default">добавить</button>
+    <div class="notification" ng-style="" >{{$ctrl.notificationMessage}}</div>
+</form>
+
+            </div>
+            </div>
+            </div>

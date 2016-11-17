@@ -19,3 +19,26 @@ span {
 input[type=text].text{
 
 }
+
+footer{
+    opacity: 0.3;
+    z-index: -1;
+}
+.navbar{
+    background: #f8f8f8;
+}
+.navbar li{
+    float: left;
+    padding-top: 5px;
+}
+
+.brand{
+    display: block;
+    float: left;
+    padding: 12px 30px 8px 15px;
+    margin-left: -20px;
+    font-size: 28px;
+    font-weight: 200;
+    line-height: 1;
+    color: #777;
+}

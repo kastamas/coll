@@ -1,16 +1,19 @@
-<h2><span><a href="#/">< Назад </a></span> {{ title}}</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+<h2 class="page-header">{{ title}}</h2>
 
 <!----------------- filters ------------------->
 
-
+            <span>Количество: {{$ctrl.list.length}}</span>
 <!----------------- message if empty ------------------->
 <div class="text-message"  ng-show="$ctrl.list.length == '0'">
-    <p>Пусто</p>
+    <p>Пусто. <a href="#/colls/new">Добавить словосочетание.</a></p>
 </div>
 
 <div ng-show="$ctrl.list.length != '0'">
 <!----------------- table --------------------->
-<table class="table"><thead>
+<table class="table table-striped"><thead>
 <tr>
     <th>Словосочетание</th>
     <th>Статус</th>
@@ -25,7 +28,7 @@
 
     <tbody>
     <tr data-ng-repeat="item in $ctrl.list">
-        <td>{{item.collocation}}</td>
+        <td title="{{item.collocation}}">{{item.collocation}}</td>
         <!--Todo:Crutch-->
         <td ng-if="item.status == 'u'">-</td>
         <td ng-if="item.status == 'd'">+</td>
@@ -39,6 +42,7 @@
         <td ng-if="item.charact_1 =='postpos'">постпозиция</td>
         <td ng-if="item.charact_1 =='prepos'">препозиция</td>
         <td ng-if="item.charact_1 =='attach'">приложение</td>
+        <td ng-if="item.charact_1 == NULL"></td>
 
         <td>{{item.charact_2}}</td>
         <td><a href="#/colls/{{item.id}}">Проанализировать</a></td>
@@ -49,5 +53,8 @@
 <hr>
 <br>
 <!----------------- footer --------------------->
-<span>Количество: {{$ctrl.list.length}}</span>
+
+</div>
+</div>
+</div>
 </div>

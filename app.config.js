@@ -4,27 +4,35 @@ var collApp = angular.module('collApp', [
     'ngRoute',
     'textItem', 'textNew', 'textsList',
                 'collNew', 'collsList',
+               'charsNew', 'charsList',
     'mainPage']);
 
 
 collApp.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvide) {
 
-    $routeProvide /*ToDo:add other routes*/
+    $routeProvide
         .when('/texts', {
-            template: '<texts-list>'
+            template: '<texts-list  ng-cloak>'
         })
         .when('/texts/new',{
-            template: '<text-new>'
+            template: '<text-new  ng-cloak>'
         })
         .when('/texts/:textId',{
-            template: '<text-item>'
+            template: '<text-item  ng-cloak>'
         })
 
         .when('/colls', {
-            template: '<colls-list>'
+            template: '<colls-list  ng-cloak>'
         })
         .when('/colls/new',{
-            template: '<coll-new>'
+            template: '<coll-new  ng-cloak>'
+        })
+
+        .when('/chars', {
+            template: '<chars-list  ng-cloak>'
+        })
+        .when('/chars/new',{
+            template: '<chars-new  ng-cloak>'
         })
 
         .when('/',{

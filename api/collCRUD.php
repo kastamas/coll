@@ -26,7 +26,7 @@ class collCRUD
     }
 
     public function queryCollocations() {
-        $query_str = "SELECT id, collocation, charact_1, charact_2, status, created_at, updated_at, text_id FROM " . self::$collocations . " ORDER BY created_at DESC";
+        $query_str = "SELECT c.id, c.collocation, t.title as text_name, c.charact_1, c.charact_2, c.status, c.created_at, c.updated_at, c.text_id FROM " . self::$collocations . " c INNER JOIN texts t ON c.text_id = t.id ORDER BY created_at DESC";
         $query = $this->pdo->prepare($query_str);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -72,6 +72,17 @@ class collCRUD
         $query->execute($params);
         return $query->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function createCharacteristic($data) {
+
+         $query_str = "INSERT INTO " . self::$characteristics . " ( characteristic) VALUES (:characteristic) RETURNING *";
+         $params = array(
+             "characteristic" => $data['characteristic']
+         );
+         $query = $this->pdo->prepare($query_str);
+         $query->execute($params);
+         return $query->fetch(PDO::FETCH_ASSOC);
+     }
 
     protected function checkText($data) {
         if (!$data['status'] || !$data['title']) {

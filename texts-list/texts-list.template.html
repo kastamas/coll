@@ -1,4 +1,7 @@
-<h2><span><a href="#/">< Назад </a></span> {{ title}}</h2>
+<div class="container">
+    <div class="row">
+    <div class=".col-sm-4">
+<h2>{{title}}</h2>
 
     <!----------------- filters ------------------->
 <div class="text-message"  ng-show="$ctrl.list.length == '0'">
@@ -24,7 +27,7 @@
     <td ng-if="item.status == 'u'">-</td>
     <td ng-if="item.status == 'd'">+</td>
     <td ng-if="item.status == 'a'">\</td>
-    <td><a href="#/texts/{{item.id}}">Проанализировать</a></td>
+    <td><a href="#/texts/{{item.id}}">Переразобрать</a></td>
     <td>{{item.created_at }}</td>
     <td class="s-last"></td>
 </tr>
@@ -33,4 +36,7 @@
 <br>
     <!----------------- footer --------------------->
 <span>Количество: {{$ctrl.list.length}}</span>
+    </div>
+</div>
+</div>
 </div>
