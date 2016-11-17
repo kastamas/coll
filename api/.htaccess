@@ -3,3 +3,4 @@ ErrorDocument 404 /index.html
 RewriteRule ^texts /api/index.php
 RewriteRule ^texts/(.*)$ /api/index.php
 RewriteRule ^collocations /api/index.php
+RewriteRule ^characteristics /api/index.php

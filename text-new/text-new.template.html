@@ -1,7 +1,7 @@
 <h2><span><a href="#/texts/">< Назад </a></span> Добавление текста</h2>
 
 <form novalidate ng-submit="$ctrl.sending()">
-    <label for="textName">Название</label>  <br>
+    <label for="textName">Название*</label>  <br>
     <input class="text" ng-model="$ctrl.entity.title" name="title" id="textName" type="text" required/> <br>
 
     <label for="textName">Текст</label>    <br>
@@ -9,7 +9,7 @@
 
     </textarea> <br>
 
-    <label for="textStatus">Текущий статус</label>  <br>
+    <label for="textStatus">Текущий статус*</label>  <br>
     <select id="textStatus" ng-model="$ctrl.entity.status">
         <option value="u">Неразобран</option>
         <option value="d">Разобран</option>

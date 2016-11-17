@@ -6,6 +6,7 @@ class collCRUD
     protected $pdo;
     protected static $texts = "texts";
     protected static $collocations = "collocations";
+    protected static $characteristics = "characteristics";
 
     public function __construct()
     {
@@ -26,6 +27,13 @@ class collCRUD
 
     public function queryCollocations() {
         $query_str = "SELECT id, collocation, charact_1, charact_2, status, created_at, updated_at, text_id FROM " . self::$collocations . " ORDER BY created_at DESC";
+        $query = $this->pdo->prepare($query_str);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+	public function queryCharacteristics() {
+        $query_str = "SELECT id, characteristic FROM " . self::$characteristics . " ORDER BY characteristic ASC";
         $query = $this->pdo->prepare($query_str);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -66,7 +74,7 @@ class collCRUD
     }
 
     protected function checkText($data) {
-        if (!$data['text'] || !$data['status'] || !$data['title']) {
+        if (!$data['status'] || !$data['title']) {
             header('HTTP/ 400 INCORRECT_INPUT');
             exit();
         }
@@ -157,21 +165,41 @@ class collCRUD
     public function createCollocation($data) {
         $this->checkCollocation($data);
 
+        function to_pg_array($set) {
+            settype($set, 'array'); // can be called with a scalar or array
+            $result = array();
+            foreach ($set as $t) {
+                if (is_array($t)) {
+                    $result[] = to_pg_array($t);
+                } else {
+                    $t = str_replace('"', '\\"', $t); // escape double quote
+                    if (! is_numeric($t)) // quote only non-numeric values
+                        $t = '"' . $t . '"';
+                    $result[] = $t;
+                }
+            }
+            return '{' . implode(",", $result) . '}'; // format
+        }
+
+        $data['charact_2'] = to_pg_array($data['charact_2']);
         $query_str = "INSERT INTO " . self::$collocations . " (collocation, charact_1, charact_2, status, text_id) VALUES (:collocation, :charact_1, :charact_2, :status, :text_id) RETURNING *";
         $params = array(
             "collocation" => $data['collocation'],
             "charact_1" => $data['charact_1'],
-            "charact_2" => $data['charact_2'],
+            "charact_2" => $data['charact_2'],//"{1,2}"
+            //"charact_2" => "ARRAY" . $data['charact_2'] . " ::integer[]",//"{1,2}"
             "text_id" => $data['text_id'],
             "status" => $data['status']
         );
         $query = $this->pdo->prepare($query_str);
+
         $query->execute($params);
+
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 
     protected function checkCollocation($data) {
-        if (!$data['collocation'] || !$data['status'] || !$data['charact_1'] || !$data['charact_2'] || !$data['text_id']) {
+        if (!$data['collocation'] || !$data['status'] || !$data['text_id']) {
             header('HTTP/ 400 INCORRECT_INPUT');
             exit();
         }

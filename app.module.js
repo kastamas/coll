@@ -2,6 +2,7 @@
 
 angular.module('collApp', [
     'ngRoute',
+    'angularjs-dropdown-multiselect',
 
     'textItem',
     'textNew',
@@ -9,6 +10,8 @@ angular.module('collApp', [
 
     'collNew',
     'collsList',
+
+
 
     'mainPage'
 ]);

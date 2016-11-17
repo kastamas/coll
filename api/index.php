@@ -60,6 +60,7 @@ switch ($route[2]) {
             }
         }
         break;
+
     case 'collocations':
         if ($route[3]) {
             if (is_numeric($route[3])) {
@@ -98,12 +99,16 @@ switch ($route[2]) {
                 }
                 echo json_encode($result);
             }
+
             if ($method === 'POST') {
                 $data = json_decode(file_get_contents('php://input'), true);
+
                 if ($data === null) {
                     header('HTTP/ 400 INCORRECT_INPUT');
                     exit();
-                } else {
+                }
+
+                else {
                     $result = $collCRUD->createCollocation($data);
                     if ($result === false) {
                         header('HTTP/ 400 CREATE_ERROR');
@@ -114,6 +119,52 @@ switch ($route[2]) {
             }
         }
         break;
+	case 'characteristics':
+		if ($route[3]) {
+			/* if (is_numeric($route[3])) {
+				if ($method === 'GET') {
+					$result = $collCRUD -> getText($route[3]);
+					if ($result === false){
+						header('HTTP/ 404 NOT_FOUND');
+						exit();
+					}
+					echo json_encode($result);
+				}
+				if ($method === 'PUT') {
+					$data = json_decode(file_get_contents('php://input'), true);
+					if ($data === null) {
+						header('HTTP/ 400 INCORRECT_INPUT');
+                        exit();
+					} else {
+						$result  = $collCRUD -> updateT
+					}
+				}
+			} */
+		} else {
+			if ($method === 'GET') {
+				$result = $collCRUD -> queryCharacteristics();
+				 if ($result === false) {
+                    header('HTTP/ 400 GET_ERROR');
+                    exit();
+                }
+                echo json_encode($result);
+			}
+			if ($method === 'POST') {
+                $data = json_decode(file_get_contents('php://input'), true);
+                if ($data === null) {
+                    header('HTTP/ 400 INCORRECT_INPUT');
+                    exit();
+                } else {
+                    $result = $collCRUD->createCharacteristic($data);
+                    if ($result === false) {
+                        header('HTTP/ 400 CREATE_ERROR');
+                        exit();
+                    }
+                    echo json_encode($result);
+                }
+            }
+		}
+		break;
     default:
         echo "<script>window.location = '/';</script>";
 }
