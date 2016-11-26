@@ -63,7 +63,7 @@ ALTER TABLE ONLY collocations
 
 ALTER TABLE ONLY collocations
     ADD CONSTRAINT collocations_text_id_fkey FOREIGN KEY (text_id) REFERENCES texts(id) ON UPDATE CASCADE ON DELETE CASCADE;
-	
+
 CREATE SEQUENCE IF NOT EXISTS characteristics_ids
     START WITH 1
     INCREMENT BY 1

@@ -14,18 +14,13 @@ angular.module('collNew')
 
 
             ctrl.onCreate = function () {
-                /*преобразовываю массив объектов в массив*/
-                /*console.log("МАССИВ ОБЪЕКТОВ!",ctrl.entity.charact_2);*/
 
                 ctrl.entity.characteristics.forEach(function (item) {
-                   /* console.log(item);*/
                     console.log(item.id);
                     ctrl.entity.charact_2.push(item.id);
                 });
 
                 console.log("МАССИВ!",ctrl.entity.charact_2);
-
-               /* ctrl.entity.characteristics.length=0;*/
 
 
                 $http.post('/api/collocations', ctrl.entity).success(function (data,status,headers,config){
@@ -53,28 +48,12 @@ angular.module('collNew')
             }).error(function () {
                 console.log("Smth wrong");
             });
-          /*  options = function() {
-                $http.get('/api/texts').success(function (data, status, headers, config) {
-                    console.log('This is Data:', data, '\n\n This is Status:', status);
-                    ctrl.textsList = data;
-                    console.log(ctrl.textsList);
-                    return data;
-                }).error(function () {
-                    console.log("Smth wrong");
-                });
-            };
-*/
-           /* console.log("OPTIONS = ",options);*/
 
             /*list of characteristics*/
             $http.get('/api/characteristics').success(function (data, status, headers, config) {
                 console.log('This is Data:', data,'\n\n This is Status:',status);
                 ctrl.charactsList = data;
                 console.log(ctrl.charactsList);
-
-
-
-
             }).error(function () {
                 console.log("Smth wrong");
             });

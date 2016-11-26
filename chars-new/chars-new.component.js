@@ -11,7 +11,7 @@ angular.module('charsNew')
 
             ctrl.onCreate = function () {
                 $http.post('/api/characteristics', ctrl.entity).success(function (data,status,headers,config){
-                    ctrl.notificationMessage ="текст добавлен ;)";
+                    ctrl.notificationMessage ="характеристика добавлена ;)";
                     console.log("Connect is here!");
                 }).error(function  (data, status, header, config) {
                     ctrl.notificationMessage = "во время запроса произошла ошибка " + status;

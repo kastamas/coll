@@ -29,7 +29,6 @@ footer{
 }
 .navbar li{
     float: left;
-    padding-top: 5px;
 }
 
 .brand{
@@ -41,4 +40,25 @@ footer{
     font-weight: 200;
     line-height: 1;
     color: #777;
+}
+
+.nav li a {
+    padding: 15px 15px;
+}
+
+.d{
+    text-align: right;
+}
+
+.c {
+    text-align: center;
+}
+
+.upFont{
+    font-size: large;
+}
+
+hr.withoutMargin{
+    margin: 0px;
+    padding: 0px;
 }

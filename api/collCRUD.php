@@ -26,7 +26,11 @@ class collCRUD
     }
 
     public function queryCollocations() {
-        $query_str = "SELECT c.id, c.collocation, t.title as text_name, c.charact_1, c.charact_2, c.status, c.created_at, c.updated_at, c.text_id FROM " . self::$collocations . " c INNER JOIN texts t ON c.text_id = t.id ORDER BY created_at DESC";
+        $query_str = "SELECT c.id, c.collocation, t.title as text_name, c.charact_1, c.charact_2, c.status, c.created_at, c.updated_at, c.text_id
+                        FROM " . self::$collocations . " c
+                        INNER JOIN texts t ON c.text_id = t.id
+
+                        ORDER BY created_at DESC";
         $query = $this->pdo->prepare($query_str);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
