@@ -15,7 +15,22 @@ angular.module('textsList',[])
          }).error(function () {
 
          });
+
+          //sort on init
+          $scope.sortingRows = 'name';
+          $scope.sortingReverse = false;
+
+         $scope.sort = function (fieldName) {
+             if($scope.sortingRows === fieldName){
+                 $scope.sortingReverse = !$scope.sortingReverse;
+             } else {
+                 $scope.sortingRows = fieldName;
+                 $scope.sortingReverse = false;
+             }
+         };
+
     }])
+
 
     .component('textsList', {
         templateUrl: 'texts-list/texts-list.template.html',

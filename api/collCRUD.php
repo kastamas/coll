@@ -43,6 +43,35 @@ class collCRUD
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
+      //todo:make it more simple
+     protected function setCharsUpdateFields($data) {
+            $updateFields = array();
+            $replacements = array();
+
+            if ($data['characteristic']) {
+                array_push($updateFields, "characteristic = :characteristic");
+                $replacements["characteristic"] = $data['characteristic'];
+            }
+
+            return array('fields' => $updateFields, 'replacements' => $replacements);
+        }
+
+        public function updateCharacteristic($data) {
+            $params = $this->setCharsUpdateFields($data);
+
+            if (count($params['fields']) == 0) {
+                header('HTTP/ 200 NOTHING_TO_UPDATE');
+                exit();
+            } else {
+                $fields = join(',',$params['fields']);
+                $query_str = "UPDATE " . self::$characteristics . " SET " . $fields . " WHERE id =  ". $data['id'] ." RETURNING *";
+                $query = $this->pdo->prepare($query_str);
+                $query->execute($params['replacements']);
+                return $query->fetch(PDO::FETCH_ASSOC);
+            }
+        }
+
+
     public  function  getText($id) {
         $query_str = "SELECT * FROM " . self::$texts . " WHERE id = :id LIMIT 1";
         $params = array(
@@ -79,7 +108,7 @@ class collCRUD
 
     public function createCharacteristic($data) {
 
-         $query_str = "INSERT INTO " . self::$characteristics . " ( characteristic) VALUES (:characteristic) RETURNING *";
+         $query_str = "INSERT INTO " . self::$characteristics . " ( characteristic) VALUES (lower(:characteristic)) RETURNING *";
          $params = array(
              "characteristic" => $data['characteristic']
          );
@@ -118,6 +147,7 @@ class collCRUD
             $replacements["text"] = $data['text'];
         }
 
+
         return array('fields' => $updateFields, 'replacements' => $replacements);
     }
 
@@ -129,7 +159,7 @@ class collCRUD
             exit();
         } else {
             $fields = join(',',$params['fields']);
-            $query_str = "UPDATE " . self::$texts . " SET " . $fields . " RETURNING *";
+            $query_str = "UPDATE " . self::$texts . " SET " . $fields . " WHERE id =  ". $data['id'] ." RETURNING *";
             $query = $this->pdo->prepare($query_str);
             $query->execute($params['replacements']);
             return $query->fetch(PDO::FETCH_ASSOC);

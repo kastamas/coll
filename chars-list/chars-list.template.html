@@ -1,34 +1,38 @@
 <div class="container">
     <div class="row">
-        <div class=".col-sm-4">
-            <h2>{{title}}</h2>
+        <div class="col-md-12">
+            <h2 class="page-header">{{title}}  <span>Количество: {{$ctrl.list.length}}</span></h2>
 
             <!----------------- filters ------------------->
             <div class="text-message"  ng-show="$ctrl.list.length == '0'">
-                <p>Пусто. <a href="#/characters/new">добавить характеристику</a></p>
+                <p>Пусто. <a href="#/chars/new">добавить характеристику</a></p>
             </div>
 
             <div ng-show="$ctrl.list.length != '0'">
                 <!----------------- table --------------------->
                 <table class="table table-striped"><thead>
                 <tr>
-                    <th>Название</th>
-                    <th>Дата создания</th>
+                    <th class="col-md-2">Название</th>
+                   <!-- <th>Дата создания</th>-->
+                    <th></th>
                     <th class="s-last"></th>
                 </tr>
                 </thead>
 
                     <tbody>
                     <tr data-ng-repeat="item in $ctrl.list">
-                        <td>{{item.characteristic}}</td>
-                        <td>{{item.created_at }}</td>
+                        <td ng-show="$ctrl.editing != '{{item.id}}'">{{item.characteristic}}</td>
+                        <td ng-show="$ctrl.editing == '{{item.id}}'"><input type="text" ng-value="item.characteristic"  ng-model="$ctrl.newValue"></td>
+                       <!-- <td>{{item.created_at }}</td>-->
+                        <td ng-show="$ctrl.editing != '{{item.id}}'"><a ng-click="editChar(item.id)">редактировать</a></td>
+                        <td ng-show="$ctrl.editing == '{{item.id}}'"><a ng-click="saveChanges(item.id)">сохранить</a></td>
                         <td class="s-last"></td>
                     </tr>
                     </tbody></table>
                 <hr>
                 <br>
                 <!----------------- footer --------------------->
-                <span>Количество: {{$ctrl.list.length}}</span>
+
             </div>
         </div>
     </div>

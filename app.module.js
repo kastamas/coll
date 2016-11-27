@@ -7,6 +7,7 @@ angular.module('collApp', [
     'textItem',
     'textNew',
     'textsList',
+    'textEdit',
 
     'collNew',
     'collsList',

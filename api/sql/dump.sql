@@ -21,8 +21,8 @@ CREATE TYPE enum_texts_status AS ENUM (
 
 CREATE TABLE IF NOT EXISTS texts (
     id integer DEFAULT nextval('texts_ids'::regclass) NOT NULL,
-    text character(250000) ,
-	  title character(256) NOT NULL,
+    text character varying(250000) ,
+	  title character varying(256) NOT NULL,
     status enum_texts_status DEFAULT 'u'::enum_texts_status NOT NULL,
     created_at timestamp with time zone,
     updated_at timestamp with time zone
@@ -50,7 +50,7 @@ CREATE TYPE enum_collocations_charact_1 AS ENUM (
 CREATE TABLE IF NOT EXISTS collocations (
     id integer DEFAULT nextval('collocations_ids'::regclass) NOT NULL,
     status enum_texts_status DEFAULT 'u'::enum_texts_status NOT NULL,
-	collocation character(100) NOT NULL,
+	collocation character varying(100) NOT NULL,
     charact_1 enum_collocations_charact_1 DEFAULT NULL,
 	charact_2 integer[] DEFAULT ARRAY[]::integer[],
     created_at timestamp with time zone,
@@ -74,7 +74,7 @@ CREATE SEQUENCE IF NOT EXISTS characteristics_ids
 
 CREATE TABLE IF NOT EXISTS characteristics (
     id integer DEFAULT nextval('characteristics_ids'::regclass) NOT NULL,
-    characteristic character(50),
+    characteristic character varying(50),
     created_at timestamp with time zone,
     updated_at timestamp with time zone
 );

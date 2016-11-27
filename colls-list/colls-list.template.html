@@ -3,7 +3,6 @@
         <div class="col-md-12">
 <h2 class="page-header">{{ title}}</h2>
 
-
 <!----------------- filters ------------------->
 <div class="row">
     <div class="col-md-2">
@@ -26,12 +25,12 @@
         <label for="selectCharactOne">Фильтр по хар. 1</label><br>
         <select id="selectCharactOne" data-ng-model="$ctrl.filter.charact_1" class="form-control">
             <option value='any'>- Любая  -</option>
-            <option value='3xmem'>3х член</td>
-            <option value='distant'>дистантное</td>
-            <option value='interpos'>интерпозиция</td>
-            <option value='postpos'>постпозиция</td>
-            <option value='prepos'>препозиция</td>
-            <option value='attach'>приложение</td>
+            <option value='3xmem'>3х член</option>
+            <option value='distant'>дистантное</option>
+            <option value='interpos'>интерпозиция</option>
+            <option value='postpos'>постпозиция</option>
+            <option value='prepos'>препозиция</option>
+            <option value='attach'>приложение</option>
         </select>
     </div>
     <div class="col-md-3">
@@ -42,12 +41,14 @@
     </div>
 </div>
 <br>
+
 <!----------------- message if empty ------------------->
 <div class="text-message"  ng-show="$ctrl.list.length == '0'">
     <p>Пусто. <a href="#/colls/new">Добавить словосочетание.</a></p>
 </div>
 
 <div ng-show="$ctrl.list.length != '0'">
+    <hr>
 <!----------------- table --------------------->
 <table class="table table-striped"><thead>
 <tr>
@@ -58,7 +59,7 @@
     <th class="col-sm-3">Характеристика 2</th>
     <th></th>
     <th class="d">Добавлено</th>
-    <th class="s-last col-xs-1"></th>
+    <th class="s-lasts"></th>
 </tr>
 </thead>
 
@@ -94,6 +95,7 @@
     </tbody></table>
 <hr>
 <br>
+
 <!----------------- footer --------------------->
 
 </div>

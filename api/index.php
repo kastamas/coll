@@ -121,7 +121,7 @@ switch ($route[2]) {
         break;
 	case 'characteristics':
 		if ($route[3]) {
-			/* if (is_numeric($route[3])) {
+			 if (is_numeric($route[3])) {
 				if ($method === 'GET') {
 					$result = $collCRUD -> getText($route[3]);
 					if ($result === false){
@@ -136,10 +136,15 @@ switch ($route[2]) {
 						header('HTTP/ 400 INCORRECT_INPUT');
                         exit();
 					} else {
-						$result  = $collCRUD -> updateT
+						$result  = $collCRUD -> updateCharacteristic($data);
+					        if($result === false){
+                                     header('HTTP/ 400 UPDATE_ERROR');
+                                     exit();
+                            }
+                             echo json_encode($result);
 					}
 				}
-			} */
+			}
 		} else {
 			if ($method === 'GET') {
 				$result = $collCRUD -> queryCharacteristics();

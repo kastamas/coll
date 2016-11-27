@@ -1,41 +1,55 @@
 <div class="container">
-    <div class="row">
-    <div class=".col-sm-4">
-<h2>{{title}}</h2>
+<div class="row">
+<div class="col-md-12">
 
-    <!----------------- filters ------------------->
+    <h2 class="page-header">{{title}} <span>Количество: {{$ctrl.list.length}}</span></h2>
+
+<!----------------- filters ------------------->
+
+<!----------------- message if empty ------------------->
 <div class="text-message"  ng-show="$ctrl.list.length == '0'">
     <p>Пусто. <a href="#/texts/new">добавить текст</a></p>
 </div>
 
 <div ng-show="$ctrl.list.length != '0'">
 <!----------------- table --------------------->
-<table class="table"><thead>
+<table class="table table table-striped"><thead>
 <tr>
-    <th>Название</th>
-    <th>Статус</th>
-    <th></th>
-    <th>Дата создания</th>
-    <th class="s-last"></th>
+    <th class="col-sm-1"
+        >Статус</th>
+    <th ><a ng-click="sort('title')"
+        >Название</a></th>
+    <!--<th
+        ></th> -->
+    <th
+        ></th>
+    <th class="d"><a ng-click="sort('created_at')"
+        >Дата создания</a></th>
+
+    <th class="s-last  col-xs-1"></th>
 </tr>
 </thead>
 
 <tbody>
-<tr data-ng-repeat="item in $ctrl.list">
-    <td>{{item.title}}</td>
+<tr data-ng-repeat="item in $ctrl.list | orderBy:sortingRows:sortingReverse">
     <!--Todo:Crutch-->
-    <td ng-if="item.status == 'u'">-</td>
-    <td ng-if="item.status == 'd'">+</td>
-    <td ng-if="item.status == 'a'">\</td>
-    <td><a href="#/texts/{{item.id}}">Переразобрать</a></td>
-    <td>{{item.created_at }}</td>
+    <td  class="c upFont" ng-if="item.status == 'u'">-</td>
+    <td  class="c upFont" ng-if="item.status == 'd'">+</td>
+    <td  class="c upFont" ng-if="item.status == 'a'">\</td>
+
+    <td>{{item.title}}</td>
+
+  <!--  <td><a href="#/texts/{{item.id}}">Переразобрать</a></td>-->
+    <td><a href="#/texts/edit/{{item.id}}">редактировать</a></td>
+    <td class="d">{{item.created_at | limitTo:'10' | date:'dd/MM/yyyy'}}</td>
+
     <td class="s-last"></td>
 </tr>
 </tbody></table>
 <hr>
 <br>
     <!----------------- footer --------------------->
-<span>Количество: {{$ctrl.list.length}}</span>
+
     </div>
 </div>
 </div>
