@@ -3,44 +3,6 @@
         <div class="col-md-12">
 <h2 class="page-header">{{ title}}</h2>
 
-<!----------------- filters ------------------->
-<div class="row">
-    <div class="col-md-2">
-        <label for="selectTextId">Фильтр по текстам</label><br>
-        <select id="selectTextId" data-ng-model="$ctrl.filter.text_id"  ng-options="item.id as item.title for item in $ctrl.textsList" class="form-control">
-           <!-- <option data-ng-repeat="item in $ctrl.textsList" value="{{item.id}}">{{item.title}}</option>-->
-            <option value=''>- Все тексты -</option>
-        </select>
-    </div>
-    <div class="col-md-2">
-        <label for="selectStatus">Фильтр по статусу</label><br>
-        <select id="selectStatus" data-ng-model="$ctrl.filter.status" class="form-control">
-            <option value='any'>- Любой статус -</option>
-            <option  value='u' >Не разобрано</option>
-            <option  value='d' >Разобрано</option>
-            <option  value='a' >Разобрано не до конца</option>
-        </select>
-    </div>
-    <div class="col-md-2">
-        <label for="selectCharactOne">Фильтр по хар. 1</label><br>
-        <select id="selectCharactOne" data-ng-model="$ctrl.filter.charact_1" class="form-control">
-            <option value='any'>- Любая  -</option>
-            <option value='3xmem'>3х член</option>
-            <option value='distant'>дистантное</option>
-            <option value='interpos'>интерпозиция</option>
-            <option value='postpos'>постпозиция</option>
-            <option value='prepos'>препозиция</option>
-            <option value='attach'>приложение</option>
-        </select>
-    </div>
-    <div class="col-md-3">
-        <span>Отфильтрованое Количество: {{($ctrl.list | filter: collocationsMainFilter).length }}</span>
-        <span>Словосочетаний в выбраном тексте: {{($ctrl.list | filter: collocationsTextFilter).length }}</span>
-        <hr class="withoutMargin">
-        <span>Общее Количество: {{$ctrl.list.length}}</span>
-    </div>
-</div>
-<br>
 
 <!----------------- message if empty ------------------->
 <div class="text-message"  ng-show="$ctrl.list.length == '0'">
@@ -48,6 +10,45 @@
 </div>
 
 <div ng-show="$ctrl.list.length != '0'">
+    <!----------------- filters ------------------->
+    <div class="row">
+        <div class="col-md-2">
+            <label for="selectTextId">Фильтр по текстам</label><br>
+            <select id="selectTextId" data-ng-model="$ctrl.filter.text_id"  ng-options="item.id as item.title for item in $ctrl.textsList" class="form-control">
+                <!-- <option data-ng-repeat="item in $ctrl.textsList" value="{{item.id}}">{{item.title}}</option>-->
+                <option value=''>- Все тексты -</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="selectStatus">Фильтр по статусу</label><br>
+            <select id="selectStatus" data-ng-model="$ctrl.filter.status" class="form-control">
+                <option value='any'>- Любой статус -</option>
+                <option  value='u' >Не разобрано</option>
+                <option  value='d' >Разобрано</option>
+                <option  value='a' >Разобрано не до конца</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="selectCharactOne">Фильтр по хар. 1</label><br>
+            <select id="selectCharactOne" data-ng-model="$ctrl.filter.charact_1" class="form-control">
+                <option value='any'>- Любая  -</option>
+                <option value='3xmem'>3х член</option>
+                <option value='distant'>дистантное</option>
+                <option value='interpos'>интерпозиция</option>
+                <option value='postpos'>постпозиция</option>
+                <option value='prepos'>препозиция</option>
+                <option value='attach'>приложение</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <span>Отфильтрованое Количество: {{($ctrl.list | filter: collocationsMainFilter).length }}</span>
+            <span>Словосочетаний в выбраном тексте: {{($ctrl.list | filter: collocationsTextFilter).length }}</span>
+            <hr class="withoutMargin">
+            <span>Общее Количество: {{$ctrl.list.length}}</span>
+        </div>
+    </div>
+
+
     <hr>
 <!----------------- table --------------------->
 <table class="table table-striped"><thead>
@@ -57,7 +58,7 @@
     <th class="col-sm-2">Из текста</th>
     <th class="col-sm-2">Характеристика 1</th>
     <th class="col-sm-3">Характеристика 2</th>
-    <th></th>
+  <!--  <th></th>-->
     <th class="d">Добавлено</th>
     <th class="s-lasts"></th>
 </tr>
@@ -87,7 +88,7 @@
         <td ng-if="item.charact_1 == NULL"></td>
 
         <td>{{item.charact_2}}</td>
-        <td><a href="#/colls/{{item.id}}">Проанализировать</a></td>
+       <!-- <td><a href="#/colls/{{item.id}}">Проанализировать</a></td>-->
         <td class="d">{{item.created_at | limitTo:'10' | date:'dd/MM/yyyy'}}</td>
 
         <td class="s-last"></td>

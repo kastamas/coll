@@ -1,6 +1,6 @@
 <div class="container">
 <div class="row">
-<div class="col-md-10">
+<div class="col-md-12">
     <h2 class="page-header">Изменение текста</h2>
 
     <form novalidate ng-submit="$ctrl.sending()">
@@ -17,19 +17,24 @@
                 <option value="a">Разобран не до конца</option>
             </select>  <br><br>
         </div>
+        <div class="col-md-2">
+            <div style="margin: 24px 0px">
+            <button type="submit" value="добавить" class="btn btn-default">изменить</button>
+            <div class="notification" ng-style="" >{{$ctrl.notificationMessage}}</div>
+                </div>
+        </div>
         </div>
 
         <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <label for="textName">Текст</label>    <br>
-            <textarea id="textText" ng-model="$ctrl.entity.text" name="text" class="form-control">
+            <textarea id="textText" ng-model="$ctrl.entity.text" name="text" class="form-control" resize="vertical">
 
             </textarea> <br><br>
         </div>
         </div>
 
-        <button type="submit" value="добавить" class="btn btn-default">изменить</button>
-        <div class="notification" ng-style="" >{{$ctrl.notificationMessage}}</div>
+
     </form>
 </div>
 </div>
