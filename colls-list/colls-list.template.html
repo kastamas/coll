@@ -59,6 +59,7 @@
     <th class="col-sm-2">Характеристика 1</th>
     <th class="col-sm-3">Характеристика 2</th>
   <!--  <th></th>-->
+    <th class="col-sm-2"></th>
     <th class="d">Добавлено</th>
     <th class="s-lasts"></th>
 </tr>
@@ -89,6 +90,7 @@
 
         <td>{{item.charact_2}}</td>
        <!-- <td><a href="#/colls/{{item.id}}">Проанализировать</a></td>-->
+        <td><a href="#/colls/edit/{{item.id}}">редактировать</a></td>
         <td class="d">{{item.created_at | limitTo:'10' | date:'dd/MM/yyyy'}}</td>
 
         <td class="s-last"></td>

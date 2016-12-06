@@ -76,3 +76,9 @@ hr.withoutMargin{
     margin: 0px;
     padding: 0px;
 }
+
+
+/*Text styles*/
+.bold {
+    font-weight: bold;
+}

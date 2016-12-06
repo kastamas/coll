@@ -3,7 +3,7 @@
 var collApp = angular.module('collApp', [
     'ngRoute',
     'textItem', 'textNew', 'textsList', 'textEdit',
-                'collNew', 'collsList',
+                'collNew', 'collsList', 'collEdit',
                'charsNew', 'charsList',
     'mainPage']);
 
@@ -29,6 +29,9 @@ collApp.config(['$locationProvider', '$routeProvider', function($locationProvide
         })
         .when('/colls/new',{
             template: '<coll-new  ng-cloak>'
+        })
+        .when('/colls/edit/:collId',{
+            template: '<coll-edit  ng-cloak>'
         })
 
         .when('/chars', {

@@ -1,29 +1,38 @@
-<h2>Текст #{{ textId}}</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="page-header">{{$ctrl.entity.title}} | просмотр</h2>
 
-<!----------------- filters ------------------->
+               <!--  Todelete
+               <div class="row">
+                    <div class="col-md-5">
+                        <label for="textName">Название*</label>  <br>
+                        <input class="text form-control" ng-model="$ctrl.entity.title" name="title" id="textName" type="text" required/> <br>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="textStatus">Текущий статус*</label>  <br>
+                        <select id="textStatus" ng-model="$ctrl.entity.status" class="form-control">
+                            <option value="u">Не разобран</option>
+                            <option value="d">Разобран</option>
+                            <option value="a">Разобран не до конца</option>
+                        </select>  <br><br>
+                    </div>
+                    <div class="col-md-2">
+                        <div style="margin: 24px 0px">
+                            <button type="submit" value="добавить" class="btn btn-default">изменить</button>
+                            <div class="notification" ng-style="" >{{$ctrl.notificationMessage}}</div>
+                        </div>
+                    </div>
+                </div>-->
 
-<!----------------- table --------------------->
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--<label for="textName">Текст</label>    <br>-->
+                        <pre>{{$ctrl.entity.text}}</pre> <br><br>
+                    </div>
+                </div>
 
-<!--<table class="table"><thead>
-<tr>
-    <th>Название</th>
-    <th>Статус</th>
-    <th></th>
-    <th>Дата создания</th>
-    <th class="s-last"></th>
-</tr> &lt;!&ndash;ng-if="!$ctrl.filter.entities.length&ndash;&gt;
-<tr data-ng-if="!$ctrl.list.length">
-    Нет записей.
-</tr>
-</thead><tbody>
-<tr data-ng-repeat="item in $ctrl.list">
-    <td>{{item.title}}</td>
-    <td>{{item.status}}</td>
-    <td>Проанализировать</td>
-    <td>{{item.created_at}}</td>
-    <td class="s-last"></td>
-</tr>
-</tbody></table><br>-->
-<!----------------- footer --------------------->
-<!--
-<span>Количество:</span>-->
+
+        </div>
+    </div>
+</div>

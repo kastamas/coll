@@ -17,13 +17,13 @@
 <tr>
     <th class="col-sm-1"
         >Статус</th>
-    <th ><a ng-click="sort('title')"
+    <th  class="col-sm-6"><a ng-click="sort('title')"
         >Название</a></th>
-    <!--<th
-        ></th> -->
-    <th
+    <th class="col-sm-1 d"
         ></th>
-    <th class="d"><a ng-click="sort('created_at')"
+    <th class="col-sm-1 d"
+        ></th>
+    <th class="col-sm-2 d"><a ng-click="sort('created_at')"
         >Дата создания</a></th>
 
     <th class="s-last  col-xs-1"></th>
@@ -39,7 +39,7 @@
 
     <td>{{item.title}}</td>
 
-  <!--  <td><a href="#/texts/{{item.id}}">Переразобрать</a></td>-->
+    <td><a href="#/texts/{{item.id}}">посмотреть</a></td>
     <td><a href="#/texts/edit/{{item.id}}">редактировать</a></td>
     <td class="d">{{item.created_at | limitTo:'10' | date:'dd/MM/yyyy'}}</td>
 

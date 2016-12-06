@@ -22,7 +22,7 @@ angular.module('textEdit')
                     ctrl.notificationMessage ="текст изменен ;)";
                     console.log("Connect is here!");
                 }).error(function  (data, status, header, config) {
-                    ctrl.notificationMessage = "во время запроса произошла ошибка " + status;
+                    ctrl.notificationMessage = "во время запроса произошла ошибка "+ status;
                     console.log("Smth wrong");
                 });
 

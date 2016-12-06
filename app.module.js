@@ -11,6 +11,7 @@ angular.module('collApp', [
 
     'collNew',
     'collsList',
+    'collEdit',
 
     'charsNew',
     'charsList',

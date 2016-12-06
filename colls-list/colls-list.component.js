@@ -41,7 +41,7 @@ angular.module('collsList',[])
                         item.charact_2_str = {};//Новая переменная под объект
                         var NWARRAY = "";
 
-                        /*Моя тима по сборке массива*/
+                        /*my team for assembly of array*/
                         var  str = item.charact_2;
                         str = str.replace("{"," ");
                         str = str.replace("}"," ");

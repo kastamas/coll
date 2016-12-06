@@ -26,11 +26,9 @@ angular.module('collNew')
                 $http.post('/api/collocations', ctrl.entity).success(function (data,status,headers,config){
                     ctrl.notificationMessage ="добавлено ;)";
                     console.log("Connect is here!");
-                    ctrl.entity.charact_2.length=0;
                 }).error(function  (data, status, header, config) {
                     ctrl.notificationMessage = "во время отпавки произошла ошибка " + status + ":(";
                     console.log("Smth wrong");
-                    ctrl.entity.charact_2.length=0;
                 });
 
 
@@ -60,15 +58,6 @@ angular.module('collNew')
 
             /*multiselect settings*/
             $scope.example15model = [];
-            /*$scope.example15data = ctrl.charactsList;*/
-            $scope.example15data = [
-                {id: 1, label: "David"},
-                {id: 2, label: "Jhon"},
-                {id: 3, label: "Lisa"},
-                {id: 4, label: "Nicole"},
-                {id: 5, label: "Danny"}];
-
-            console.log("EXAMPLE", $scope.example15data);
 
             $scope.example15settings = {
                 enableSearch: true,

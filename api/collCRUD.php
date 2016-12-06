@@ -169,6 +169,23 @@ class collCRUD
     protected function setCollocationUpdateFields($data) {
         $updateFields = array();
         $replacements = array();
+
+              function to_pg_array($set) {
+                              settype($set, 'array'); // can be called with a scalar or array
+                              $result = array();
+                              foreach ($set as $t) {
+                                  if (is_array($t)) {
+                                      $result[] = to_pg_array($t);
+                                  } else {
+                                      $t = str_replace('"', '\\"', $t); // escape double quote
+                                      if (! is_numeric($t)) // quote only non-numeric values
+                                          $t = '"' . $t . '"';
+                                      $result[] = $t;
+                                  }
+                              }
+                              return '{' . implode(",", $result) . '}'; // format
+                        }
+
         if ($data['status'] && strlen($data['status']) < 2) {
             array_push($updateFields, "status = :status");
             $replacements["status"] = $data['status'];
@@ -185,6 +202,7 @@ class collCRUD
         }
 
         if ($data['charact_2']) {
+            $data['charact_2'] = to_pg_array($data['charact_2']);
             array_push($updateFields, "charact_2 = :charact_2");
             $replacements["charact_2"] = $data['charact_2'];
         }
@@ -193,6 +211,7 @@ class collCRUD
     }
 
     public function updateCollocation($data) {
+
         $params = $this->setCollocationUpdateFields($data);
 
         if (count($params['fields']) == 0) {
@@ -200,7 +219,7 @@ class collCRUD
             exit();
         } else {
             $fields = join(',',$params['fields']);
-            $query_str = "UPDATE " . self::$collocations . " SET " . $fields . " RETURNING *";
+            $query_str = "UPDATE " . self::$collocations . " SET " . $fields . "  WHERE id =  ". $data['id'] ." RETURNING *";
             $query = $this->pdo->prepare($query_str);
             $query->execute($params['replacements']);
             return $query->fetch(PDO::FETCH_ASSOC);
@@ -210,21 +229,21 @@ class collCRUD
     public function createCollocation($data) {
         $this->checkCollocation($data);
 
-        function to_pg_array($set) {
-            settype($set, 'array'); // can be called with a scalar or array
-            $result = array();
-            foreach ($set as $t) {
-                if (is_array($t)) {
-                    $result[] = to_pg_array($t);
-                } else {
-                    $t = str_replace('"', '\\"', $t); // escape double quote
-                    if (! is_numeric($t)) // quote only non-numeric values
-                        $t = '"' . $t . '"';
-                    $result[] = $t;
-                }
-            }
-            return '{' . implode(",", $result) . '}'; // format
-        }
+         function to_pg_array($set) {
+                  settype($set, 'array'); // can be called with a scalar or array
+                  $result = array();
+                  foreach ($set as $t) {
+                      if (is_array($t)) {
+                          $result[] = to_pg_array($t);
+                      } else {
+                          $t = str_replace('"', '\\"', $t); // escape double quote
+                          if (! is_numeric($t)) // quote only non-numeric values
+                              $t = '"' . $t . '"';
+                          $result[] = $t;
+                      }
+                  }
+                  return '{' . implode(",", $result) . '}'; // format
+              }
 
         $data['charact_2'] = to_pg_array($data['charact_2']);
         $query_str = "INSERT INTO " . self::$collocations . " (collocation, charact_1, charact_2, status, text_id) VALUES (:collocation, :charact_1, :charact_2, :status, :text_id) RETURNING *";
