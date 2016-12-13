@@ -56,7 +56,7 @@ COPY characteristics_expansion (id, expansion, characteristic_id) FROM stdin;
 --
 -- Data for Name: texts; Type: TABLE DATA; Schema: public;
 --
-COPY  (id, expansion, characteristic_id) FROM stdin;
+-- COPY  (id, expansion, characteristic_id) FROM stdin;
 --
 -- PostgreSQL database dump complete
 --
