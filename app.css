@@ -38,8 +38,13 @@ footer{
     opacity: 0.3;
     z-index: -1;
 }
+
+footer:hover{
+    opacity: 1;
+}
 .navbar{
     background: #f8f8f8;
+    min-height:30px;
 }
 .navbar li{
     float: left;
@@ -81,4 +86,12 @@ hr.withoutMargin{
 /*Text styles*/
 .bold {
     font-weight: bold;
+}
+
+.blue {
+    color: #337ab7;
+}
+
+.red {
+    color: red;
 }

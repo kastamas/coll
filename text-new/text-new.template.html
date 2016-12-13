@@ -7,11 +7,11 @@
 <form novalidate ng-submit="$ctrl.sending()">
     <div class="row">
         <div class="col-md-5">
-    <label for="textName">Название*</label>  <br>
+    <label for="textName" class="red">Название*</label>  <br>
     <input class="text form-control" ng-model="$ctrl.entity.title" name="title" id="textName" type="text" required/> <br>
         </div>
         <div class="col-md-5">
-        <label for="textStatus">Текущий статус*</label>  <br>
+        <label for="textStatus" class="red">Текущий статус*</label>  <br>
         <select id="textStatus" ng-model="$ctrl.entity.status" class="form-control">
             <option value="u">Не разобран</option>
             <option value="d">Разобран</option>
@@ -36,8 +36,17 @@
     </div>
     </div>
 
+    <div class="row">
+    <div class="col-md-12">
+    <label for="textName">Библиографическая информация</label><br>
+    <textarea ng-model="$ctrl.entity.bibliography" name="text"  class="form-control">
 
+    </textarea> <br><br>
+    </div>
+    </div>
 </form>
+
+    <pre>{{$ctrl.entity | json}}</pre>
 </div>
 </div>
 </div>

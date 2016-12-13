@@ -5,47 +5,163 @@
 
             <form novalidate ng-submit="$ctrl.update()">
 
-                <h4><span class="bold">Принадлежит тексту: </span><br><br>
-                    {{$ctrl.entity.text_name}}</h4>
+                <h4><span class="bold">Принадлежит тексту: </span>
+                    <span class="blue bold">{{$ctrl.entity.text_name}}</span></h4>
                 <br>
 
-                <label for="collName">Словосочетание*</label>  <br>
+
+                <label for="collName" class="red">Словосочетание*</label>  <br>
                 <input class="text form-control" ng-model="$ctrl.entity.collocation" name="title" id="collName" type="text" required/> <br><br>
 
-                <label for="collCharact1">Характеристика 1</label>  <br>
-                <select id="collCharact1" class="form-control" ng-model="$ctrl.entity.charact_1">
-                    <option value="3xmem">3х член</option>
-                    <option value="distant">дистантное</option>
-                    <option value="interpos">интерпозиция</option>
-                    <option value="postpos">постпозиция</option>
-                    <option value="prepos">препозиция</option>
-                    <option value="attach">приложение</option>
-                </select> <br><br>
+                <label for="collName">Номер страницы</label>  <br>
+                <input class="text form-control" ng-model="$ctrl.entity.page_number" name="title" id="collPageNumber" type="number"> <br><br>
+                <br>
 
+                <label>Характеристика по количеству компонентов</label><br>
+                <input type="radio" name="char1" ng-model="$ctrl.entity.characteristic_quantity" id="ch1a" value="3xmem"> <label for="ch1a"> трёхчленое</label><br>
+                <input type="radio" name="char1" ng-model="$ctrl.entity.characteristic_quantity" id="ch1b" value="2xmem"> <label for="ch1b"> двучленное</label>
+                <br><br>
+
+                <label>Характеристика по отношению к главному слову</label><br>
+                <input type="radio" name="char1x" ng-model="$ctrl.entity.characteristic_relation_to_main" ng-change="$ctrl.onChangeCharacteristicRelationToMain()" id="ch1xa" value="prepos"> <label for="ch1xa"> препозитивное</label><br>
+                <input type="radio" name="char1x" ng-model="$ctrl.entity.characteristic_relation_to_main" ng-change="$ctrl.onChangeCharacteristicRelationToMain()" id="ch1xb" value="postpos"> <label for="ch1xb"> постпозитивное</label><br>
+                <input type="radio" name="char1x" ng-model="$ctrl.entity.characteristic_relation_to_main" ng-change="$ctrl.onChangeCharacteristicRelationToMain()" id="ch1xc" value="interpos"> <label for="ch1xc"> интерпозитивное</label><br>
+                <input type="radio" name="char1x" ng-model="$ctrl.entity.characteristic_relation_to_main" ng-change="$ctrl.onChangeCharacteristicRelationToMain()" id="ch1xd" value="distant"> <label for="ch1xd"> дистантное</label>
+                <br><br>
+
+                <!--Случай треугольничек-->
+                <div ng-show="$ctrl.entity.characteristic_relation_to_main == 'prepos' || $ctrl.entity.characteristic_relation_to_main == 'postpos'">
+                    <label>Характеристика атрибута</label>
+                    <select id="characteristicTwo"
+                            ng-model="$ctrl.characteristicAttr1"
+                            class="form-control"
+                            ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList">
+                    </select>
+                    <br>
+
+                    <div ng-show="$ctrl.characteristicAttr1 != undefined">
+                        <label class="red">Дополнение к характеристики атрибута</label>
+                        <select id="characteristicThree"
+                                ng-model="$ctrl.entity.characteristic_attr1"
+                                class="form-control"
+                                ng-options="item.id as item.expansion for item in $ctrl.characteristicThreeList | filter: characteristicThreeFilter1">
+                        </select>
+                    </div>
+
+                    <br><br>
+                </div>
+
+                <!--Случай кружок-->
+                <div ng-show="$ctrl.entity.characteristic_relation_to_main == 'distant'">
+                    <label>Характеристика атрибута</label>
+                    <select  ng-model="$ctrl.characteristicAttr1"
+                             class="form-control"
+                             ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList">
+                    </select>
+                    <div ng-show="$ctrl.characteristicAttr1 != undefined">
+                        <br>
+                        <label class="red">Дополнение к характеристики атрибута</label>
+                        <select ng-model="$ctrl.entity.characteristic_attr1"
+                                class="form-control"
+                                ng-options="item.id as item.expansion for item in $ctrl.characteristicThreeList | filter: characteristicThreeFilter1">
+                        </select>
+                    </div>
+                    <hr>
+                    <label>Характеристика разделителя</label>
+                    <select  ng-model="$ctrl.entity.characteristic_divider"
+                             class="form-control"
+                             ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList">
+                    </select>
+                    <br><br>
+
+                    <br>
+                </div>
+
+                <!--Случай звёздочка-->
+                <div ng-show="$ctrl.entity.characteristic_relation_to_main == 'interpos'">
+                    <label>Характеристика <span class="blue">первого</span> атрибута</label>
+                    <select
+                            ng-model="$ctrl.characteristicAttr1"
+                            class="form-control"
+                            ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList">
+                    </select>
+
+                    <div ng-show="$ctrl.characteristicAttr1 != undefined">
+                        <br>
+                        <label class="red">Дополнение к характеристики атрибута*</label>
+                        <select  ng-model="$ctrl.entity.characteristic_attr1"
+                                 class="form-control"
+                                 ng-options="item.id as item.expansion for item in $ctrl.characteristicThreeList | filter: characteristicThreeFilter1">
+                        </select>
+                        <!--<select  ng-model="$ctrl.entity.characteristic_attr1" class="form-control" ng-options="item.id as item. for item in $ctrl.characteristicThreeList | filter: characteristicThreeFilter1">
+                        </select>-->
+                    </div>
+                    <hr>
+                    <label>Характеристика <span class="blue">второго</span> атрибута</label>
+                    <select  ng-model="$ctrl.characteristicAttr2"
+                             class="form-control"
+                             ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList">
+                    </select>
+                    <br>
+
+                    <div ng-show="$ctrl.characteristicAttr2 != undefined">
+                        <label class="red">Дополнение к характеристики атрибута*</label>
+                        <select  ng-model="$ctrl.entity.characteristic_attr2"
+                                 class="form-control"
+                                 ng-options="item.id as item.expansion for item in $ctrl.characteristicThreeList | filter: characteristicThreeFilter2">
+                        </select>
+                    </div>
+
+
+
+                    <br><br>
+                </div>
+
+                <!-- препозитивное словосочетание, постпозитивное, интерпозитивное и дистантное.
+                -->
+                <!--   <label for="collCharact1">Характеристика 1</label>  <br>
+                   <select id="collCharact1" class="form-control" ng-model="$ctrl.entity.charact_1">
+                       <option value="3xmem">3х член</option>
+                       <option value="distant">дистантное</option>
+                       <option value="interpos">интерпозиция</option>
+                       <option value="postpos">постпозиция</option>
+                       <option value="prepos">препозиция</option>
+                       <option value="attach">приложение</option>
+                   </select> <br><br>
+               -->
 
                 <!--TODO:charact2-->
+                <!--  <label for="collCharact2">Характеристика 2</label>  <br>
+                  <div id="collCharact2"
+                          ng-dropdown-multiselect=""
 
-                <label for="collCharact2">Характеристика 2</label>  <br>
-                <div id="collCharact2"
-                     ng-dropdown-multiselect=""
-                     search-filter="customFilter"
-                     options="$ctrl.charactsList"
-                     selected-model="$ctrl.Char2selected"
-                     extra-settings="example15settings"
-                     translation-texts="translation"
-                ></div> <br> <br>
-
+                       search-filter="customFilter"
+                       options="$ctrl.charactsList"
+                       selected-model="$ctrl.entity.characteristics"
+                       extra-settings="example15settings"
+                          translation-texts="translation"
+                  ></div> <br> <br>
+              -->
 
                 <!-- <select id="collCharact2" ng-model="$ctrl.entity.charact_2">
                        <option data-ng-repeat="item in $ctrl.charactsList" value="{{item.id}}">{{item.characteristic}}</option>
                    </select>  <br>-->
 
-                <label for="collStatus">Текущий статус*</label>  <br>
+                <!--<label for="collStatus">Текущий статус*</label>  <br>
                 <select id="collStatus" class="form-control" ng-model="$ctrl.entity.status">
                     <option value="u">Неразобрано</option>
                     <option value="d">Разобрано</option>
                     <option value="a">Разобрано не до конца</option>
-                </select>  <br><br>
+                </select>  <br><br>-->
+
+
+                <label><span class="red">Текущий статус словосочетания*</span></label><br>
+                <input type="radio" name="collStatus" ng-model="$ctrl.entity.status" id="status_u"  value="u"> <label for="status_u"> Не разобрано</label><br>
+                <input type="radio" name="collStatus" ng-model="$ctrl.entity.status" id="status_d"  value="d"> <label for="status_d"> Разобрано</label><br>
+                <input type="radio" name="collStatus" ng-model="$ctrl.entity.status" id="status_a"   value="a"> <label for="status_a"> Разобрано не до конца</label>
+                <br><br>
+
+
 
                 <button type="submit" class="btn btn-default" value="добавить">изменить</button>
 
@@ -53,8 +169,14 @@
                 <div class="notification" ng-style="">{{$ctrl.notificationMessage}}</div>
             </form>
 
+            <!--For Testing
+ <pre>{{$ctrl.entity | json}}</pre>
 
-        </div>
-    </div>
+ <pre>{{$ctrl.characteristicAttr1 }}</pre>
+ <pre>{{$ctrl.characteristicAttr2 }}</pre>
+-->
+
+</div>
+</div>
 </div>
 

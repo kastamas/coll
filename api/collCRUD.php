@@ -7,6 +7,7 @@ class collCRUD
     protected static $texts = "texts";
     protected static $collocations = "collocations";
     protected static $characteristics = "characteristics";
+    protected static $characteristicsExpansion = "characteristics_expansion";
 
     public function __construct()
     {
@@ -26,11 +27,24 @@ class collCRUD
     }
 
     public function queryCollocations() {
-        $query_str = "SELECT c.id, c.collocation, t.title as text_name, c.charact_1, c.charact_2, c.status, c.created_at, c.updated_at, c.text_id
-                        FROM " . self::$collocations . " c
-                        INNER JOIN texts t ON c.text_id = t.id
 
-                        ORDER BY created_at DESC";
+        //todo: improve this
+        $query_str  = "SELECT c.*,
+                              t.title as text_name,
+                              ch_ex_1.expansion as expansion_1, ch_ex_1.characteristic_id as characteristic_1,
+                              ch_ex_2.expansion as expansion_2, ch_ex_2.characteristic_id as characteristic_2,
+                              ch_1.characteristic as characteristic_1_name,
+                              ch_2.characteristic as characteristic_2_name,
+                              ch_d.characteristic as characteristic_d_name
+
+                        FROM " . self::$collocations . " AS c
+                            INNER JOIN texts AS t ON c.text_id = t.id
+                            LEFT JOIN characteristics_expansion AS ch_ex_1 ON c.characteristic_attr1 = ch_ex_1.id
+                            LEFT JOIN characteristics_expansion AS ch_ex_2 ON c.characteristic_attr2 = ch_ex_2.id
+                            LEFT JOIN characteristics AS ch_1 ON ch_ex_1.characteristic_id = ch_1.id
+                            LEFT JOIN characteristics AS ch_2 ON ch_ex_2.characteristic_id = ch_2.id
+                            LEFT JOIN characteristics AS ch_d ON c.characteristic_divider = ch_d.id
+                        ORDER BY id DESC";
         $query = $this->pdo->prepare($query_str);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -42,6 +56,14 @@ class collCRUD
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function queryCharacteristicsExpansion() {
+            $query_str = "SELECT id, expansion, characteristic_id FROM " . self::$characteristicsExpansion . " ORDER BY expansion ASC";
+            $query = $this->pdo->prepare($query_str);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
       //todo:make it more simple
      protected function setCharsUpdateFields($data) {
@@ -83,7 +105,22 @@ class collCRUD
     }
 
     public  function  getCollocation($id) {
-        $query_str = "SELECT c.id, c.collocation, t.title as text_name, c.status, c.charact_1, c.charact_2, c.created_at, c.updated_at FROM " . self::$collocations . " c INNER JOIN texts t ON c.text_id = t.id WHERE c.id = :id LIMIT 1";
+        $query_str = "SELECT c.*,
+                             t.title as text_name,
+                             ch_ex_1.expansion as expansion_1, ch_ex_1.characteristic_id as characteristic_1,
+                             ch_ex_2.expansion as expansion_2, ch_ex_2.characteristic_id as characteristic_2,
+                             ch_1.characteristic as characteristic_1_name,
+                             ch_2.characteristic as characteristic_2_name,
+                             ch_d.characteristic as characteristic_d_name
+
+                       FROM " . self::$collocations . " AS c
+                             INNER JOIN texts AS t ON c.text_id = t.id
+                             LEFT JOIN characteristics_expansion AS ch_ex_1 ON c.characteristic_attr1 = ch_ex_1.id
+                             LEFT JOIN characteristics_expansion AS ch_ex_2 ON c.characteristic_attr2 = ch_ex_2.id
+                             LEFT JOIN characteristics AS ch_1 ON ch_ex_1.characteristic_id = ch_1.id
+                             LEFT JOIN characteristics AS ch_2 ON ch_ex_2.characteristic_id = ch_2.id
+                             LEFT JOIN characteristics AS ch_d ON c.characteristic_divider = ch_d.id
+                     WHERE c.id = :id LIMIT 1";
         $params = array(
             "id" => $id
         );
@@ -95,11 +132,12 @@ class collCRUD
     public function createText($data) {
         $this->checkText($data);
 
-        $query_str = "INSERT INTO " . self::$texts . " (title, text, status) VALUES (:title, :text, :status) RETURNING *";
+        $query_str = "INSERT INTO " . self::$texts . " (title, text, status, bibliography) VALUES (:title, :text, :status , :bibliography) RETURNING *";
         $params = array(
             "title" => $data['title'],
             "text" => $data['text'],
-            "status" => $data['status']
+            "status" => $data['status'],
+            "bibliography" => $data['bibliography']
         );
         $query = $this->pdo->prepare($query_str);
         $query->execute($params);
@@ -146,6 +184,10 @@ class collCRUD
             array_push($updateFields, "text = :text");
             $replacements["text"] = $data['text'];
         }
+        if ($data['bibliography']) {
+            array_push($updateFields, "bibliography = :bibliography");
+            $replacements["bibliography"] = $data['bibliography'];
+        }
 
 
         return array('fields' => $updateFields, 'replacements' => $replacements);
@@ -170,6 +212,7 @@ class collCRUD
         $updateFields = array();
         $replacements = array();
 
+               /*
               function to_pg_array($set) {
                               settype($set, 'array'); // can be called with a scalar or array
                               $result = array();
@@ -184,7 +227,7 @@ class collCRUD
                                   }
                               }
                               return '{' . implode(",", $result) . '}'; // format
-                        }
+                        }*/
 
         if ($data['status'] && strlen($data['status']) < 2) {
             array_push($updateFields, "status = :status");
@@ -196,16 +239,36 @@ class collCRUD
             $replacements["collocation"] = $data['collocation'];
         }
 
-        if ($data['charact_1']) {
-            array_push($updateFields, "charact_1 = :charact_1");
-            $replacements["charact_1"] = $data['charact_1'];
+        if ($data['page_number']) {
+            array_push($updateFields, "page_number = :page_number");
+            $replacements["page_number"] = $data['page_number'];
         }
 
-        if ($data['charact_2']) {
-            $data['charact_2'] = to_pg_array($data['charact_2']);
-            array_push($updateFields, "charact_2 = :charact_2");
-            $replacements["charact_2"] = $data['charact_2'];
+        if ($data['characteristic_quantity']) {
+            array_push($updateFields, "characteristic_quantity = :characteristic_quantity");
+            $replacements["characteristic_quantity"] = $data['characteristic_quantity'];
         }
+
+        if ($data['characteristic_relation_to_main']) {
+            array_push($updateFields, "characteristic_relation_to_main = :characteristic_relation_to_main");
+            $replacements["characteristic_relation_to_main"] = $data['characteristic_relation_to_main'];
+        }
+
+        if ($data['characteristic_attr1']) {
+            array_push($updateFields, "characteristic_attr1 = :characteristic_attr1");
+            $replacements["characteristic_attr1"] = $data['characteristic_attr1'];
+        }
+
+        if ($data['characteristic_attr2']) {
+            array_push($updateFields, "characteristic_attr2 = :characteristic_attr2");
+            $replacements["characteristic_attr2"] = $data['characteristic_attr2'];
+        }
+
+        if ($data['characteristic_divider']) {
+            array_push($updateFields, "characteristic_divider = :characteristic_divider");
+            $replacements["characteristic_divider"] = $data['characteristic_divider'];
+        }
+
 
         return array('fields' => $updateFields, 'replacements' => $replacements);
     }
@@ -229,7 +292,7 @@ class collCRUD
     public function createCollocation($data) {
         $this->checkCollocation($data);
 
-         function to_pg_array($set) {
+         /*function to_pg_array($set) {
                   settype($set, 'array'); // can be called with a scalar or array
                   $result = array();
                   foreach ($set as $t) {
@@ -243,15 +306,20 @@ class collCRUD
                       }
                   }
                   return '{' . implode(",", $result) . '}'; // format
-              }
+              }*/
 
-        $data['charact_2'] = to_pg_array($data['charact_2']);
-        $query_str = "INSERT INTO " . self::$collocations . " (collocation, charact_1, charact_2, status, text_id) VALUES (:collocation, :charact_1, :charact_2, :status, :text_id) RETURNING *";
+        //$data['charact_2'] = to_pg_array($data['charact_2']);
+        $query_str = "INSERT INTO " . self::$collocations . " (collocation, characteristic_quantity, characteristic_relation_to_main, characteristic_attr1, characteristic_attr2, characteristic_divider, page_number, status, text_id)
+                        VALUES (:collocation, :characteristic_quantity, :characteristic_relation_to_main, :characteristic_attr1, :characteristic_attr2, :characteristic_divider, :page_number,   :status, :text_id) RETURNING *";
         $params = array(
             "collocation" => $data['collocation'],
-            "charact_1" => $data['charact_1'],
-            "charact_2" => $data['charact_2'],//"{1,2}"
-            //"charact_2" => "ARRAY" . $data['charact_2'] . " ::integer[]",//"{1,2}"
+            "characteristic_quantity" => $data['characteristic_quantity'],
+            "characteristic_relation_to_main" => $data['characteristic_relation_to_main'],
+            "characteristic_attr1" => $data['characteristic_attr1'],
+            "characteristic_attr2" => $data['characteristic_attr2'],
+            "characteristic_divider" => $data['characteristic_divider'],
+
+            "page_number" => $data['page_number'],
             "text_id" => $data['text_id'],
             "status" => $data['status']
         );

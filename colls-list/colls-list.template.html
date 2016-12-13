@@ -1,13 +1,12 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
+
+<!-- for test
+ <pre>{{$ctrl.filter | json}}</pre>-->
+
 <h2 class="page-header">{{ title}}</h2>
 
-
-<!----------------- message if empty ------------------->
-<div class="text-message"  ng-show="$ctrl.list.length == '0'">
-    <p>Пусто. <a href="#/colls/new">Добавить словосочетание.</a></p>
-</div>
 
 <div ng-show="$ctrl.list.length != '0'">
     <!----------------- filters ------------------->
@@ -28,7 +27,7 @@
                 <option  value='a' >Разобрано не до конца</option>
             </select>
         </div>
-        <div class="col-md-2">
+       <!-- <div class="col-md-2">
             <label for="selectCharactOne">Фильтр по хар. 1</label><br>
             <select id="selectCharactOne" data-ng-model="$ctrl.filter.charact_1" class="form-control">
                 <option value='any'>- Любая  -</option>
@@ -39,26 +38,96 @@
                 <option value='prepos'>препозиция</option>
                 <option value='attach'>приложение</option>
             </select>
-        </div>
+        </div>-->
         <div class="col-md-3">
-            <span>Отфильтрованое Количество: {{($ctrl.list | filter: collocationsMainFilter).length }}</span>
-            <span>Словосочетаний в выбраном тексте: {{($ctrl.list | filter: collocationsTextFilter).length }}</span>
+            <span>Всего словосочетаний: {{$ctrl.list.length}}</span>
             <hr class="withoutMargin">
-            <span>Общее Количество: {{$ctrl.list.length}}</span>
+            <span>в выбраном тексте: {{($ctrl.list | filter: collocationsTextFilter).length }}</span><br>
+            <span>соответствуют фильтру: {{($ctrl.list | filter: collocationsMainFilter).length }}</span>
+
+
         </div>
     </div>
 
 
     <hr>
+
 <!----------------- table --------------------->
-<table class="table table-striped"><thead>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th> </th>
+                    <th>Текст</th>
+                    <th>Словосочетание</th>
+
+                    <th>Номер страницы</th>
+                    <th>Х-ка по количеству компонентов</th>
+                    <th>Отношение к главному слову</th>
+                    <!-- characteristics begin -->
+                        <th style="border-left: 1px solid #ddd;">Первый атрибут</th>
+                        <!--  <th>?</th>-->
+
+                        <th style="border-left: 1px solid #ddd;">Второй атрибут</th>
+                        <!--  <th>?</th>-->
+                        <th style="border-left: 1px solid #ddd;">Разделитель</th>
+                    <!-- characteristics end -->
+                    <th></th>
+                    <th>Добавлено</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in $ctrl.list | filter: collocationsMainFilter">
+                    <!--Status todo:removeCrutch -->
+                        <td class="c danger"  title="Не разобрано"          ng-if="item.status == 'u'" ></td>
+                        <td class="c success" title="Разобрано"             ng-if="item.status == 'd'" ></td>
+                        <td class="c info"    title="Разобрано не до конца" ng-if="item.status == 'a'" ></td>
+                    <td title="{{item.collocation}}">{{item.text_name}}</td>
+                    <td title="{{item.collocation}}">{{item.collocation}}</td>
+                    <td>{{item.page_number}}</td>
+                    <!--Status todo:removeCrutch -->
+                      <!--  <td class="c upFont danger"  title="Не разобрано"          ng-if="item.status == 'u'" >-</td>
+                        <td class="c upFont success" title="Разобрано"             ng-if="item.status == 'd'" >+</td>
+                        <td class="c upFont info"    title="Разобрано не до конца" ng-if="item.status == 'a'" >\</td>-->
+
+                    <!--charact_relation_to_main todo:removeCrutch-->
+                        <td class=" "  ng-if="item.characteristic_quantity == '3xmem'"  >двучленное</td>
+                        <td class=" "  ng-if="item.characteristic_quantity == '2xmem'"  >трехчленное</td>
+                        <td            ng-if="item.characteristic_quantity == NULL"></td>
+
+
+                    <!--charact_quantity todo:removeCrutch-->
+                        <td class=" "  ng-if="item.characteristic_relation_to_main == 'prepos'"   >препозитивное </td>
+                        <td class=" "  ng-if="item.characteristic_relation_to_main == 'postpos'"  >постпозитивное</td>
+                        <td class=" "  ng-if="item.characteristic_relation_to_main == 'interpos'" >интерпозитивное</td>
+                        <td class=" "  ng-if="item.characteristic_relation_to_main == 'distant'"  >дистантное</td>
+                        <td            ng-if="item.characteristic_relation_to_main == NULL"></td>
+
+
+                    <!-- Extra characteristics begin  Order is Changed Due To comfortoble-->
+                       <!-- <td>{{item.expansion_1}}</td>-->
+                        <td style="border-left: 1px solid #ddd;">{{item.expansion_1}} {{item.characteristic_1_name}}</td>
+
+                      <!--  <td>{{item.expansion_2}}</td>-->
+                        <td style="border-left: 1px solid #ddd;">{{item.expansion_2}} {{item.characteristic_2_name}}</td>
+
+
+                        <td style="border-left: 1px solid #ddd;">{{item.characteristic_d_name}}</td>
+                    <!-- Extra characteristics end -->
+                    <td><a href="#/colls/edit/{{item.id}}">ред.</a></td>
+                    <td>{{item.created_at | limitTo:'10' | date:'dd/MM/yyyy'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<!--<table class="table table-striped"><thead>
 <tr>
     <th>Статус</th>
     <th class="col-sm-2">Словосочетание</th>
     <th class="col-sm-2">Из текста</th>
     <th class="col-sm-2">Характеристика 1</th>
     <th class="col-sm-3">Характеристика 2</th>
-  <!--  <th></th>-->
+  &lt;!&ndash;  <th></th>&ndash;&gt;
     <th class="col-sm-2"></th>
     <th class="d">Добавлено</th>
     <th class="s-lasts"></th>
@@ -68,7 +137,7 @@
     <tbody>
     <tr data-ng-repeat="item in $ctrl.list | filter: collocationsMainFilter">
 
-        <!--Todo:Crutch-->
+        &lt;!&ndash;Todo:Crutch&ndash;&gt;
         <td class="c upFont" title="Не разобрано"          ng-if="item.status == 'u'" >-</td>
         <td class="c upFont" title="Разобрано"             ng-if="item.status == 'd'" >+</td>
         <td class="c upFont" title="Разобрано не до конца" ng-if="item.status == 'a'" >\</td>
@@ -79,7 +148,7 @@
 
         <td>{{item.text_name}}</td>
 
-        <!--Todo:Crutch-->
+        &lt;!&ndash;Todo:Crutch&ndash;&gt;
         <td ng-if="item.charact_1 =='3xmem'">3х член</td>
         <td ng-if="item.charact_1 =='distant'">дистантное</td>
         <td ng-if="item.charact_1 =='interpos'">интерпозиция</td>
@@ -89,19 +158,27 @@
         <td ng-if="item.charact_1 == NULL"></td>
 
         <td>{{item.charact_2}}</td>
-       <!-- <td><a href="#/colls/{{item.id}}">Проанализировать</a></td>-->
+       &lt;!&ndash; <td><a href="#/colls/{{item.id}}">Проанализировать</a></td>&ndash;&gt;
         <td><a href="#/colls/edit/{{item.id}}">редактировать</a></td>
         <td class="d">{{item.created_at | limitTo:'10' | date:'dd/MM/yyyy'}}</td>
 
         <td class="s-last"></td>
     </tr>
-    </tbody></table>
+    </tbody></table>-->
+
+
 <hr>
 <br>
 
 <!----------------- footer --------------------->
 
 </div>
+
+<!----------------- message if empty ------------------->
+<div class="text-message"  ng-show="$ctrl.list.length == '0'">
+    <p>Пусто. <a href="#/colls/new">Добавить словосочетание.</a></p>
+</div>
+
 </div>
 </div>
 </div>

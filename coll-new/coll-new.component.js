@@ -7,20 +7,28 @@ angular.module('collNew')
             const ctrl = this;
 
             ctrl.entity = {};
-            ctrl.entity.charact_2 = [];
+           /* ctrl.entity.charact_2 = [];
             ctrl.entity.characteristics = [];
-
+            */
             $scope.title = 'Добавление словосочетаний';
 
 
-            ctrl.onCreate = function () {
+            ctrl.onChangeCharacteristicRelationToMain = function () {
+                delete ctrl.characteristicAttr1;
+                delete ctrl.characteristicAttr2;
+                delete ctrl.entity.characteristic_attr2   ;
+                delete ctrl.entity.characteristic_attr1   ;
+                delete ctrl.entity.characteristic_divider ;
+            };
 
+            ctrl.onCreate = function () {
+/*
                 ctrl.entity.characteristics.forEach(function (item) {
                     console.log(item.id);
                     ctrl.entity.charact_2.push(item.id);
                 });
 
-                console.log("МАССИВ!",ctrl.entity.charact_2);
+                console.log("МАССИВ!",ctrl.entity.charact_2);*/
 
 
                 $http.post('/api/collocations', ctrl.entity).success(function (data,status,headers,config){
@@ -32,9 +40,11 @@ angular.module('collNew')
                 });
 
 
-
-                console.log("НА ВЫХОДЕ",ctrl.entity.charact_2);
+/*
+                console.log("НА ВЫХОДЕ",ctrl.entity.charact_2);*/
             };
+
+
 
             /*list of texts*/
             $http.get('/api/texts').success(function (data, status, headers, config) {
@@ -47,17 +57,44 @@ angular.module('collNew')
                 console.log("Smth wrong");
             });
 
-            /*list of characteristics*/
+            /*list of characteristicsTwo*/
             $http.get('/api/characteristics').success(function (data, status, headers, config) {
+                console.log('This is Data:', data,'\n\n This is Status:',status);
+                ctrl.characteristicTwoList = data;
+                console.log(ctrl.characteristicTwoList);
+            }).error(function () {
+                console.log("Smth wrong");
+            });
+
+            /*list of characteristicsThree*/
+            $http.get('/api/characteristicsExpansion').success(function (data, status, headers, config) {
+                console.log('This is Data:', data,'\n\n This is Status:',status);
+                ctrl.characteristicThreeList = data;
+                console.log(ctrl.characteristicThreeList);
+
+                //todo:optimisation
+                $scope.characteristicThreeFilter1 = function (item) {
+                    return (item.expansion) && (item.characteristic_id == ctrl.characteristicAttr1);
+                };
+                $scope.characteristicThreeFilter2 = function (item) {
+                    return (item.expansion) && (item.characteristic_id == ctrl.characteristicAttr2);
+                };
+
+            }).error(function () {
+                console.log("Smth wrong");
+            });
+
+            /*list of characteristics*/
+           /* $http.get('/api/characteristics').success(function (data, status, headers, config) {
                 console.log('This is Data:', data,'\n\n This is Status:',status);
                 ctrl.charactsList = data;
                 console.log(ctrl.charactsList);
             }).error(function () {
                 console.log("Smth wrong");
-            });
+            });*/
 
             /*multiselect settings*/
-            $scope.example15model = [];
+           /* $scope.example15model = [];
 
             $scope.example15settings = {
                 enableSearch: true,
@@ -79,7 +116,7 @@ angular.module('collNew')
                 buttonDefaultText: 'Выбрать',
                 dynamicButtonTextSuffix: 'выбрано'
 
-            };
+            };*/
 
         }])
 

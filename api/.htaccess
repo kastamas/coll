@@ -5,4 +5,6 @@ RewriteRule ^texts/(.*)$ /api/index.php
 RewriteRule ^collocations /api/index.php
 RewriteRule ^collocations/(.*)$ /api/index.php
 RewriteRule ^characteristics /api/index.php
+RewriteRule ^characteristicsExpansion /api/index.php
 RewriteRule ^characteristics/(.*)$ /api/index.php
+RewriteRule ^characteristicsExpansion/(.*)$ /api/index.php

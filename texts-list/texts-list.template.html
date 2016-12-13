@@ -15,8 +15,7 @@
 <!----------------- table --------------------->
 <table class="table table table-striped"><thead>
 <tr>
-    <th class="col-sm-1"
-        >Статус</th>
+    <th></th>
     <th  class="col-sm-6"><a ng-click="sort('title')"
         >Название</a></th>
     <th class="col-sm-1 d"
@@ -33,10 +32,10 @@
 <tbody>
 <tr data-ng-repeat="item in $ctrl.list | orderBy:sortingRows:sortingReverse">
     <!--Todo:Crutch-->
-    <td  class="c upFont" ng-if="item.status == 'u'">-</td>
-    <td  class="c upFont" ng-if="item.status == 'd'">+</td>
-    <td  class="c upFont" ng-if="item.status == 'a'">\</td>
-
+    <!--Status todo:removeCrutch -->
+        <td class=" danger"  title="Не разобран"          ng-if="item.status == 'u'" ></td>
+        <td class=" success" title="Разобран"             ng-if="item.status == 'd'" ></td>
+        <td class=" info"    title="Разобран не до конца" ng-if="item.status == 'a'" ></td>
     <td>{{item.title}}</td>
 
     <td><a href="#/texts/{{item.id}}">посмотреть</a></td>

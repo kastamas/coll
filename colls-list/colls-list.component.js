@@ -66,7 +66,7 @@ angular.module('collsList',[])
                 });
 
                 //set up for filters
-                ctrl.filter = {text_id:0, status: "any", charact_1:"any"};
+                ctrl.filter = {text_id:0, status: "any"};
 
                 //todo:remove this bicycle from india
                 $scope.collocationsMainFilter = function (item) {

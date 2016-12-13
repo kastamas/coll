@@ -14,86 +14,59 @@ angular.module('collEdit')
             ctrl.entityId = $routeParams.collId;
             console.log("Айдишенька",$routeParams.collId);
 
-                $http.get('/api/collocations/' + ctrl.entityId).success( function(data, status){
-                    ctrl.entity = data;//Объект с инфой по словосочетанию
-                    console.log("DATA",data);
-                    //fot selected
-                    //From {1,2} to [1,2]
-
-                    //TODO:remove this crutch
-                    var str = data.charact_2;
-                    str = str.replace("{","");
-                    str = str.replace("}","");
-                    var strArray = str.split(",");
-
-                    //Приведение массива строк к массиву целых чисел
-                    strArray.forEach(function (x,y,z) {
-                       z[y] = x | 0
-                    });
-                    ctrl.entity.charact_2 = []; //to update
-                    ctrl.entity.characteristicss = strArray;
-                    ctrl.Char2selected = [];
-
-
-                    ctrl.entity.characteristicss.forEach(function (item) {
-                        ctrl.Char2selected.push({id:item});
-                    });
-
-
-                }).error(function ()  {console.log("Smth wrong");});
-
-
-
-
-            ctrl.update = function () {
-                //preparing array
-                ctrl.Char2selected.forEach(function (item) {
-                    ctrl.entity.charact_2.push(item.id);
-                });
-
-                $http.put('/api/collocations/' + ctrl.entityId, ctrl.entity).success(function () {
-                    ctrl.notificationMessage ="словосочетание изменено ;)";
-                }).error(function () {
-                    ctrl.notificationMessage = "во время запроса произошла ошибка "+ status;
-                });
+            ctrl.onChangeCharacteristicRelationToMain = function () {
+                delete ctrl.characteristicAttr1;
+                delete ctrl.characteristicAttr2;
+                delete ctrl.entity.characteristic_attr2   ;
+                delete ctrl.entity.characteristic_attr1   ;
+                delete ctrl.entity.characteristic_divider ;
             };
 
+            /*collocation inf*/
+            $http.get('/api/collocations/' + ctrl.entityId).success( function(data, status){
+                ctrl.entity = data;//Объект с инфой по словосочетанию
+                console.log("DATA",data);
+                /*set up*/
+                ctrl.characteristicAttr1 = ctrl.entity.characteristic_1;
+                ctrl.characteristicAttr2 = ctrl.entity.characteristic_2;
+            }).error(function ()  {console.log("Smth rong");});
 
 
-
-            /*list of characteristics*/
+            /*list of characteristicsTwo*/
             $http.get('/api/characteristics').success(function (data, status, headers, config) {
                 console.log('This is Data:', data,'\n\n This is Status:',status);
+                ctrl.characteristicTwoList = data;
+                console.log(ctrl.characteristicTwoList);
+            }).error(function () {
+                console.log("Smth wrong");
+            });
 
-                ctrl.charactsList = data;//options
-                console.log("характеристики",ctrl.charactsList);
+            /*list of characteristicsThree*/
+            $http.get('/api/characteristicsExpansion').success(function (data, status, headers, config) {
+                console.log('This is Data:', data,'\n\n This is Status:',status);
+                ctrl.characteristicThreeList = data;
+                console.log(ctrl.characteristicThreeList);
+
+                //todo:optimisation
+                $scope.characteristicThreeFilter1 = function (item) {
+                    return (item.expansion) && (item.characteristic_id == ctrl.characteristicAttr1);
+                };
+                $scope.characteristicThreeFilter2 = function (item) {
+                    return (item.expansion) && (item.characteristic_id == ctrl.characteristicAttr2);
+                };
+
             }).error(function () {
                 console.log("Smth wrong");
             });
 
 
 
-            /*multiselect settings*/
-            $scope.example15settings = {
-                enableSearch: true,
-                selectionLimit: 10,
-                displayProp: 'characteristic',
-                showCheckAll: false,
-                showUncheckAll
-                    : false
-            };
-
-            $scope.customFilter = '';
-
-            $scope.translation = {
-                checkAll: 'Выбрать всё',
-                uncheckAll: 'Убрать всё',
-                selectionCount: 'выбрано',
-                selectionOf: '/',
-                searchPlaceholder: 'Поиск...',
-                buttonDefaultText: 'Выбрать',
-                dynamicButtonTextSuffix: 'выбрано'
-
+            ctrl.update = function () {
+                $http.put('/api/collocations/' + ctrl.entityId, ctrl.entity).success(function () {
+                    ctrl.notificationMessage ="словосочетание изменено ;)";
+                }).error(function () {
+                    ctrl.notificationMessage = "во время запроса произошла ошибка "+ status;
+                });
             };
 
         }])
