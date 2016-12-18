@@ -17,7 +17,7 @@ angular.module('textsList',[])
          });
 
           //sort on init
-          $scope.sortingRows = 'name';
+          $scope.sortingRows = 'title';
           $scope.sortingReverse = false;
 
          $scope.sort = function (fieldName) {

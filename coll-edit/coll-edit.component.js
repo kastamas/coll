@@ -8,12 +8,16 @@ angular.module('collEdit')
            const ctrl = this;
 
             ctrl.entity = {};
-            ctrl.entity.characteristics = [];
-            ctrl.Char2selected = [];
 
             ctrl.entityId = $routeParams.collId;
             console.log("Айдишенька",$routeParams.collId);
 
+            ctrl.onChangeCharacteristicQuantity = function () {
+                if(ctrl.entity.characteristic_relation_to_main != 'interpos'){
+                    delete ctrl.characteristicAttr2;
+                    delete ctrl.entity.characteristic_attr2;
+                }
+            };
             ctrl.onChangeCharacteristicRelationToMain = function () {
                 delete ctrl.characteristicAttr1;
                 delete ctrl.characteristicAttr2;
@@ -59,19 +63,26 @@ angular.module('collEdit')
                 console.log("Smth wrong");
             });
 
+            function changeSendingStatus() {
+                ctrl.sended = false;
+            }
 
-
-            ctrl.update = function () {
+            ctrl.onAction = function () {
                 $http.put('/api/collocations/' + ctrl.entityId, ctrl.entity).success(function () {
-                    ctrl.notificationMessage ="словосочетание изменено ;)";
+                    ctrl.sendingError = false;
+                    ctrl.sended = true;
+                    $timeout(changeSendingStatus, 3000);//todo: it's a crutch, i suppose
                 }).error(function () {
-                    ctrl.notificationMessage = "во время запроса произошла ошибка "+ status;
+                    ctrl.sended = false;
+                    ctrl.sendingError = true;
+                    ctrl.notificationMessage = "Код ошибки: " + status;
                 });
             };
 
         }])
 
     .component('collEdit', {
-        templateUrl: 'coll-edit/coll-edit.template.html',
+        //templateUrl: 'coll-edit/coll-edit.template.html', //todo:crutch
+        templateUrl:'coll-new/coll-new.template.html',
         controller: 'CollEditCtrl'
     });

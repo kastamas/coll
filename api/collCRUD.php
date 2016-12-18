@@ -44,7 +44,7 @@ class collCRUD
                             LEFT JOIN characteristics AS ch_1 ON ch_ex_1.characteristic_id = ch_1.id
                             LEFT JOIN characteristics AS ch_2 ON ch_ex_2.characteristic_id = ch_2.id
                             LEFT JOIN characteristics AS ch_d ON c.characteristic_divider = ch_d.id
-                        ORDER BY id DESC";
+                        ORDER BY created_at ASC";
         $query = $this->pdo->prepare($query_str);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -121,6 +121,17 @@ class collCRUD
                              LEFT JOIN characteristics AS ch_2 ON ch_ex_2.characteristic_id = ch_2.id
                              LEFT JOIN characteristics AS ch_d ON c.characteristic_divider = ch_d.id
                      WHERE c.id = :id LIMIT 1";
+        $params = array(
+            "id" => $id
+        );
+        $query = $this->pdo->prepare($query_str);
+        $query->execute($params);
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function deleteCollocation($id) {
+        $query_str = "DELETE FROM  " . self::$collocations . " WHERE id = :id ";
+
         $params = array(
             "id" => $id
         );
@@ -212,23 +223,6 @@ class collCRUD
         $updateFields = array();
         $replacements = array();
 
-               /*
-              function to_pg_array($set) {
-                              settype($set, 'array'); // can be called with a scalar or array
-                              $result = array();
-                              foreach ($set as $t) {
-                                  if (is_array($t)) {
-                                      $result[] = to_pg_array($t);
-                                  } else {
-                                      $t = str_replace('"', '\\"', $t); // escape double quote
-                                      if (! is_numeric($t)) // quote only non-numeric values
-                                          $t = '"' . $t . '"';
-                                      $result[] = $t;
-                                  }
-                              }
-                              return '{' . implode(",", $result) . '}'; // format
-                        }*/
-
         if ($data['status'] && strlen($data['status']) < 2) {
             array_push($updateFields, "status = :status");
             $replacements["status"] = $data['status'];
@@ -254,19 +248,29 @@ class collCRUD
             $replacements["characteristic_relation_to_main"] = $data['characteristic_relation_to_main'];
         }
 
+        //todo:strange situation with the null values
         if ($data['characteristic_attr1']) {
             array_push($updateFields, "characteristic_attr1 = :characteristic_attr1");
             $replacements["characteristic_attr1"] = $data['characteristic_attr1'];
+        } else {
+            array_push($updateFields, "characteristic_attr1 = :characteristic_attr1");
+            $replacements["characteristic_attr1"] = NULL;
         }
 
         if ($data['characteristic_attr2']) {
             array_push($updateFields, "characteristic_attr2 = :characteristic_attr2");
             $replacements["characteristic_attr2"] = $data['characteristic_attr2'];
+        } else {
+             array_push($updateFields, "characteristic_attr2 = :characteristic_attr2");
+             $replacements["characteristic_attr2"] = NULL;
         }
 
         if ($data['characteristic_divider']) {
             array_push($updateFields, "characteristic_divider = :characteristic_divider");
             $replacements["characteristic_divider"] = $data['characteristic_divider'];
+        } else {
+            array_push($updateFields, "characteristic_divider = :characteristic_divider");
+            $replacements["characteristic_divider"] = NULL;
         }
 
 

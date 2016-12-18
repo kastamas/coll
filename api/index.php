@@ -86,9 +86,18 @@ switch ($route[2]) {
                         echo json_encode($result);
                     }
                 }
+                if ($method === 'DELETE') {
+                    //todo:add more security
+                    $result = $collCRUD->deleteCollocation($route[3]);
+                    if ($result === false) {
+                        header('HTTP/ 404 NOT_FOUND');
+                        exit();
+                    }
+                    echo json_encode($result);
+                }
             }
             else {
-                echo json_encode(array('error' => 'INCORRECT_ID'));
+                echo json_encode(array('error' => 'INCORRECT_ID_OR_METHOD'));
             }
         } else {
             if ($method === 'GET') {

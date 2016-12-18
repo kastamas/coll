@@ -3,7 +3,8 @@
 angular.module('collsList',[])
 
     .controller('CollsListCtrl', [
-        '$scope','$http', function ($scope, $http) {
+        '$scope','$http','$route',
+        function ($scope, $http, $route) {
             const ctrl = this;
             $scope.title = 'Список словосочетаний';
 
@@ -20,9 +21,7 @@ angular.module('collsList',[])
                 $http.get('/api/texts').success(function (data, status, headers, config) {
                     console.log('This is TEXTS Data:', data, '\n\n This is Status:', status);
                     ctrl.textsList = data;
-                    $scope.textsList = data;
-                    console.log(ctrl.textsList);
-                    return data;
+                    console.log("TEXTSSS",ctrl.textsList);
                 }).error(function () {
                     console.log("Smth wrong");
                 });
@@ -33,40 +32,26 @@ angular.module('collsList',[])
                 $http.get('/api/characteristics').success(function (data, status, headers, config) {
                     ctrl.charactsList = data;
                     console.log("Characteristics Data",ctrl.charactsList);//Объект всех характеристик 2
-
-
-
-                    //new array for chrs 2
-                    res.data.forEach(function (item) {//Одна строка за итерацию
-                        item.charact_2_str = {};//Новая переменная под объект
-                        var NWARRAY = "";
-
-                        /*my team for assembly of array*/
-                        var  str = item.charact_2;
-                        str = str.replace("{"," ");
-                        str = str.replace("}"," ");
-                        var strArray = str.split(",");
-
-
-                        strArray.forEach(function (item) {// строка за итерацию
-
-                                ctrl.charactsList.forEach(function (item2) {
-                                    if (item == item2.id){
-                                        item = item2.characteristic;
-                                        NWARRAY = NWARRAY + item + " ";
-
-                                    }
-
-                                });
-                        });
-                        item.charact_2 = NWARRAY;
-                    });
                 }).error(function () {
                     console.log("Smth wrong");
                 });
 
                 //set up for filters
-                ctrl.filter = {text_id:0, status: "any"};
+                ctrl.filter = {text_id:null, status: "any"};
+
+                //set up for orderBys
+                //sort on init
+                ctrl.sorting = {rows:'created_at', reverse:true};
+
+                ctrl.sort = function (fieldName) {
+                    if(ctrl.sorting.rows === fieldName){
+                        ctrl.sorting.reverse = !ctrl.sorting.reverse;
+                    } else {
+                        ctrl.sorting.rows = fieldName;
+                        ctrl.sorting.reverse = false;
+                    }
+                };
+
 
                 //todo:remove this bicycle from india
                 $scope.collocationsMainFilter = function (item) {
@@ -82,7 +67,14 @@ angular.module('collsList',[])
                      return (item.collocation) && ((ctrl.filter.text_id != 0 && ctrl.filter.text_id != null) ? item.text_id == ctrl.filter.text_id  : " ");
                  };
 
-
+                ctrl.delete = function (item_id) {
+                    $http.delete('/api/collocations/' + item_id).success(function (data, status) {
+                        console.log("Запрос на удаление выполнен, статус: ", status);
+                        $route.reload();//todo: i know, you can make it better!
+                    }).error(function (data, status) {
+                        console.log("Запрос на удаление НЕ ВЫПОЛНЕН, статус: ", status);
+                    });
+                };
 
              });
 

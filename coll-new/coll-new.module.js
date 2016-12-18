@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('collNew', ['angularjs-dropdown-multiselect']);
+angular.module('collNew', ['ngAnimate']);

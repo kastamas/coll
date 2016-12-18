@@ -1,7 +1,7 @@
 'use strict';
 
 var collApp = angular.module('collApp', [
-    'ngRoute',
+    'ngRoute', 'ngAnimate',
     'textItem', 'textNew', 'textsList', 'textEdit',
                 'collNew', 'collsList', 'collEdit',
                'charsNew', 'charsList',

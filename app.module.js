@@ -3,6 +3,7 @@
 angular.module('collApp', [
     'ngRoute',
     'angularjs-dropdown-multiselect',
+    'ngAnimate',
 
     'textItem',
     'textNew',
