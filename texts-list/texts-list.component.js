@@ -12,6 +12,11 @@ angular.module('textsList',[])
             console.log('This is Data:', data,'\n\n This is Status:',status);
              ctrl.list = data;
              console.log(ctrl.list);
+             /*Потому что постгрес какого-то черта возвращает значение COUNT() строкой O_o*/
+             ctrl.list.forEach(function (item) {
+                 item.number_of_collocations = parseInt(item.number_of_collocations, 10)
+             }) ;
+             console.log(typeof ctrl.list[1].number_of_collocations);
          }).error(function () {
 
          });

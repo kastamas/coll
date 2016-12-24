@@ -1,6 +1,6 @@
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
+<div class="row">
+<div class="col-md-12">
 
 <!-- for test
  <pre>{{$ctrl.filter | json}}</pre>-->
@@ -10,21 +10,40 @@
 
 <div ng-show="$ctrl.list.length != '0'">
     <!----------------- filters ------------------->
+    <h3 style="text-transform: uppercase;">фильтры</h3>
     <div class="row">
         <div class="col-md-2">
-            <label for="selectTextId">Фильтр по текстам</label><br>
+            <label for="selectTextId">по тексту</label><br>
             <select id="selectTextId" data-ng-model="$ctrl.filter.text_id"  ng-options="item.id as item.title for item in $ctrl.textsList | orderBy:'title':false " class="form-control">
                 <!-- <option data-ng-repeat="item in $ctrl.textsList" value="{{item.id}}">{{item.title}}</option>-->
                 <option value=''>- Все тексты -</option>
             </select>
         </div>
         <div class="col-md-2">
-            <label for="selectStatus">Фильтр по статусу</label><br>
+            <label for="selectStatus">по статусу</label><br>
             <select id="selectStatus" data-ng-model="$ctrl.filter.status" class="form-control">
                 <option value='any'>- Любой статус -</option>
                 <option  value='u' >Не разобрано</option>
                 <option  value='d' >Разобрано</option>
                 <option  value='a' >Разобрано не до конца</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="selectStatus">по кол. компонентов</label><br>
+            <select id="selectStatus" data-ng-model="$ctrl.filter.characteristic_quantity" class="form-control">
+                <option value='any'>- Любое количество -</option>
+                <option  value='2xmem' >двучленное</option>
+                <option  value='3xmem' >трехчленное</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="selectStatus">по отношению</label><br>
+            <select id="selectStatus" data-ng-model="$ctrl.filter.characteristic_relation_to_main" class="form-control">
+                <option  value='any'>- Любое отношение -</option>
+                <option  value='prepos'   >препозитивное</option>
+                <option  value='postpos'  >интерпозитивное</option>
+                <option  value='interpos' >постпозитивное</option>
+                <option  value='distant'  >дистантное</option>
             </select>
         </div>
 
@@ -41,12 +60,11 @@
         </div>-->
     </div>
 </div>
+<hr>
 
-    <hr>
 
-
-        </div>
-    </div>
+</div>
+</div>
 </div>
 
 
@@ -57,7 +75,7 @@
         <table class="table table-striped table-hover table-custom">
             <thead>
                 <tr>
-                    <th> </th>
+                    <th > </th>
                     <th ng-show="$ctrl.filter.text_id == null">Текст</th>
                     <th class="text-nowrap">Словосочетание</th>
                     <th title="Номер страницы"><a ng-click="$ctrl.sort('page_number')">
@@ -87,16 +105,16 @@
             <tbody>
                 <tr data-ng-repeat="item in $ctrl.list | filter: collocationsMainFilter | orderBy:$ctrl.sorting.rows:$ctrl.sorting.reverse">
                     <!--Status todo:removeCrutch -->
-                        <td class="c danger"  title="Не разобрано"          ng-if="item.status == 'u'" ></td>
-                        <td class="c success" title="Разобрано"             ng-if="item.status == 'd'" ></td>
-                        <td class="c info"    title="Разобрано не до конца" ng-if="item.status == 'a'" ></td>
+                        <td  class="c danger"    title="Не разобрано"          ng-if="item.status == 'u'" ></td>
+                        <td  class="c success"  title="Разобрано"             ng-if="item.status == 'd'" ></td>
+                        <td  class="c info"     title="Разобрано не до конца" ng-if="item.status == 'a'" ></td>
 
                     <td title="{{item.collocation}}"
                         ng-show="$ctrl.filter.text_id == null"
                         >{{item.text_name}}</td>
                     <td title="{{item.collocation}}"
                         class="text-nowrap"
-                        ><div class="cell-limiter">{{item.collocation}}</div></td>
+                        ><div class="cell-limited-m">{{item.collocation}}</div></td>
                     <td>{{item.page_number}}</td>
 
                     <!--charact_relation_to_main todo:removeCrutch-->

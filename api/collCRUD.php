@@ -20,7 +20,8 @@ class collCRUD
     }
 
     public function queryTexts() {
-        $query_str = "SELECT id, title, status, created_at, updated_at FROM " . self::$texts . " ORDER BY created_at DESC";
+        $query_str = "SELECT t.id, t.title, t.status, t.created_at, t.updated_at, COUNT(c.text_id) as number_of_collocations  FROM public.texts AS t
+                      LEFT JOIN collocations AS c ON t.id = c.text_id GROUP BY t.id  ORDER BY created_at DESC";
         $query = $this->pdo->prepare($query_str);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);

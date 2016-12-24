@@ -115,10 +115,20 @@ input[type="radio"]:checked + .btn-default{
     cursor: pointer;
 }
 
-.cell-limiter{
+.cell-limited-s{
     overflow: hidden;
     text-overflow: ellipsis;
     width: 240px;
+}
+.cell-limited-l{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 360px;
+}
+.cell-limited-xl{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 480px;
 }
 
 .stylish-form input.ng-invalid.ng-touched{
@@ -157,6 +167,15 @@ input[type="radio"]:checked + .btn-default{
 }
 .notification.ng-hide {
     opacity: 0;
+}
+
+.table > thead > tr > td.info, .table > tbody > tr > td.info, .table > tfoot > tr > td.info, .table > thead > tr > th.info, .table > tbody > tr > th.info, .table > tfoot > tr > th.info, .table > thead > tr.info > td, .table > tbody > tr.info > td, .table > tfoot > tr.info > td, .table > thead > tr.info > th, .table > tbody > tr.info > th, .table > tfoot > tr.info > th{
+    background-color: #bad2ff;
+}
+
+
+.table-hover > tbody > tr > td.info:hover, .table-hover > tbody > tr > th.info:hover, .table-hover > tbody > tr.info:hover > td, .table-hover > tbody > tr:hover > .info, .table-hover > tbody > tr.info:hover > th {
+    background-color: #a1b4d9;
 }
 /*border-color: #66afe9;
     outline: 0;

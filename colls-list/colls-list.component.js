@@ -37,7 +37,7 @@ angular.module('collsList',[])
                 });
 
                 //set up for filters
-                ctrl.filter = {text_id:null, status: "any"};
+                ctrl.filter = {text_id: null, status: "any", characteristic_quantity: "any", characteristic_relation_to_main: "any"};
 
                 //set up for orderBys
                 //sort on init
@@ -59,7 +59,8 @@ angular.module('collsList',[])
                     return (item.collocation) &&
                         ((ctrl.filter.text_id != 0 && ctrl.filter.text_id != null) ? item.text_id == ctrl.filter.text_id  : " ") &&
                         ((ctrl.filter.status != "any") ? item.status == ctrl.filter.status : " ") &&
-                        ((ctrl.filter.charact_1 != "any") ? item.charact_1 == ctrl.filter.charact_1 : " ")
+                        ((ctrl.filter.characteristic_quantity != "any") ? item.characteristic_quantity == ctrl.filter.characteristic_quantity : " ") &&
+                        ((ctrl.filter.characteristic_relation_to_main != "any") ? item.characteristic_relation_to_main == ctrl.filter.characteristic_relation_to_main : " ")
                         ;
                  };
 
