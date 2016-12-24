@@ -52,7 +52,7 @@ class collCRUD
     }
 
 	public function queryCharacteristics() {
-        $query_str = "SELECT id, characteristic FROM " . self::$characteristics . " ORDER BY characteristic ASC";
+        $query_str = "SELECT id, type, characteristic FROM " . self::$characteristics . " ORDER BY characteristic ASC";
         $query = $this->pdo->prepare($query_str);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);

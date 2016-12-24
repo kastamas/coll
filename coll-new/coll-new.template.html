@@ -61,7 +61,7 @@
             <select id="characteristicTwo"
                     ng-model="$ctrl.characteristicAttr1"
                     class="form-control"
-                    ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList">
+                    ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'attribute'">
             </select>
 
             <div ng-show="$ctrl.characteristicAttr1 != undefined">
@@ -78,7 +78,7 @@
             <label>Характеристика <span class="blue">первого</span> атрибута</label>
             <select ng-model="$ctrl.characteristicAttr1"
                     class="form-control"
-                    ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList">
+                    ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'attribute'">
             </select>
 
             <div ng-show="$ctrl.characteristicAttr1 != undefined">
@@ -93,7 +93,7 @@
             <label>Характеристика <span class="blue">второго</span> атрибута</label>
             <select  ng-model="$ctrl.characteristicAttr2"
                      class="form-control"
-                     ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList">
+                     ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'attribute'">
             </select>
 
 
@@ -115,7 +115,7 @@
             <label>Характеристика атрибута</label>
             <select  ng-model="$ctrl.characteristicAttr1"
                      class="form-control"
-                     ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList">
+                     ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'attribute'">
             </select>
             <div ng-show="$ctrl.characteristicAttr1 != undefined">
                 <br>
@@ -130,7 +130,7 @@
             <label>Характеристика <span class="blue">первого</span> атрибута</label>
             <select  ng-model="$ctrl.characteristicAttr1"
                      class="form-control"
-                     ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList">
+                     ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'attribute'">
             </select>
             <div ng-show="$ctrl.characteristicAttr1 != undefined">
                 <br>
@@ -146,7 +146,7 @@
             <label>Характеристика <span class="blue">второго</span> атрибута</label>
             <select  ng-model="$ctrl.characteristicAttr2"
                      class="form-control"
-                     ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList">
+                     ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'attribute'">
             </select>
             <div ng-show="$ctrl.characteristicAttr2 != undefined">
                 <br>
@@ -163,16 +163,16 @@
         <label>Характеристика разделителя</label>
         <select  ng-model="$ctrl.entity.characteristic_divider"
                  class="form-control"
-                 ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList">
+                 ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'divider'">
         </select>
     </div>
     <!--Случай звёздочка-->
     <div ng-show="$ctrl.entity.characteristic_relation_to_main == 'interpos'">
-        <label>Характеристика <span class="blue">первого</span> атрибута</label>
+        <label>Характеристика <span class="blue">первоdго</span> атрибута</label>
         <select
                 ng-model="$ctrl.characteristicAttr1"
                 class="form-control"
-                ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList">
+                ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'attribute'">
         </select>
 
         <div ng-show="$ctrl.characteristicAttr1 != undefined">
@@ -187,7 +187,7 @@
         <label>Характеристика <span class="blue">второго</span> атрибута</label>
         <select  ng-model="$ctrl.characteristicAttr2"
                  class="form-control"
-                 ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList">
+                 ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'attribute'">
         </select>
 
 
