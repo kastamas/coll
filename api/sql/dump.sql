@@ -44,7 +44,7 @@ CREATE SEQUENCE IF NOT EXISTS characteristics_ids
 
 CREATE TABLE IF NOT EXISTS characteristics (
     id integer DEFAULT nextval('characteristics_ids'::regclass) NOT NULL,
-    characteristic character varying(50) NOT NULL,
+    characteristic character varying(100) NOT NULL,
     created_at timestamp with time zone,
     updated_at timestamp with time zone
 );

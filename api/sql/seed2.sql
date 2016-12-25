@@ -22,6 +22,11 @@ ALTER TABLE ONLY characteristics
     ADD COLUMN type enum_characteristic_type DEFAULT 'attribute'::enum_characteristic_type NOT NULL;
 
 UPDATE characteristics SET type = 'attribute';
+
+UPDATE pg_attribute SET atttypmod = 104
+WHERE attrelid = 'characteristics'::regclass
+AND attname = 'characteristic';
+
 --
 -- Data for Name: characteristics; Type: TABLE DATA; Schema: public;
 --
