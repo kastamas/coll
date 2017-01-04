@@ -69,9 +69,18 @@ angular.module('collsList',[])
                  };
 
                 ctrl.delete = function (item_id) {
+
+
+
+
                     $http.delete('/api/collocations/' + item_id).success(function (data, status) {
+                        //топорнейшее решение, но должно сработать
+                        ctrl.list.forEach(function (item,i) {
+                            if (item.id === item_id) {
+                                ctrl.list.splice(i,1);
+                            }
+                        });
                         console.log("Запрос на удаление выполнен, статус: ", status);
-                        $route.reload();//todo: i know, you can make it better!
                     }).error(function (data, status) {
                         console.log("Запрос на удаление НЕ ВЫПОЛНЕН, статус: ", status);
                     });

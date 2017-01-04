@@ -9,9 +9,29 @@ angular.module('collNew')
 
             ctrl.entity = {};
 
+            //Костыль из-за последних изменений в системе добавления/редактирования
+            //ctrl.attributes_without_expansion = [8,9,10,11];
+            //ctrl.special_conditions = "";
+
+
+
+            ctrl.condition_for_showing_extensions = function (characteristic) {
+                console.log("SPECIAL CONDITIONS!",characteristic);
+                switch (characteristic){
+                    case undefined: return undefined; break;
+                    case 8:  return false; break;
+                    case 9:  return false; break;
+                    case 10: return false; break;
+                    case 11: return false; break;
+                    default: return true;
+                }
+            };
+
+
 
             ctrl.onChangeCharacteristicQuantity = function () {
                 delete ctrl.characteristicAttr2;
+                delete ctrl.entity.characteristic_attr2 ;
                 delete ctrl.entity.characteristic_attr2 ;
             };
 
@@ -29,6 +49,13 @@ angular.module('collNew')
 
 
             ctrl.onAction = function () {
+                if (!ctrl.condition_for_showing_extensions(ctrl.characteristicAttr1))
+                    ctrl.entity.characteristic_attr1_explicit = ctrl.characteristicAttr1;
+                    else delete ctrl.entity.characteristic_attr1_explicit   ;
+                if (!ctrl.condition_for_showing_extensions(ctrl.characteristicAttr2))
+                    ctrl.entity.characteristic_attr2_explicit = ctrl.characteristicAttr2;
+                    else  delete ctrl.entity.characteristic_attr2_explicit   ;
+
                 $http.post('/api/collocations', ctrl.entity).success(function (data,status,headers,config){
                     ctrl.sendingError = false;
                     console.log("Connect is here!");

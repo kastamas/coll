@@ -12,6 +12,21 @@ angular.module('collEdit')
             ctrl.entityId = $routeParams.collId;
             console.log("Айдишенька",$routeParams.collId);
 
+
+            ctrl.condition_for_showing_extensions = function (characteristic) {
+                console.log("SPECIAL CONDITIONS!",characteristic);
+                switch (characteristic){
+                    case undefined: return undefined; break;
+                    case 8:  return false; break;
+                    case 9:  return false; break;
+                    case 10: return false; break;
+                    case 11: return false; break;
+                    default: return true;
+                }
+            };
+
+
+
             ctrl.onChangeCharacteristicQuantity = function () {
                 if(ctrl.entity.characteristic_relation_to_main != 'interpos'){
                     delete ctrl.characteristicAttr2;
@@ -31,8 +46,12 @@ angular.module('collEdit')
                 ctrl.entity = data;//Объект с инфой по словосочетанию
                 console.log("DATA",data);
                 /*set up*/
-                ctrl.characteristicAttr1 = ctrl.entity.characteristic_1;
-                ctrl.characteristicAttr2 = ctrl.entity.characteristic_2;
+                if (ctrl.entity.characteristic_1 != null)
+                    ctrl.characteristicAttr1 = ctrl.entity.characteristic_1;
+                    else    ctrl.characteristicAttr1 = ctrl.entity.characteristic_attr1_explicit;
+                if (ctrl.entity.characteristic_1 != null)
+                    ctrl.characteristicAttr2 = ctrl.entity.characteristic_2;
+                    else    ctrl.characteristicAttr2 = ctrl.entity.characteristic_attr2_explicit;
             }).error(function ()  {console.log("Smth rong");});
 
 
@@ -40,6 +59,8 @@ angular.module('collEdit')
             $http.get('/api/characteristics').success(function (data, status, headers, config) {
                 console.log('This is Data:', data,'\n\n This is Status:',status);
                 ctrl.characteristicTwoList = data;
+
+
                 console.log(ctrl.characteristicTwoList);
             }).error(function () {
                 console.log("Smth wrong");
@@ -68,6 +89,13 @@ angular.module('collEdit')
             }
 
             ctrl.onAction = function () {
+                if (!ctrl.condition_for_showing_extensions(ctrl.characteristicAttr1))
+                    ctrl.entity.characteristic_attr1_explicit = ctrl.characteristicAttr1;
+                else delete ctrl.entity.characteristic_attr1_explicit   ;
+                if (!ctrl.condition_for_showing_extensions(ctrl.characteristicAttr2))
+                    ctrl.entity.characteristic_attr2_explicit = ctrl.characteristicAttr2;
+                else  delete ctrl.entity.characteristic_attr2_explicit   ;
+
                 $http.put('/api/collocations/' + ctrl.entityId, ctrl.entity).success(function () {
                     ctrl.sendingError = false;
                     ctrl.sended = true;

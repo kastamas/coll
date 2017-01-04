@@ -36,6 +36,8 @@ class collCRUD
                               ch_ex_2.expansion as expansion_2, ch_ex_2.characteristic_id as characteristic_2,
                               ch_1.characteristic as characteristic_1_name,
                               ch_2.characteristic as characteristic_2_name,
+                              ch_1_explicit.characteristic as characteristic_attr1_explicit_name,
+                              ch_2_explicit.characteristic as characteristic_attr2_explicit_name,
                               ch_d.characteristic as characteristic_d_name
 
                         FROM " . self::$collocations . " AS c
@@ -44,6 +46,8 @@ class collCRUD
                             LEFT JOIN characteristics_expansion AS ch_ex_2 ON c.characteristic_attr2 = ch_ex_2.id
                             LEFT JOIN characteristics AS ch_1 ON ch_ex_1.characteristic_id = ch_1.id
                             LEFT JOIN characteristics AS ch_2 ON ch_ex_2.characteristic_id = ch_2.id
+                            LEFT JOIN characteristics AS ch_1_explicit ON c.characteristic_attr1_explicit = ch_1_explicit.id
+                            LEFT JOIN characteristics AS ch_2_explicit ON c.characteristic_attr2_explicit = ch_2_explicit.id
                             LEFT JOIN characteristics AS ch_d ON c.characteristic_divider = ch_d.id
                         ORDER BY created_at ASC";
         $query = $this->pdo->prepare($query_str);
@@ -274,6 +278,22 @@ class collCRUD
             $replacements["characteristic_divider"] = NULL;
         }
 
+        if ($data['characteristic_attr1_explicit']) {
+            array_push($updateFields, "characteristic_attr1_explicit = :characteristic_attr1_explicit");
+            $replacements["characteristic_attr1_explicit"] = $data['characteristic_attr1_explicit'];
+        } else {
+            array_push($updateFields, "characteristic_attr1_explicit = :characteristic_attr1_explicit");
+            $replacements["characteristic_attr1_explicit"] = NULL;
+        }
+
+        if ($data['characteristic_attr2_explicit']) {
+            array_push($updateFields, "characteristic_attr2_explicit = :characteristic_attr2_explicit");
+            $replacements["characteristic_attr2_explicit"] = $data['characteristic_attr2_explicit'];
+        } else {
+            array_push($updateFields, "characteristic_attr2_explicit = :characteristic_attr2_explicit");
+            $replacements["characteristic_attr2_explicit"] = NULL;
+        }
+
 
         return array('fields' => $updateFields, 'replacements' => $replacements);
     }
@@ -297,31 +317,16 @@ class collCRUD
     public function createCollocation($data) {
         $this->checkCollocation($data);
 
-         /*function to_pg_array($set) {
-                  settype($set, 'array'); // can be called with a scalar or array
-                  $result = array();
-                  foreach ($set as $t) {
-                      if (is_array($t)) {
-                          $result[] = to_pg_array($t);
-                      } else {
-                          $t = str_replace('"', '\\"', $t); // escape double quote
-                          if (! is_numeric($t)) // quote only non-numeric values
-                              $t = '"' . $t . '"';
-                          $result[] = $t;
-                      }
-                  }
-                  return '{' . implode(",", $result) . '}'; // format
-              }*/
-
-        //$data['charact_2'] = to_pg_array($data['charact_2']);
-        $query_str = "INSERT INTO " . self::$collocations . " (collocation, characteristic_quantity, characteristic_relation_to_main, characteristic_attr1, characteristic_attr2, characteristic_divider, page_number, status, text_id)
-                        VALUES (:collocation, :characteristic_quantity, :characteristic_relation_to_main, :characteristic_attr1, :characteristic_attr2, :characteristic_divider, :page_number,   :status, :text_id) RETURNING *";
+        $query_str = "INSERT INTO " . self::$collocations . " (collocation, characteristic_quantity, characteristic_relation_to_main, characteristic_attr1, characteristic_attr2, characteristic_divider, characteristic_attr1_explicit, characteristic_attr2_explicit, page_number, status, text_id)
+                        VALUES (:collocation, :characteristic_quantity, :characteristic_relation_to_main, :characteristic_attr1, :characteristic_attr2, :characteristic_divider, :characteristic_attr1_explicit, :characteristic_attr2_explicit, :page_number,   :status, :text_id) RETURNING *";
         $params = array(
             "collocation" => $data['collocation'],
             "characteristic_quantity" => $data['characteristic_quantity'],
             "characteristic_relation_to_main" => $data['characteristic_relation_to_main'],
             "characteristic_attr1" => $data['characteristic_attr1'],
             "characteristic_attr2" => $data['characteristic_attr2'],
+            "characteristic_attr1_explicit" => $data['characteristic_attr1_explicit'],
+            "characteristic_attr2_explicit" => $data['characteristic_attr2_explicit'],
             "characteristic_divider" => $data['characteristic_divider'],
 
             "page_number" => $data['page_number'],
