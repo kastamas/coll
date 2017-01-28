@@ -253,7 +253,7 @@ class collCRUD
             $replacements["characteristic_relation_to_main"] = $data['characteristic_relation_to_main'];
         }
 
-        //todo:strange situation with the null values
+        //todo: strange situation with the null values (Ты такой индус. Не стыдно?)
         if ($data['characteristic_attr1']) {
             array_push($updateFields, "characteristic_attr1 = :characteristic_attr1");
             $replacements["characteristic_attr1"] = $data['characteristic_attr1'];
@@ -294,6 +294,47 @@ class collCRUD
             $replacements["characteristic_attr2_explicit"] = NULL;
         }
 
+        if ($data['characteristic_preposition']) {
+            array_push($updateFields, "characteristic_preposition = :characteristic_preposition");
+            $replacements["characteristic_preposition"] = $data['characteristic_preposition'];
+        } else {
+            array_push($updateFields, "characteristic_preposition = :characteristic_preposition");
+            $replacements["characteristic_preposition"] = NULL;
+        }
+
+
+        if ($data['characteristic_substantive_lg']) {
+            array_push($updateFields, "characteristic_substantive_lg = :characteristic_substantive_lg");
+            $replacements["characteristic_substantive_lg"] = $data['characteristic_substantive_lg'];
+        } else {
+            array_push($updateFields, "characteristic_substantive_lg = :characteristic_substantive_lg");
+            $replacements["characteristic_substantive_lg"] = NULL;
+        }
+
+        if ($data['characteristic_substantive_lg_explicit']) {
+            array_push($updateFields, "characteristic_substantive_lg_explicit = :characteristic_substantive_lg_explicit");
+            $replacements["characteristic_substantive_lg_explicit"] = $data['characteristic_substantive_lg_explicit'];
+        } else {
+            array_push($updateFields, "characteristic_substantive_lg_explicit = :characteristic_substantive_lg_explicit");
+            $replacements["characteristic_substantive_lg_explicit"] = NULL;
+        }
+
+        if ($data['characteristic_substantive_animacy']) {
+            array_push($updateFields, "characteristic_substantive_animacy = :characteristic_substantive_animacy");
+            $replacements["characteristic_substantive_animacy"] = $data['characteristic_substantive_animacy'];
+        } else {
+            array_push($updateFields, "characteristic_substantive_animacy = :characteristic_substantive_animacy");
+            $replacements["characteristic_substantive_animacy"] = NULL;
+        }
+
+        if ($data['characteristic_substantive_case']) {
+            array_push($updateFields, "characteristic_substantive_case = :characteristic_substantive_case");
+            $replacements["characteristic_substantive_case"] = $data['characteristic_substantive_case'];
+        } else {
+            array_push($updateFields, "characteristic_substantive_case = :characteristic_substantive_case");
+            $replacements["characteristic_substantive_case"] = NULL;
+        }
+
 
         return array('fields' => $updateFields, 'replacements' => $replacements);
     }
@@ -315,12 +356,50 @@ class collCRUD
     }
 
     public function createCollocation($data) {
-        $this->checkCollocation($data);
-
-        $query_str = "INSERT INTO " . self::$collocations . " (collocation, characteristic_quantity, characteristic_relation_to_main, characteristic_attr1, characteristic_attr2, characteristic_divider, characteristic_attr1_explicit, characteristic_attr2_explicit, page_number, status, text_id)
-                        VALUES (:collocation, :characteristic_quantity, :characteristic_relation_to_main, :characteristic_attr1, :characteristic_attr2, :characteristic_divider, :characteristic_attr1_explicit, :characteristic_attr2_explicit, :page_number,   :status, :text_id) RETURNING *";
+        $this->checkCollocation($data);//check status,text,collocation's text
+        //todo:refactor query style
+        $query_str = "INSERT INTO " . self::$collocations . " (
+                     collocation, 
+                     characteristic_quantity, 
+                     characteristic_relation_to_main, 
+                     characteristic_attr1, 
+                     characteristic_attr2, 
+                     characteristic_divider, 
+                     characteristic_attr1_explicit, 
+                     characteristic_attr2_explicit,
+                     characteristic_preposition,
+                     
+                     characteristic_substantive_lg,
+                     characteristic_substantive_lg_explicit,
+                     characteristic_substantive_animacy,
+                     characteristic_substantive_case,
+                     
+                     page_number, 
+                     status, 
+                     text_id
+                )VALUES (
+                     :collocation,
+                     :characteristic_quantity, 
+                     :characteristic_relation_to_main, 
+                     :characteristic_attr1, 
+                     :characteristic_attr2, 
+                     :characteristic_divider, 
+                     :characteristic_attr1_explicit, 
+                     :characteristic_attr2_explicit,
+                     :characteristic_preposition,
+                     
+                     :characteristic_substantive_lg,
+                     :characteristic_substantive_lg_explicit,
+                     :characteristic_substantive_animacy,
+                     :characteristic_substantive_case,
+                     
+                     :page_number,   
+                     :status, 
+                     :text_id
+                 ) RETURNING * ";
         $params = array(
             "collocation" => $data['collocation'],
+
             "characteristic_quantity" => $data['characteristic_quantity'],
             "characteristic_relation_to_main" => $data['characteristic_relation_to_main'],
             "characteristic_attr1" => $data['characteristic_attr1'],
@@ -328,13 +407,18 @@ class collCRUD
             "characteristic_attr1_explicit" => $data['characteristic_attr1_explicit'],
             "characteristic_attr2_explicit" => $data['characteristic_attr2_explicit'],
             "characteristic_divider" => $data['characteristic_divider'],
+            "characteristic_preposition" => $data['characteristic_preposition'],
+
+            "characteristic_substantive_lg" => $data['characteristic_substantive_lg'],
+            "characteristic_substantive_lg_explicit" => $data['characteristic_substantive_lg_explicit'],
+            "characteristic_substantive_animacy" => $data['characteristic_substantive_animacy'],
+            "characteristic_substantive_case" => $data['characteristic_substantive_case'],
 
             "page_number" => $data['page_number'],
             "text_id" => $data['text_id'],
             "status" => $data['status']
         );
         $query = $this->pdo->prepare($query_str);
-
         $query->execute($params);
 
         return $query->fetch(PDO::FETCH_ASSOC);

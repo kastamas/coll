@@ -33,12 +33,17 @@ angular.module('collEdit')
                     delete ctrl.entity.characteristic_attr2;
                 }
             };
+
             ctrl.onChangeCharacteristicRelationToMain = function () {
                 delete ctrl.characteristicAttr1;
                 delete ctrl.characteristicAttr2;
                 delete ctrl.entity.characteristic_attr2   ;
                 delete ctrl.entity.characteristic_attr1   ;
                 delete ctrl.entity.characteristic_divider ;
+            };
+
+            ctrl.onChangeCharacteristicSubstantive_lg = function () {
+                delete ctrl.entity.characteristic_substantive_lg_explicit;
             };
 
             /*collocation inf*/

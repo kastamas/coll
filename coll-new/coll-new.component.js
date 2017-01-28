@@ -43,6 +43,13 @@ angular.module('collNew')
                 delete ctrl.entity.characteristic_divider ;
             };
 
+            ctrl.onChangeCharacteristicSubstantive_lg = function () {
+                delete ctrl.entity.characteristic_substantive_lg_explicit;
+            };
+
+
+
+
             function changeSendingStatus() {
                 ctrl.sended = false;
             }

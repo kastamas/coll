@@ -23,7 +23,7 @@ ALTER TABLE ONLY characteristics
 
 UPDATE characteristics SET type = 'attribute';
 
-UPDATE pg_attribute SET atttypmod = 104
+UPDATE pg_attribute SET atttypmod = 104  -- Не надо больше так делать
 WHERE attrelid = 'characteristics'::regclass
 AND attname = 'characteristic';
 

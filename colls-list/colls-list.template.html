@@ -86,6 +86,7 @@
                     </th>
                     <th>Х-ка по количеству компонентов</th>
                     <th>Х-ка по отношению к главному слову</th>
+                    <th>Х-ка по наличию предлога</th>
                     <!-- characteristics begin -->
                         <th  class="text-nowrap" style="border-left: 1px solid #ddd;" >Первый атрибут</th>
                         <!--  <th>?</th>-->
@@ -93,6 +94,10 @@
                         <!--  <th>?</th>-->
                         <th  class="text-nowrap" style="border-left: 1px solid #ddd;">Разделитель</th>
                     <!-- characteristics end -->
+                    <!-- substantive end -->
+                        <th  class="text-nowrap" style="border-left: 1px solid #ddd;" colspan="4">Субстантив</th>
+
+                    <!-- substantive end -->
                     <th></th>
                     <th class="text-nowrap"><a ng-click="$ctrl.sort('created_at')"><div class="text-nowrap"
                     >Добавлено
@@ -130,6 +135,10 @@
                         <td class=" "  ng-if="item.characteristic_relation_to_main == 'distant'"  >дистантное</td>
                         <td            ng-if="item.characteristic_relation_to_main == NULL"></td>
 
+                    <!--charact_quantity todo:removeCrutch-->
+                        <td class=" "  ng-if="item.characteristic_preposition == 'prepositional'"   >предложное </td>
+                        <td class=" "  ng-if="item.characteristic_preposition == 'non-prepositional'"  >беспредложное</td>
+                        <td            ng-if="item.characteristic_preposition == NULL"></td>
 
                     <!-- Extra characteristics begin  Order is Changed Due To comfortoble-->
                        <!-- <td>{{item.expansion_1}}</td>-->
@@ -138,8 +147,33 @@
                       <!--  <td>{{item.expansion_2}}</td>-->
                         <td style="border-left: 1px solid #ddd;">{{item.expansion_2}} {{item.characteristic_2_name}} {{item.characteristic_attr2_explicit_name}}</td>
 
+                      <!--Substantive-->
+                        <td style="border-left: 1px solid #ddd;">
+                            <td ng-if="item.characteristic_substantive_lg == 'appellative'">нарицательный</td>
+                            <td ng-if="item.characteristic_substantive_lg == 'own'">собственный</td>
+                            <td ng-if="item.characteristic_substantive_lg == NULL"></td>
 
-                        <td style="border-left: 1px solid #ddd;">{{item.characteristic_d_name}}</td>
+                            <td ng-if="item.characteristic_substantive_lg_explicit == 'real'">вещественный </td>
+                            <td ng-if="item.characteristic_substantive_lg_explicit == 'specific'">конкретный   </td>
+                            <td ng-if="item.characteristic_substantive_lg_explicit == 'collective'">собирательный</td>
+                            <td ng-if="item.characteristic_substantive_lg_explicit == 'abstract'">абстрактный  </td>
+                            <td ng-if="item.characteristic_substantive_lg_explicit ==  NULL"></td>
+
+
+                            <td ng-if="item.characteristic_substantive_animacy == 'animated'">   одушевлённый</td>
+                            <td ng-if="item.characteristic_substantive_animacy == 'not-animated'">неодушевлённый</td>
+                            <td ng-if="item.characteristic_substantive_animacy == NULL"></td>
+
+                            <td ng-if="item.characteristic_substantive_case == 'nominative'">И.П.</td>
+                            <td ng-if="item.characteristic_substantive_case == 'genitive'">Р.П.</td>
+                            <td ng-if="item.characteristic_substantive_case == 'dative'">Д.П.</td>
+                            <td ng-if="item.characteristic_substantive_case == 'accusative'">В.П.</td>
+                            <td ng-if="item.characteristic_substantive_case == 'instrumental'">Т.П.</td>
+                            <td ng-if="item.characteristic_substantive_case == 'prepositional'">П.П.</td>
+                            <td ng-if="item.characteristic_substantive_case == NULL"></td>
+
+                        </td>
+                    <!--Substantive-->
                     <!-- Extra characteristics end -->
                     <td><a href="#/colls/edit/{{item.id}}">ред.</a></td>
                     <td>{{item.created_at | limitTo:'10' | date:'dd/MM/yyyy'}}</td>

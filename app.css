@@ -21,6 +21,12 @@ h2 {
 h3{
     color: #999;
 }
+
+h6 {
+    text-transform: uppercase;
+    color: #aaa;
+    font-size: medium;
+}
 .text-message{
 
 }
