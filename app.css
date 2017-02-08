@@ -1,5 +1,5 @@
 body {
-    padding: 20px;
+  /*  padding: 20px;*/
 }
 
 span {
@@ -55,6 +55,7 @@ footer:hover{
 .navbar{
     background: #f8f8f8;
     min-height:30px;
+    margin-bottom:0px;
 }
 .navbar li{
     float: left;
@@ -65,7 +66,7 @@ footer:hover{
     float: left;
     padding: 12px 30px 8px 15px;
     margin-left: -20px;
-    font-size: 28px;
+    font-size: x-large;
     font-weight: 200;
     line-height: 1;
     color: #777;
@@ -200,7 +201,7 @@ label{
     padding-right: 0px;
     padding-left: 0px;
     margin-right: 0px;
-    margin-left: -20px;
+    margin-left: 0px;
 }
 
 th{

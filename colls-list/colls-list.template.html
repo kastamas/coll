@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container closely" style="margin-left:15px;">
 <div class="row">
 <div class="col-md-12">
 
@@ -10,7 +10,7 @@
 
 <div ng-show="$ctrl.list.length != '0'">
     <!----------------- filters ------------------->
-    <h3 style="text-transform: uppercase;">фильтры</h3>
+    <h6 style="text-transform: uppercase;">фильтры</h6>
     <div class="row">
         <div class="col-md-2">
             <label for="selectTextId">по тексту</label><br>
@@ -22,7 +22,7 @@
         <div class="col-md-2">
             <label for="selectStatus">по статусу</label><br>
             <select id="selectStatus" data-ng-model="$ctrl.filter.status" class="form-control">
-                <option value='any'>- Любой статус -</option>
+                <option value='any'>- Любой -</option>
                 <option  value='u' >Не разобрано</option>
                 <option  value='d' >Разобрано</option>
                 <option  value='a' >Разобрано не до конца</option>
@@ -31,7 +31,7 @@
         <div class="col-md-2">
             <label for="selectStatus">по кол. компонентов</label><br>
             <select id="selectStatus" data-ng-model="$ctrl.filter.characteristic_quantity" class="form-control">
-                <option value='any'>- Любое количество -</option>
+                <option value='any'>- Любое -</option>
                 <option  value='2xmem' >двучленное</option>
                 <option  value='3xmem' >трехчленное</option>
             </select>
@@ -39,7 +39,7 @@
         <div class="col-md-2">
             <label for="selectStatus">по отношению</label><br>
             <select id="selectStatus" data-ng-model="$ctrl.filter.characteristic_relation_to_main" class="form-control">
-                <option  value='any'>- Любое отношение -</option>
+                <option  value='any'>- Любое -</option>
                 <option  value='prepos'   >препозитивное</option>
                 <option  value='postpos'  >интерпозитивное</option>
                 <option  value='interpos' >постпозитивное</option>
@@ -78,6 +78,8 @@
                     <th > </th>
                     <th ng-show="$ctrl.filter.text_id == null">Текст</th>
                     <th class="text-nowrap">Словосочетание</th>
+                    <th></th><!--edit-->
+                    <th></th><!--del-->
                     <th title="Номер страницы"><a ng-click="$ctrl.sort('page_number')">
                         <div class="text-nowrap"
                         >#Стр.
@@ -96,15 +98,12 @@
                     <!-- characteristics end -->
                     <!-- substantive end -->
                         <th  class="text-nowrap" colspan="4">Субстантив</th>
-
                     <!-- substantive end -->
-                    <th></th>
                     <th class="text-nowrap"><a ng-click="$ctrl.sort('created_at')"><div class="text-nowrap"
                     >Добавлено
                     <span ng-show="$ctrl.sorting.rows == 'created_at'" class="glyphicon"  ng-class="{'glyphicon-menu-up' : $ctrl.sorting.reverse, 'glyphicon-menu-down' : !$ctrl.sorting.reverse}" aria-hidden="true"></span>
                     </div>
                     </a></th>
-                    <th></th><!--del-->
                 </tr>
             </thead>
             <tbody>
@@ -120,6 +119,8 @@
                     <td title="{{item.collocation}}"
                         class="text-nowrap"
                         ><div class="cell-limited-m">{{item.collocation}}</div></td>
+                    <td title="редактировать"><a href="#/colls/edit/{{item.id}}">ред.</a></td>
+                    <td title="удалить" class="red"><a class="red" ng-click="$ctrl.delete(item.id, item.collocation)">уд.</a></td>
                     <td>{{item.page_number}}</td>
 
                     <!--charact_relation_to_main todo:removeCrutch-->
@@ -175,9 +176,7 @@
                         </td>
                     <!--Substantive-->
                     <!-- Extra characteristics end -->
-                    <td><a href="#/colls/edit/{{item.id}}">ред.</a></td>
                     <td>{{item.created_at | limitTo:'10' | date:'dd/MM/yyyy'}}</td>
-                    <td class="red"><a class="red" ng-click="$ctrl.delete(item.id)">удалить</a></td>
                 </tr>
             </tbody>
         </table>

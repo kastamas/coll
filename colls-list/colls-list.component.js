@@ -39,16 +39,23 @@ angular.module('collsList', ['ngCookies'])
 
                 //set up for orderBys
                 //sort on init
+                if($cookies.getObject('collsListSort')){
+                    ctrl.sorting = $cookies.getObject('collsListSort');
+                } else {
+                    ctrl.sorting = {rows:"created_at", reverse:true};
+                    $cookies.putObject('collsListSort', ctrl.sorting);
+                }
 
-                ctrl.sorting = {rows:'created_at', reverse:true};
 
-                ctrl.sort = function (fieldName) {
+                ctrl.sort = function (fieldName)
+                {
                     if(ctrl.sorting.rows === fieldName){
                         ctrl.sorting.reverse = !ctrl.sorting.reverse;
                     } else {
                         ctrl.sorting.rows = fieldName;
                         ctrl.sorting.reverse = false;
                     }
+                    $cookies.putObject('collsListSort', ctrl.sorting);
                 };
 
                 //for collection
@@ -70,7 +77,8 @@ angular.module('collsList', ['ngCookies'])
                 }
 
                 //todo:remove this bicycle from india
-                $scope.collocationsMainFilter = function (item) {
+                $scope.collocationsMainFilter = function (item)
+                {
                     $cookies.putObject('collsListFilter', ctrl.filter);
 
                     return (item.collocation) &&
@@ -85,18 +93,21 @@ angular.module('collsList', ['ngCookies'])
                      return (item.collocation) && ((ctrl.filter.text_id != 0 && ctrl.filter.text_id != null) ? item.text_id == ctrl.filter.text_id  : " ");
                  };
 
-                ctrl.delete = function (item_id) {
-                    $http.delete('/api/collocations/' + item_id).success(function (data, status) {
-                        //топорнейшее решение, но должно сработать
-                        ctrl.list.forEach(function (item,i) {
-                            if (item.id === item_id) {
-                                ctrl.list.splice(i,1);
-                            }
-                        });
-                        console.log("Запрос на удаление выполнен, статус: ", status);
-                    }).error(function (data, status) {
-                        console.log("Запрос на удаление НЕ ВЫПОЛНЕН, статус: ", status);
-                    });
+                ctrl.delete = function (item_id, collocation) {//function Expression
+                    if(confirm("Словосочетание «"+ collocation + "» будет удалено."))
+                        {
+                            $http.delete('/api/collocations/' + item_id).success(function (data, status) {
+                                //топорнейшее решение, но должно сработать
+                                ctrl.list.forEach(function (item,i) {
+                                    if (item.id === item_id) {
+                                        ctrl.list.splice(i,1);
+                                    }
+                                });
+                                console.log("Запрос на удаление выполнен, статус: ", status);
+                            }).error(function (data, status) {
+                                console.log("Запрос на удаление НЕ ВЫПОЛНЕН, статус: ", status);
+                            });
+                        }
                 };
 
              });
