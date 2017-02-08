@@ -58,7 +58,7 @@ angular.module('collsList', ['ngCookies'])
                 //$cookies.putObject('collsFilteredCollection',item.id); todo:..
                 });*/
 
-                console.log(collection);
+                //console.log(collection);
 
 
                 //for filters
