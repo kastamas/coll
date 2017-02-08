@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('collsList',[])
+angular.module('collsList', ['ngCookies'])
 
     .controller('CollsListCtrl', [
-        '$scope','$http','$route',
-        function ($scope, $http, $route) {
+        '$scope','$http','$route', '$cookies',
+        function ($scope, $http, $route, $cookies) {
             const ctrl = this;
             $scope.title = 'Список словосочетаний';
 
@@ -36,11 +36,10 @@ angular.module('collsList',[])
                     console.log("Smth wrong");
                 });
 
-                //set up for filters
-                ctrl.filter = {text_id: null, status: "any", characteristic_quantity: "any", characteristic_relation_to_main: "any"};
 
                 //set up for orderBys
                 //sort on init
+
                 ctrl.sorting = {rows:'created_at', reverse:true};
 
                 ctrl.sort = function (fieldName) {
@@ -52,9 +51,27 @@ angular.module('collsList',[])
                     }
                 };
 
+                //for collection
+               /* var collection = []; Todo:..
+                ctrl.list.forEach(function (item, i, arr) {
+                //создаю коллекцию
+                //$cookies.putObject('collsFilteredCollection',item.id); todo:..
+                });*/
+
+                console.log(collection);
+
+
+                //for filters
+                if($cookies.getObject('collsListFilter')){
+                    ctrl.filter = $cookies.getObject('collsListFilter');
+                }  else{
+                    ctrl.filter = {text_id: null, status: "any", characteristic_quantity: "any", characteristic_relation_to_main: "any"};
+                    $cookies.putObject('collsListFilter', ctrl.filter);
+                }
 
                 //todo:remove this bicycle from india
                 $scope.collocationsMainFilter = function (item) {
+                    $cookies.putObject('collsListFilter', ctrl.filter);
 
                     return (item.collocation) &&
                         ((ctrl.filter.text_id != 0 && ctrl.filter.text_id != null) ? item.text_id == ctrl.filter.text_id  : " ") &&
@@ -64,15 +81,11 @@ angular.module('collsList',[])
                         ;
                  };
 
-                 $scope.collocationsTextFilter = function (item) {
+                 $scope.collocationsTextFilter = function (item) {//Only for counting
                      return (item.collocation) && ((ctrl.filter.text_id != 0 && ctrl.filter.text_id != null) ? item.text_id == ctrl.filter.text_id  : " ");
                  };
 
                 ctrl.delete = function (item_id) {
-
-
-
-
                     $http.delete('/api/collocations/' + item_id).success(function (data, status) {
                         //топорнейшее решение, но должно сработать
                         ctrl.list.forEach(function (item,i) {

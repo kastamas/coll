@@ -2,6 +2,7 @@
 
 angular.module('collApp', [
     'ngRoute',
+    'ngCookies',
     'angularjs-dropdown-multiselect',
     'ngAnimate',
 

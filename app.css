@@ -187,3 +187,23 @@ input[type="radio"]:checked + .btn-default{
     outline: 0;
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);*/
+
+label{
+    font-weight: normal;
+}
+
+.btn{
+    margin-bottom: 5px;
+}
+
+.closely{
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: 0px;
+    margin-left: -20px;
+}
+
+th{
+    font-weight: normal;
+    color: #afafaf;
+}

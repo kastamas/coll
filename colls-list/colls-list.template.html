@@ -2,8 +2,8 @@
 <div class="row">
 <div class="col-md-12">
 
-<!-- for test
- <pre>{{$ctrl.filter | json}}</pre>-->
+<!-- for test-->
+ <pre>{{$ctrl.filter | json}}</pre>
 
 <h2 class="page-header">{{ title}}</h2>
 
@@ -60,8 +60,8 @@
         </div>-->
     </div>
 </div>
-<hr>
 
+    <br>
 
 </div>
 </div>
@@ -69,10 +69,10 @@
 
 
 <!----------------- table --------------------->
-<div class="container">
+<div class="container closely">
 <div ng-show=" $ctrl.list.length != '0'">
     <div ng-show="($ctrl.list | filter: collocationsTextFilter).length != 0 ">
-        <table class="table table-striped table-hover table-custom">
+        <table class="table table-striped table-hover table-custom" style="border: 1px solid #ddd;">
             <thead>
                 <tr>
                     <th > </th>
@@ -95,7 +95,7 @@
                         <th  class="text-nowrap" style="border-left: 1px solid #ddd;">Разделитель</th>
                     <!-- characteristics end -->
                     <!-- substantive end -->
-                        <th  class="text-nowrap" style="border-left: 1px solid #ddd;" colspan="4">Субстантив</th>
+                        <th  class="text-nowrap" colspan="4">Субстантив</th>
 
                     <!-- substantive end -->
                     <th></th>
@@ -149,19 +149,19 @@
 
                       <!--Substantive-->
                         <td style="border-left: 1px solid #ddd;">
-                            <td ng-if="item.characteristic_substantive_lg == 'appellative'">нарицательный</td>
-                            <td ng-if="item.characteristic_substantive_lg == 'own'">собственный</td>
+                            <td ng-if="item.characteristic_substantive_lg == 'appellative'">нарицательное</td>
+                            <td ng-if="item.characteristic_substantive_lg == 'own'">собственное</td>
                             <td ng-if="item.characteristic_substantive_lg == NULL"></td>
 
-                            <td ng-if="item.characteristic_substantive_lg_explicit == 'real'">вещественный </td>
-                            <td ng-if="item.characteristic_substantive_lg_explicit == 'specific'">конкретный   </td>
-                            <td ng-if="item.characteristic_substantive_lg_explicit == 'collective'">собирательный</td>
-                            <td ng-if="item.characteristic_substantive_lg_explicit == 'abstract'">абстрактный  </td>
+                            <td ng-if="item.characteristic_substantive_lg_explicit == 'real'">вещественное</td>
+                            <td ng-if="item.characteristic_substantive_lg_explicit == 'specific'">конкретное   </td>
+                            <td ng-if="item.characteristic_substantive_lg_explicit == 'collective'">собирательное</td>
+                            <td ng-if="item.characteristic_substantive_lg_explicit == 'abstract'">абстрактное  </td>
                             <td ng-if="item.characteristic_substantive_lg_explicit ==  NULL"></td>
 
 
-                            <td ng-if="item.characteristic_substantive_animacy == 'animated'">   одушевлённый</td>
-                            <td ng-if="item.characteristic_substantive_animacy == 'not-animated'">неодушевлённый</td>
+                            <td ng-if="item.characteristic_substantive_animacy == 'animated'">   одушевлённое</td>
+                            <td ng-if="item.characteristic_substantive_animacy == 'not-animated'">неодушевлённое</td>
                             <td ng-if="item.characteristic_substantive_animacy == NULL"></td>
 
                             <td ng-if="item.characteristic_substantive_case == 'nominative'">И.П.</td>
@@ -183,16 +183,21 @@
         </table>
 </div>
 
-    <div class="text-message" ng-show="($ctrl.list | filter: collocationsTextFilter).length == 0">
-        <p>Для этог текста не добавлено ни одного словосочетания.</p>
-    </div>
-<hr>
-<br>
+
 <!----------------- footer --------------------->
 </div>
+
+
 </div>
 
-
+<div class="container" ng-show="($ctrl.list | filter: collocationsTextFilter).length == 0">
+    <div class="text-message">
+        <hr>
+        <p>Для этого текста не добавлено ни одного словосочетания.</p>
+        <hr>
+    </div>
+    <br>
+</div>
 
 
 <!----------------- message if empty ------------------->
