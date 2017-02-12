@@ -3,11 +3,10 @@
 angular.module('collsList', ['ngCookies'])
 
     .controller('CollsListCtrl', [
-        '$scope','$http','$route', '$cookies',
-        function ($scope, $http, $route, $cookies) {
+        '$scope','$http','$route', '$cookies', '$filter',
+        function ($scope, $http, $route, $cookies, $filter) {
             const ctrl = this;
             $scope.title = 'Список словосочетаний';
-
 
             //list of colls
             $http.get('/api/collocations').success(function (data, status, headers, config) {
@@ -21,7 +20,6 @@ angular.module('collsList', ['ngCookies'])
                 $http.get('/api/texts').success(function (data, status, headers, config) {
                     console.log('This is TEXTS Data:', data, '\n\n This is Status:', status);
                     ctrl.textsList = data;
-                    console.log("TEXTSSS",ctrl.textsList);
                 }).error(function () {
                     console.log("Smth wrong");
                 });
@@ -58,21 +56,16 @@ angular.module('collsList', ['ngCookies'])
                     $cookies.putObject('collsListSort', ctrl.sorting);
                 };
 
-                //for collection
-               /* var collection = []; Todo:..
-                ctrl.list.forEach(function (item, i, arr) {
-                //создаю коллекцию
-                //$cookies.putObject('collsFilteredCollection',item.id); todo:..
-                });*/
-
-                //console.log(collection);
-
 
                 //for filters
                 if($cookies.getObject('collsListFilter')){
                     ctrl.filter = $cookies.getObject('collsListFilter');
                 }  else{
-                    ctrl.filter = {text_id: null, status: "any", characteristic_quantity: "any", characteristic_relation_to_main: "any"};
+                    ctrl.filter = {text_id: null,
+                                   status: "any",
+                                   characteristic_quantity: "any",
+                                   characteristic_relation_to_main: "any",
+                                   characteristic_preposition: "any"};
                     $cookies.putObject('collsListFilter', ctrl.filter);
                 }
 
@@ -81,21 +74,59 @@ angular.module('collsList', ['ngCookies'])
                 {
                     $cookies.putObject('collsListFilter', ctrl.filter);
 
+                    //If it works, don't touch it
                     return (item.collocation) &&
                         ((ctrl.filter.text_id != 0 && ctrl.filter.text_id != null) ? item.text_id == ctrl.filter.text_id  : " ") &&
                         ((ctrl.filter.status != "any") ? item.status == ctrl.filter.status : " ") &&
                         ((ctrl.filter.characteristic_quantity != "any") ? item.characteristic_quantity == ctrl.filter.characteristic_quantity : " ") &&
-                        ((ctrl.filter.characteristic_relation_to_main != "any") ? item.characteristic_relation_to_main == ctrl.filter.characteristic_relation_to_main : " ")
+                        ((ctrl.filter.characteristic_relation_to_main != "any") ? item.characteristic_relation_to_main == ctrl.filter.characteristic_relation_to_main : " ") &&
+                        ((ctrl.filter.characteristic_preposition != "any") ? item.characteristic_preposition == ctrl.filter.characteristic_preposition : " ")
                         ;
                  };
 
                  $scope.collocationsTextFilter = function (item) {//Only for counting
-                     return (item.collocation) && ((ctrl.filter.text_id != 0 && ctrl.filter.text_id != null) ? item.text_id == ctrl.filter.text_id  : " ");
+                     return (item.collocation) &&
+                            ((ctrl.filter.text_id != 0 && ctrl.filter.text_id != null) ?
+                            item.text_id == ctrl.filter.text_id  : " ");
                  };
 
+
+                var collectionOfColls = [];
+                var collectionFiltered;
+
+                //Слежка за Filter
+                $scope.$watchCollection(angular.bind(ctrl, function () {
+                    return ctrl.filter;
+                }), function( ) {
+                    ctrl.updateCollection();
+                    console.log("Filter has changed!");
+                });
+
+                //Слежка за Sort
+                $scope.$watchCollection(angular.bind(ctrl, function () {
+                    return ctrl.sorting;
+                }), function( ) {
+                    ctrl.updateCollection();
+                    console.log("Sort has changed!");
+                });
+
+                //for collection
+                ctrl.updateCollection = function () {
+                    ctrl.collectionFiltered = $filter('filter')(ctrl.list, $scope.collocationsMainFilter);
+                    ctrl.collectionSorted = $filter('orderBy')(ctrl.collectionFiltered, ctrl.sorting.rows, ctrl.sorting.reverse);
+                    collectionOfColls = [];
+                    ctrl.collectionSorted.forEach(function (item) {
+                        collectionOfColls.push(item.id);
+                    });
+                    var collection = {collectionOfColls: collectionOfColls
+                                        };//Формирую объект
+                    $cookies.putObject('collectionOfColls', collection);
+                    console.log("New Collection", collection);
+                };
+
+
                 ctrl.delete = function (item_id, collocation) {//function Expression
-                    if(confirm("Словосочетание «"+ collocation + "» будет удалено."))
-                        {
+                    if( confirm("Словосочетание «"+ collocation + "» будет удалено.") ) {
                             $http.delete('/api/collocations/' + item_id).success(function (data, status) {
                                 //топорнейшее решение, но должно сработать
                                 ctrl.list.forEach(function (item,i) {
@@ -108,11 +139,17 @@ angular.module('collsList', ['ngCookies'])
                                 console.log("Запрос на удаление НЕ ВЫПОЛНЕН, статус: ", status);
                             });
                         }
+                };/*ToDo:refactor
+                 общий принцип - при нажатии вы можете в обработчике получить текущий объект. Затем найти в массиве ответов его индекс и с помощью функции splice удалить с этого индекса выделенный элемент из массива
+                 что-то наподобие
+                 $scope.question.answers.splice(index, 1);
+                 где index - это индекс удаляемого элемента*/
+
+                ctrl.showMoreFilters = function () {
+                    alert("Эта функция ещё в разработке :(");
                 };
 
              });
-
-
 
         }])
 
@@ -120,3 +157,4 @@ angular.module('collsList', ['ngCookies'])
         templateUrl: 'colls-list/colls-list.template.html',
         controller: 'CollsListCtrl'
     });
+

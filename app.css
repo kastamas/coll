@@ -201,10 +201,51 @@ label{
     padding-right: 0px;
     padding-left: 0px;
     margin-right: 0px;
-    margin-left: 0px;
+    margin-left: 15px;
 }
 
 th{
     font-weight: normal;
     color: #afafaf;
+}
+
+.table > thead > tr > th {
+    vertical-align: middle;
+}
+
+.collection_prev {
+    position: absolute;
+    font-size: x-large;
+}
+
+.page__navigation{
+    width: 60px;
+    height: 70px;
+    position: fixed;
+    top:40%;
+    cursor: pointer;
+}
+.page__navigation:hover{
+    background: #EFEFFF;
+}
+
+.page__navigation span{
+    width: 100%;
+    text-align: center;
+    top:35%;
+    color:#999;
+}
+.left-align{
+    left: 0px;
+}
+.right-align{
+    right:0px;
+}
+
+.navbar{
+    background: #EFEFFF;
+}
+ .informer{
+    position: absolute;
+     width: 100px;
 }

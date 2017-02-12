@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('collEdit', ['angularjs-dropdown-multiselect']);
+angular.module('collEdit', ['ngCookies']);

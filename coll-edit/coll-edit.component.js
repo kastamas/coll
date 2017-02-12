@@ -3,9 +3,10 @@
 angular.module('collEdit')
 
     .controller('CollEditCtrl', [
-        '$scope','$http', '$location', '$routeParams',
-        function ($scope, $http, $location, $routeParams) {
-           const ctrl = this;
+        '$scope','$http', '$location', '$routeParams', '$cookies',
+
+        function ($scope, $http, $location, $routeParams, $cookies) {
+            const ctrl = this;
 
             ctrl.entity = {};
 
@@ -14,7 +15,7 @@ angular.module('collEdit')
 
 
             ctrl.condition_for_showing_extensions = function (characteristic) {
-                console.log("SPECIAL CONDITIONS!",characteristic);
+                //console.log("SPECIAL CONDITIONS!",characteristic);
                 switch (characteristic){
                     case undefined: return undefined; break;
                     case 8:  return false; break;
@@ -53,10 +54,10 @@ angular.module('collEdit')
                 /*set up*/
                 if (ctrl.entity.characteristic_1 != null)
                     ctrl.characteristicAttr1 = ctrl.entity.characteristic_1;
-                    else    ctrl.characteristicAttr1 = ctrl.entity.characteristic_attr1_explicit;
+                else    ctrl.characteristicAttr1 = ctrl.entity.characteristic_attr1_explicit;
                 if (ctrl.entity.characteristic_1 != null)
                     ctrl.characteristicAttr2 = ctrl.entity.characteristic_2;
-                    else    ctrl.characteristicAttr2 = ctrl.entity.characteristic_attr2_explicit;
+                else    ctrl.characteristicAttr2 = ctrl.entity.characteristic_attr2_explicit;
             }).error(function ()  {console.log("Smth rong");});
 
 
@@ -112,8 +113,28 @@ angular.module('collEdit')
                 });
             };
 
-        }])
 
+            //Работа с коллекцией
+
+            var collection = $cookies.getObject('collectionOfColls');
+            var i = 0, curr = 1;
+
+            collection.collectionOfColls.forEach(function (item, i) {
+                if(item == ctrl.entityId) {
+                    curr = i;
+                }
+            });
+
+            ctrl.collectionQuantity = collection.collectionOfColls.length;//Length Считается верно хм
+            ctrl.collectionCurrent = curr + 1;//Чтобы счёт вёлся с единицы
+
+            ctrl.collectionPrevious = collection.collectionOfColls[curr - 1];
+            console.log("pred",ctrl.collectionPrevious);
+            ctrl.collectionNext = collection.collectionOfColls[curr + 1];//
+            console.log("next",ctrl.collectionNext);
+
+
+        }])
     .component('collEdit', {
         //templateUrl: 'coll-edit/coll-edit.template.html', //todo:crutch
         templateUrl:'coll-new/coll-new.template.html',

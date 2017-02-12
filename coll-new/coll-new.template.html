@@ -1,5 +1,25 @@
+<!--For Coll-Edit -->
+<div ng-show="$ctrl.entityId != undefined">
+    <a href="#/colls/edit/{{$ctrl.collectionPrevious}}" ng-show="$ctrl.collectionPrevious !==undefined">
+    <div class="page__navigation left-align" title="предыдущее">
+        <span class="collection_prev glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+    </div>
+    </a>
+
+    <a href="#/colls/edit/{{$ctrl.collectionNext}}" ng-show="$ctrl.collectionNext!==undefined">
+    <div class="page__navigation right-align" title="следующее">
+        <span class="collection_prev glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+    </div>
+    </a>
+
+</div>
+<!--Coll-Edit end-->
+
 <div class="container">
-    <h2 ng-show="$ctrl.entityId != undefined" class="page-header">Изменение словосочетания</h2>
+    <div ng-show="$ctrl.entityId != undefined">
+
+        <h2  class="page-header">Изменение словосочетания <span class="blue">{{$ctrl.collectionCurrent}}</span><span>/{{$ctrl.collectionQuantity}}</span></h2>
+    </div>
     <h2  ng-show="$ctrl.entityId == undefined"  class="page-header">Добавление словосочетания</h2>
 
     <div ng-show="$ctrl.textsList.length != '0'">
@@ -8,13 +28,16 @@
 <div class="row">
 <div class="col-md-5">
 
+<h6>характеристика словосочетания</h6>
 
-    <h6>характеристика словосочетания</h6>
+<!--For Coll-Edit -->
 <div ng-show="$ctrl.entityId != undefined">
         <h4><span class="bold">Относится к тексту: </span>
             <span class="blue bold">{{$ctrl.entity.text_name}}</span></h4>
         <br>
 </div>
+<!--Coll-Edit end-->
+
 <div  ng-show="$ctrl.entityId == undefined">
 
     <label for="collText_id" class="red">Относится к тексту*</label>  <br>
