@@ -58,7 +58,8 @@
                 <option  value='prepos'   >препозитивное</option>
                 <option  value='interpos'  >интерпозитивное</option>
                 <option  value='postpos' >постпозитивное</option>
-                <option  value='distant'  >дистантное</option>
+                <option  value='distant_prepos'  >дистантное препозитивное</option>
+                <option  value='distant_postpos'  >дистантное постпозитивное</option>
             </select>
         </div>
         <div class="col-md-2">
@@ -127,12 +128,13 @@
         <!--  <th>?</th>-->
         <th  class = "text-nowrap" style = "border-left: 1px solid #ddd; "
              ng-hide = "$ctrl.filter.characteristic_relation_to_main != 'any' &&
-                        $ctrl.filter.characteristic_relation_to_main != 'distant'"
+                        $ctrl.filter.characteristic_relation_to_main != 'distant_prepos' &&
+                        $ctrl.filter.characteristic_relation_to_main != 'distant_postpos'"
         >Разделитель</th>
         <!-- characteristics end -->
         <!-- substantive begin -->
             <th style="border-right: 1px solid #ddd; width: 1px; box-sizing: border-box;"></th><!--crutch-->
-            <th  class="text-nowrap" colspan="4">Субстантив</th>
+            <th  class="text-nowrap" colspan="4">Определяемое слово</th>
         <!-- substantive end -->
         <th class="text-nowrap"><a ng-click="$ctrl.sort('created_at')">
             <div class="text-nowrap"
@@ -173,7 +175,8 @@
                   <td class=" "  ng-if="item.characteristic_relation_to_main == 'prepos'"   >препозитивное </td>
                   <td class=" "  ng-if="item.characteristic_relation_to_main == 'postpos'"  >постпозитивное</td>
                   <td class=" "  ng-if="item.characteristic_relation_to_main == 'interpos'" >интерпозитивное</td>
-                  <td class=" "  ng-if="item.characteristic_relation_to_main == 'distant'"  >дистантное</td>
+                  <td class=" "  ng-if="item.characteristic_relation_to_main == 'distant_prepos'"  >дистантное препозитивное</td>
+                  <td class=" "  ng-if="item.characteristic_relation_to_main == 'distant_postpos'"  >дистантное постпозитивное</td>
                   <td            ng-if="item.characteristic_relation_to_main == NULL"></td>
 
 
@@ -191,7 +194,8 @@
                     >{{item.expansion_2}} {{item.characteristic_2_name}} {{item.characteristic_attr2_explicit_name}}</td>
                   <td style="border-left: 1px solid #ddd;"
                       ng-hide = "$ctrl.filter.characteristic_relation_to_main != 'any' &&
-                                 $ctrl.filter.characteristic_relation_to_main != 'distant'"
+                                $ctrl.filter.characteristic_relation_to_main != 'distant_prepos' &&
+                        $ctrl.filter.characteristic_relation_to_main != 'distant_postpos'"
                   >{{item.characteristic_d_name}}</td>
 
                 <!--Substantive-->
@@ -217,6 +221,7 @@
                   <td ng-if="item.characteristic_substantive_case == 'accusative'">В.П.</td>
                   <td ng-if="item.characteristic_substantive_case == 'instrumental'">Т.П.</td>
                   <td ng-if="item.characteristic_substantive_case == 'prepositional'">П.П.</td>
+                  <td ng-if="item.characteristic_substantive_case == 'vocative'">Зв.П.</td>
                   <td ng-if="item.characteristic_substantive_case == NULL"></td>
               <!--Substantive-->
               <!-- Extra characteristics end -->

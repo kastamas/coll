@@ -66,7 +66,8 @@
         <input type="radio" name="char1x" ng-model="$ctrl.entity.characteristic_relation_to_main" ng-change="$ctrl.onChangeCharacteristicRelationToMain()" id="ch1xa" value="prepos"   class="specRadiobutton"> <label for="ch1xa" class="btn btn-default"> препозитивное</label>
         <input type="radio" name="char1x" ng-model="$ctrl.entity.characteristic_relation_to_main" ng-change="$ctrl.onChangeCharacteristicRelationToMain()" id="ch1xc" value="interpos" class="specRadiobutton"> <label for="ch1xc" class="btn btn-default"> интерпозитивное</label>
         <input type="radio" name="char1x" ng-model="$ctrl.entity.characteristic_relation_to_main" ng-change="$ctrl.onChangeCharacteristicRelationToMain()" id="ch1xb" value="postpos"  class="specRadiobutton"> <label for="ch1xb" class="btn btn-default"> постпозитивное</label>
-        <input type="radio" name="char1x" ng-model="$ctrl.entity.characteristic_relation_to_main" ng-change="$ctrl.onChangeCharacteristicRelationToMain()" id="ch1xd" value="distant"  class="specRadiobutton"> <label for="ch1xd" class="btn btn-default"> дистантное</label>
+        <input type="radio" name="char1x" ng-model="$ctrl.entity.characteristic_relation_to_main" ng-change="$ctrl.onChangeCharacteristicRelationToMain()" id="ch1xd" value="distant_prepos"  class="specRadiobutton"> <label for="ch1xd" class="btn btn-default"> дистантное препозитивное</label>
+        <input type="radio" name="char1x" ng-model="$ctrl.entity.characteristic_relation_to_main" ng-change="$ctrl.onChangeCharacteristicRelationToMain()" id="ch1xe" value="distant_postpos"  class="specRadiobutton"> <label for="ch1xe" class="btn btn-default"> дистантное постпозитивное</label>
     </div>
     <hr>
         <label>по наличию предлога</label><br>
@@ -86,7 +87,7 @@
 
 <!--Субстантив-->
 <div class="col-md-4">
-        <h6>характеристика субстантива</h6>
+        <h6>характеристика определяемого слова</h6>
         <div>
             <label>лексико-грамматический разряд</label><br>
             <input type="radio" name="characteristic_substantive_lg" ng-model="$ctrl.entity.characteristic_substantive_lg"  ng-change="$ctrl.onChangeCharacteristicSubstantive_lg()" id="characteristic_substantive_lg_appellative" value="appellative" class="specRadiobutton"> <label for="characteristic_substantive_lg_appellative" class="btn btn-default">нарицательное</label>
@@ -112,6 +113,7 @@
             <input type="radio" name="characteristic_substantive_case" ng-model="$ctrl.entity.characteristic_substantive_case"  id="characteristic_substantive_case_accusative   "       value="accusative   "  class="specRadiobutton"><label for="characteristic_substantive_case_accusative   "   class="btn btn-default">В.П.</label>
             <input type="radio" name="characteristic_substantive_case" ng-model="$ctrl.entity.characteristic_substantive_case"  id="characteristic_substantive_case_instrumental "       value="instrumental "  class="specRadiobutton"><label for="characteristic_substantive_case_instrumental "   class="btn btn-default">Т.П.</label>
             <input type="radio" name="characteristic_substantive_case" ng-model="$ctrl.entity.characteristic_substantive_case"  id="characteristic_substantive_case_prepositional"       value="prepositional"  class="specRadiobutton"><label for="characteristic_substantive_case_prepositional"   class="btn btn-default">П.П.</label>
+            <input type="radio" name="characteristic_substantive_case" ng-model="$ctrl.entity.characteristic_substantive_case"  id="characteristic_substantive_case_vocative"       value="vocative"  class="specRadiobutton"><label for="characteristic_substantive_case_vocative"   class="btn btn-default">Зв.П.</label>
         </div>
  </div>
 
