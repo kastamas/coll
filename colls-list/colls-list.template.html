@@ -2,7 +2,7 @@
 <div class="row">
 <div class="col-md-12">
 
-<!-- for test
+<!-- for test-->
     <div class="row">
     <div class="col-md-3">
  <pre>{{$ctrl.filter | json}}</pre>
@@ -15,7 +15,7 @@
 
 
     </div>
-    </div>-->
+    </div>
 
 
 <h2 class="page-header">{{ title}} <span>Всего словосочетаний: {{$ctrl.list.length}}</span>
@@ -25,18 +25,20 @@
 
 <div ng-show="$ctrl.list.length != '0'">
     <!----------------- filters ------------------->
-    <h6 style="text-transform: uppercase;">фильтры</h6>
+    <h6 style="text-transform: uppercase;">основные фильтры</h6>
     <div class="row">
         <div class="col-md-2">
             <label for="selectTextId" class="blue">по тексту</label><br>
-            <select id="selectTextId" data-ng-model="$ctrl.filter.text_id"  ng-options="item.id as item.title for item in $ctrl.textsList | orderBy:'title':false " class="form-control">
+            <select id="selectTextId" data-ng-model="$ctrl.filter.text_id"  ng-options="item.id as item.title for item in $ctrl.textsList | orderBy:'title':false " class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.text_id != null}">
                 <!-- <option data-ng-repeat="item in $ctrl.textsList" value="{{item.id}}">{{item.title}}</option>-->
                 <option value=''>- Все тексты -</option>
             </select>
         </div>
         <div class="col-md-2">
             <label for="selectStatus">по статусу</label><br>
-            <select id="selectStatus" data-ng-model="$ctrl.filter.status" class="form-control">
+            <select id="selectStatus" data-ng-model="$ctrl.filter.status" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.status != 'any'}">
                 <option value='any'>- Любой -</option>
                 <option  value='d' >Разобрано</option>
                 <option  value='u' >Не разобрано</option>
@@ -44,16 +46,20 @@
             </select>
         </div>
         <div class="col-md-2">
-            <label for="selectStatus">по кол. компонентов</label><br>
-            <select id="selectStatus" data-ng-model="$ctrl.filter.characteristic_quantity" class="form-control">
+            <label for="characteristic_quantity">по кол. компонентов</label><br>
+            <select id="characteristic_quantity" data-ng-model="$ctrl.filter.characteristic_quantity" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_quantity != 'any'}"
+                    ng-change="$ctrl.onChangeCharacteristicQuantity()">
                 <option value='any'>- Любое -</option>
-                <option  value='2xmem' >двучленное</option>
+                <option  value='2xmem' >двуxчленное</option>
                 <option  value='3xmem' >трехчленное</option>
             </select>
         </div>
         <div class="col-md-2">
-            <label for="selectStatus">по отношению</label><br>
-            <select id="selectStatus" data-ng-model="$ctrl.filter.characteristic_relation_to_main" class="form-control">
+            <label for="characteristic_relation_to_main">по отношению</label><br>
+            <select id="characteristic_relation_to_main" data-ng-model="$ctrl.filter.characteristic_relation_to_main" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_relation_to_main != 'any'}"
+                    ng-change="$ctrl.onChangeCharacteristicRelationToMain()">
                 <option  value='any' >- Любое -</option>
                 <option  value='prepos'   >препозитивное</option>
                 <option  value='interpos'  >интерпозитивное</option>
@@ -63,16 +69,18 @@
             </select>
         </div>
         <div class="col-md-2">
-            <label for="selectStatus">по наличию предлога</label><br>
-            <select id="selectStatus" data-ng-model="$ctrl.filter.characteristic_preposition" class="form-control">
+            <label for="characteristic_preposition">по наличию предлога</label><br>
+            <select id="characteristic_preposition" data-ng-model="$ctrl.filter.characteristic_preposition" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_preposition != 'any'}">
                 <option  value='any'>- Любое -</option>
                 <option  value='prepositional'   >предложное</option>
                 <option  value='non-prepositional'  >беспредложное</option>
             </select>
         </div>
         <div class="col-md-2" style="margin-top: 20px;">
-            <span class="blue"><a ng-click="$ctrl.showMoreFilters()">Больше фильтров</a></span>
-            <span class="blue"><a ng-click="$ctrl.showMoreFilters()">Статистика</a></span>
+            <span class="blue" ng-show="!$ctrl.filter.more"><a ng-click="$ctrl.showMoreFilters()">Больше фильтров</a></span><!--todo: You can do it better-->
+            <span class="blue" ng-show="$ctrl.filter.more"><a ng-click="$ctrl.showMoreFilters()">Меньше фильтров</a></span><!--todo: You can do it better-->
+            <span class="blue"><a ng-click="$ctrl.statistic()">Статистика</a></span>
         </div>
 
         <!--<div class="col-md-3">
@@ -86,6 +94,114 @@
        <!-- <div class="col-md-2">
             <pre>{{$ctrl.filter | json}}</pre>
         </div>-->
+    </div>
+    <div ng-show="$ctrl.filter.more">
+     <br>
+     <h6 style="text-transform: uppercase;">определяемое слово</h6>
+     <div class="row"   >
+        <div class="col-md-2">
+            <label for="characteristic_substantive_lg" class="cell-limited" style="width: 170px; margin-bottom: 0px;" title="лексико-грамматический разряд">лексико-грамматический разряд</label><br>
+            <select id="characteristic_substantive_lg" data-ng-model="$ctrl.filter.characteristic_substantive_lg" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_substantive_lg != 'any'}"
+                    ng-change="$ctrl.onChangeCharacteristicSubstantive_lg()">
+                <option value='any'>- Любой -</option>
+                <option ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_lg"
+                    value="{{item.name}}">{{item.name_rus}}</option>
+            </select>
+        </div>
+        <div class="col-md-2"> <!--Todo:RemoveCrutch-->
+                <label for="characteristic_substantive_lg_explicit">дополнение к л-г разряду</label><br>
+                <select id="characteristic_substantive_lg_explicit" data-ng-model="$ctrl.filter.characteristic_substantive_lg_explicit" class="form-control" ng-class="{'filter-active': $ctrl.filter.characteristic_substantive_lg_explicit != 'any'}">
+                    <option value='any'>- Любой -</option>
+                    <option ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_lg_explicit"
+                         value="{{item.name}}">{{item.name_rus}}</option>
+                </select>
+        </div>
+        <div class="col-md-2">
+            <label for="characteristic_substantive_animacy" >одушевлённость</label><br>
+            <select id="characteristic_substantive_animacy" data-ng-model="$ctrl.filter.characteristic_substantive_animacy" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_substantive_animacy != 'any'}">
+                <option value='any'>- Любая -</option>
+                <option ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_animacy"
+                        value="{{item.name}}">{{item.name_rus}}</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="characteristic_substantive_case" >падеж</label><br>
+            <select id="characteristic_substantive_case" data-ng-model="$ctrl.filter.characteristic_substantive_case" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_substantive_case != 'any'}">
+                <option value='any'>- Любой -</option>
+                <option ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_case"
+                        value="{{item.name}}">{{item.name_rus}}</option>
+            </select>
+        </div>
+    </div>
+
+
+    <br>
+    <h6 style="text-transform: uppercase;">характеристики</h6>
+    <div class="row">
+        <div class="col-md-2">
+            <label for="characteristic_1" >первый атрибут</label><br>
+            <select id="characteristic_1" data-ng-model="$ctrl.filter.characteristic_1" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_1 != null}"
+                    ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'attribute'"
+            >
+                <option value=''>- Любой -</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="characteristic_attr1" >дополнение первого</label><br>
+            <select id="characteristic_attr1" data-ng-model="$ctrl.filter.characteristic_attr1" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_attr1 != null}"
+                    ng-options="item.id as item.expansion for item in $ctrl.characteristicThreeList | filter: characteristicThreeFilter1"
+
+            >
+                <option value=''>- Любое -</option>
+            </select>
+        </div>
+
+
+        <div class="col-md-2">
+            <label for="characteristic_2" >второй атрибут</label><br>
+            <select id="characteristic_2" data-ng-model="$ctrl.filter.characteristic_2" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_2 != null}"
+                    ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'attribute'"
+            >
+                <option value=''>- Любой -</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="characteristic_attr2" >дополнение второго</label><br>
+            <select id="characteristic_attr2" data-ng-model="$ctrl.filter.characteristic_attr2" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_attr2 != null}"
+                    ng-options="item.id as item.expansion for item in $ctrl.characteristicThreeList | filter: characteristicThreeFilter2"
+            >
+                <option value=''>- Любое -</option>
+            </select>
+        </div>
+
+
+        <div class="col-md-2"
+             ng-class="{dis: $ctrl.filter.characteristic_relation_to_main != 'distant_prepos' &&
+                                  $ctrl.filter.characteristic_relation_to_main != 'distant_postpos'}">
+            <label for="selectDivider"
+            >разделитель</label><br>
+            <select id="selectDivider" data-ng-model="$ctrl.filter.characteristic_divider" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_divider != null}"
+                    ng-options="itabledem.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'divider'"
+            >
+                <option value=''>- Любой -</option>
+            </select>
+            <!--
+            ng-disabled="$ctrl.filter.characteristic_relation_to_main != 'distant_prepos' &&
+                                 $ctrl.filter.characteristic_relation_to_main != 'distant_postpos'"
+                                 -->
+        </div>
+        <div class="col-md-2" style="margin-top: 20px;">
+            <span class="blue"><a ng-click="$ctrl.clearFilter($ctrl.filter.text_id)">Сбросить фильтры</a></span>
+        </div>
+    </div>
     </div>
 </div>
 
@@ -166,7 +282,7 @@
               <td>{{item.page_number}}</td>
 
               <!--charact_relation_to_main todo:removeCrutch-->
-                  <td class=" "  ng-if="item.characteristic_quantity == '2xmem'"  >двучленное</td>
+                  <td class=" "  ng-if="item.characteristic_quantity == '2xmem'"  >двуxчленное</td>
                   <td class=" "  ng-if="item.characteristic_quantity == '3xmem'"  >трехчленное</td>
                   <td            ng-if="item.characteristic_quantity == NULL"></td>
 
@@ -252,4 +368,3 @@
 <div class="text-message"  ng-show="$ctrl.list.length == '0'">
     <p>Пусто. <a href="#/colls/new">Добавить словосочетание.</a></p>
 </div>
-

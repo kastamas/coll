@@ -10,10 +10,11 @@ a {
     cursor: pointer;
 }
 
-.s-last{
-
+p{
+    font-size: medium;
 }
 
+/*Headers*/
 h2 {
      color: #999;
  }
@@ -27,6 +28,9 @@ h6 {
     color: #aaa;
     font-size: medium;
 }
+
+/*---The End Of Main Styles---*/
+
 .text-message{
 
 }
@@ -122,6 +126,17 @@ input[type="radio"]:checked + .btn-default{
     cursor: pointer;
 }
 
+
+.s-last{
+
+}
+
+.cell-limited {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .cell-limited-s{
     overflow: hidden;
     text-overflow: ellipsis;
@@ -197,6 +212,14 @@ label{
     margin-bottom: 5px;
 }
 
+label + .btn {
+    margin: 0px 0px 5px 4px;
+}
+
+label + .btn:last-child{
+    margin-left: 0px;
+}
+
 .closely{
     padding-right: 0px;
     padding-left: 0px;
@@ -244,8 +267,22 @@ th{
 
 .navbar{
     background: #EFEFFF;
+    border-radius: 0px;
 }
  .informer{
     position: absolute;
      width: 100px;
 }
+
+ .disabled{
+     cursor: not-allowed;
+     opacity: 0.6;
+
+ }
+
+ .filter-active{
+     border-color: #66afe9;
+     outline: 0;
+     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+     box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+ }

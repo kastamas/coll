@@ -57,7 +57,7 @@
 
 
     <label>по количеству компонентов</label><br>
-        <input type="radio" name="char1" ng-model="$ctrl.entity.characteristic_quantity" ng-change="$ctrl.onChangeCharacteristicQuantity()" id="ch1b" value="2xmem" class="specRadiobutton"> <label for="ch1b" class="btn btn-default"> двучленное</label>
+        <input type="radio" name="char1" ng-model="$ctrl.entity.characteristic_quantity" ng-change="$ctrl.onChangeCharacteristicQuantity()" id="ch1b" value="2xmem" class="specRadiobutton"> <label for="ch1b" class="btn btn-default"> двуxчленное</label>
         <input type="radio" name="char1" ng-model="$ctrl.entity.characteristic_quantity" ng-change="$ctrl.onChangeCharacteristicQuantity()" id="ch1a" value="3xmem" class="specRadiobutton"> <label for="ch1a" class="btn btn-default"> трёхчленное</label>
     <br>
 
@@ -85,38 +85,38 @@
 
 </div>
 
-<!--Субстантив-->
+<!--Субстантив/Nice Code-->
 <div class="col-md-4">
         <h6>характеристика определяемого слова</h6>
         <div>
             <label>лексико-грамматический разряд</label><br>
-            <input type="radio" name="characteristic_substantive_lg" ng-model="$ctrl.entity.characteristic_substantive_lg"  ng-change="$ctrl.onChangeCharacteristicSubstantive_lg()" id="characteristic_substantive_lg_appellative" value="appellative" class="specRadiobutton"> <label for="characteristic_substantive_lg_appellative" class="btn btn-default">нарицательное</label>
-            <input type="radio" name="characteristic_substantive_lg" ng-model="$ctrl.entity.characteristic_substantive_lg"  ng-change="$ctrl.onChangeCharacteristicSubstantive_lg()" id="characteristic_substantive_lg_own" value="own" class="specRadiobutton"> <label for="characteristic_substantive_lg_own" class="btn btn-default">собственное</label>
+            <label  ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_lg" class="btn btn-default">
+                <input type="radio" name="characteristic_substantive_lg" ng-model="$ctrl.entity.characteristic_substantive_lg"  ng-change="$ctrl.onChangeCharacteristicSubstantive_lg()"  value="{{item.name}}" class="specRadiobutton"
+                >{{item.name_rus}}</label>
+
             <div data-ng-show="$ctrl.entity.characteristic_substantive_lg == 'appellative'">
                 <br>
                 <label>дополнение к лексико-грамматическому разряду</label><br>
-                <input type="radio" name="characteristic_substantive_lg_explicit" ng-model="$ctrl.entity.characteristic_substantive_lg_explicit"  id="characteristic_substantive_lg_explicit_real"       value="real      "       class="specRadiobutton"><label for="characteristic_substantive_lg_explicit_real"       class="btn btn-default">вещественное </label>
-                <input type="radio" name="characteristic_substantive_lg_explicit" ng-model="$ctrl.entity.characteristic_substantive_lg_explicit"  id="characteristic_substantive_lg_explicit_specific"   value="specific  "   class="specRadiobutton"><label for="characteristic_substantive_lg_explicit_specific"       class="btn btn-default">конкретное   </label>
-                <input type="radio" name="characteristic_substantive_lg_explicit" ng-model="$ctrl.entity.characteristic_substantive_lg_explicit"  id="characteristic_substantive_lg_explicit_collective" value="collective" class="specRadiobutton"><label for="characteristic_substantive_lg_explicit_collective"       class="btn btn-default">собирательное</label>
-                <input type="radio" name="characteristic_substantive_lg_explicit" ng-model="$ctrl.entity.characteristic_substantive_lg_explicit"  id="characteristic_substantive_lg_explicit_abstract"   value="abstract   "   class="specRadiobutton"><label for="characteristic_substantive_lg_explicit_abstract"      class="btn btn-default">абстрактное  </label>
+                <label ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_lg_explicit" class="btn btn-default">
+                    <input type="radio" name="characteristic_substantive_lg_explicit" ng-model="$ctrl.entity.characteristic_substantive_lg_explicit"  id="characteristic_substantive_lg_explicit_real"       value="{{item.name}}"       class="specRadiobutton"
+                    >{{item.name_rus}}</label>
             </div>
             <hr>
-            <label>одушевлённоесть</label><br>
-            <input type="radio" name="characteristic_substantive_lg_animacy" ng-model="$ctrl.entity.characteristic_substantive_animacy"  id="characteristic_substantive_lg_animacy_animated    "       value="animated    "  class="specRadiobutton"><label for="characteristic_substantive_lg_animacy_animated    "   class="btn btn-default">одушевлённое</label>
-            <input type="radio" name="characteristic_substantive_lg_animacy" ng-model="$ctrl.entity.characteristic_substantive_animacy"  id="characteristic_substantive_lg_animacy_not-animated"       value="not-animated"  class="specRadiobutton"><label for="characteristic_substantive_lg_animacy_not-animated"   class="btn btn-default">неодушевлённое</label>
 
+            <label>одушевлённость</label><br>
+            <label ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_animacy" class="btn btn-default">
+                <input type="radio" name="characteristic_substantive_lg_animacy" ng-model="$ctrl.entity.characteristic_substantive_animacy"      value="{{item.name}}"  class="specRadiobutton"
+                >{{item.name_rus}}</label>
             <br><br>
+
             <label>падеж</label><br>
-            <input type="radio" name="characteristic_substantive_case" ng-model="$ctrl.entity.characteristic_substantive_case"  id="characteristic_substantive_case_nominative   "       value="nominative   "  class="specRadiobutton"><label for="characteristic_substantive_case_nominative   "   class="btn btn-default">И.П.</label>
-            <input type="radio" name="characteristic_substantive_case" ng-model="$ctrl.entity.characteristic_substantive_case"  id="characteristic_substantive_case_genitive     "       value="genitive     "  class="specRadiobutton"><label for="characteristic_substantive_case_genitive     "   class="btn btn-default">Р.П.</label>
-            <input type="radio" name="characteristic_substantive_case" ng-model="$ctrl.entity.characteristic_substantive_case"  id="characteristic_substantive_case_dative       "       value="dative       "  class="specRadiobutton"><label for="characteristic_substantive_case_dative       "   class="btn btn-default">Д.П.</label>
-            <input type="radio" name="characteristic_substantive_case" ng-model="$ctrl.entity.characteristic_substantive_case"  id="characteristic_substantive_case_accusative   "       value="accusative   "  class="specRadiobutton"><label for="characteristic_substantive_case_accusative   "   class="btn btn-default">В.П.</label>
-            <input type="radio" name="characteristic_substantive_case" ng-model="$ctrl.entity.characteristic_substantive_case"  id="characteristic_substantive_case_instrumental "       value="instrumental "  class="specRadiobutton"><label for="characteristic_substantive_case_instrumental "   class="btn btn-default">Т.П.</label>
-            <input type="radio" name="characteristic_substantive_case" ng-model="$ctrl.entity.characteristic_substantive_case"  id="characteristic_substantive_case_prepositional"       value="prepositional"  class="specRadiobutton"><label for="characteristic_substantive_case_prepositional"   class="btn btn-default">П.П.</label>
-            <input type="radio" name="characteristic_substantive_case" ng-model="$ctrl.entity.characteristic_substantive_case"  id="characteristic_substantive_case_vocative"       value="vocative"  class="specRadiobutton"><label for="characteristic_substantive_case_vocative"   class="btn btn-default">Зв.П.</label>
+            <label ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_case" class="btn btn-default " title="{{item.name_rus}}">
+                <input type="radio"  name="characteristic_substantive_case" ng-model="$ctrl.entity.characteristic_substantive_case" value="{{item.name}}" id="characteristic_substantive_case_{{item.name}}" class="specRadiobutton"
+                >{{item.name_rus_short}}</label>
         </div>
  </div>
 
+<!--Very Bad-->
 <div class="col-md-3">
     <!--Todo Improve this part. Really-->
     <!--Случай треугольничек-->
@@ -175,7 +175,7 @@
 
     </div>
     <!--Случай кружок-->
-    <div ng-show="$ctrl.entity.characteristic_relation_to_main == 'distant'">
+    <div ng-show="$ctrl.entity.characteristic_relation_to_main == 'distant_prepos' || $ctrl.entity.characteristic_relation_to_main == 'distant_postpos' ">
         <div ng-show="$ctrl.entity.characteristic_quantity == '2xmem'">
             <label>Характеристика атрибута</label>
             <select  ng-model="$ctrl.characteristicAttr1"
@@ -266,9 +266,6 @@
 
 
 </div>
-
-
-
 
 <!--For Testing
 <br>

@@ -34,6 +34,53 @@ angular.module('collsList', ['ngCookies'])
                     console.log("Smth wrong");
                 });
 
+                //Подгружаю характеристики
+                $http.get('jsons/collocation_characteristics.json').then(function (response) {
+                    ctrl.collocations_characteristics = response.data;
+                });
+
+
+
+
+                /*
+                    very very bad
+                */
+                ctrl.condition_for_showing_extensions = function (characteristic) {
+                    console.log("SPECIAL CONDITIONS!",characteristic);
+                    switch (characteristic){
+                        case undefined: return undefined; break;
+                        case 8:  return false; break;
+                        case 9:  return false; break;
+                        case 10: return false; break;
+                        case 11: return false; break;
+                        default: return true;
+                    }
+                };
+
+                /*list of characteristicsTwo*/
+                $http.get('/api/characteristics').success(function (data, status, headers, config) {
+                    ctrl.characteristicTwoList = data;
+                }).error(function () {
+                    console.log("Smth wrong");
+                });
+
+                /*list of characteristicsThree*/
+                $http.get('/api/characteristicsExpansion').success(function (data, status, headers, config) {
+                    console.log('This is Data:', data,'\n\n This is Status:',status);
+                    ctrl.characteristicThreeList = data;
+                    console.log(ctrl.characteristicThreeList);
+
+                    //todo:optimisation
+                    $scope.characteristicThreeFilter1 = function (item) {
+                        return (item.expansion) && (item.characteristic_id == ctrl.filter.characteristic_1);
+                    };
+                    $scope.characteristicThreeFilter2 = function (item) {
+                        return (item.expansion) && (item.characteristic_id == ctrl.filter.characteristic_2);
+                    };
+                }).error(function () {
+                    console.log("smth wrong");
+                });
+
 
                 //set up for orderBys
                 //sort on init
@@ -56,6 +103,7 @@ angular.module('collsList', ['ngCookies'])
                     $cookies.putObject('collsListSort', ctrl.sorting);
                 };
 
+                /*TODO: Приведи основной объект в порядок.  characteristic_attr1 - Это вообще неочевидно */
 
                 //for filters
                 if($cookies.getObject('collsListFilter')){
@@ -65,7 +113,21 @@ angular.module('collsList', ['ngCookies'])
                                    status: "any",
                                    characteristic_quantity: "any",
                                    characteristic_relation_to_main: "any",
-                                   characteristic_preposition: "any"};
+                                   characteristic_preposition: "any",
+
+                                   characteristic_substantive_lg: "any",
+                                   characteristic_substantive_lg_explicit: "any",
+                                   characteristic_substantive_animacy: "any",
+                                   characteristic_substantive_case: "any",
+
+                                   characteristic_1: null,
+                                   characteristic_2: null,
+                                   characteristic_attr1: null,
+                                   characteristic_attr2: null,
+                                   characteristic_divider: null,
+
+                                   more: false
+                    };
                     $cookies.putObject('collsListFilter', ctrl.filter);
                 }
 
@@ -80,7 +142,18 @@ angular.module('collsList', ['ngCookies'])
                         ((ctrl.filter.status != "any") ? item.status == ctrl.filter.status : " ") &&
                         ((ctrl.filter.characteristic_quantity != "any") ? item.characteristic_quantity == ctrl.filter.characteristic_quantity : " ") &&
                         ((ctrl.filter.characteristic_relation_to_main != "any") ? item.characteristic_relation_to_main == ctrl.filter.characteristic_relation_to_main : " ") &&
-                        ((ctrl.filter.characteristic_preposition != "any") ? item.characteristic_preposition == ctrl.filter.characteristic_preposition : " ")
+                        ((ctrl.filter.characteristic_preposition != "any") ? item.characteristic_preposition == ctrl.filter.characteristic_preposition : " ") &&
+
+                        ((ctrl.filter.characteristic_substantive_lg != "any") ? item.characteristic_substantive_lg == ctrl.filter.characteristic_substantive_lg : " ") &&
+                        ((ctrl.filter.characteristic_substantive_lg_explicit != "any") ? item.characteristic_substantive_lg_explicit == ctrl.filter.characteristic_substantive_lg_explicit : " ") &&
+                        ((ctrl.filter.characteristic_substantive_animacy != "any") ? item.characteristic_substantive_animacy == ctrl.filter.characteristic_substantive_animacy : " ") &&
+                        ((ctrl.filter.characteristic_substantive_case != "any") ? item.characteristic_substantive_case == ctrl.filter.characteristic_substantive_case : " ") &&
+
+                        ((ctrl.filter.characteristic_1 != null) ? item.characteristic_1 == ctrl.filter.characteristic_1 : " ") &&
+                        ((ctrl.filter.characteristic_2 != null) ? item.characteristic_2 == ctrl.filter.characteristic_2 : " ") &&
+                        ((ctrl.filter.characteristic_attr1 != null) ? item.characteristic_attr1 == ctrl.filter.characteristic_attr1 : " ") &&
+                        ((ctrl.filter.characteristic_attr2 != null) ? item.characteristic_attr2 == ctrl.filter.characteristic_attr2 : " ") &&
+                        ((ctrl.filter.characteristic_divider != null) ? item.characteristic_divider == ctrl.filter.characteristic_divider : " ")
                         ;
                  };
 
@@ -124,6 +197,27 @@ angular.module('collsList', ['ngCookies'])
                     console.log("New Collection", collection);
                 };
 
+                ctrl.clearFilter = function (text_id) {
+                    ctrl.filter = {text_id: text_id,
+                        status: "any",
+                        characteristic_quantity: "any",
+                        characteristic_relation_to_main: "any",
+                        characteristic_preposition: "any",
+
+                        characteristic_substantive_lg: "any",
+                        characteristic_substantive_lg_explicit: "any",
+                        characteristic_substantive_animacy: "any",
+                        characteristic_substantive_case: "any",
+
+                        characteristic_1: null,
+                        characteristic_2: null,
+                        characteristic_attr1: null,
+                        characteristic_attr2: null,
+                        characteristic_divider: null,
+
+                        more: true
+                    };
+                };
 
                 ctrl.delete = function (item_id, collocation) {//function Expression
                     if( confirm("Словосочетание «"+ collocation + "» будет удалено.") ) {
@@ -146,7 +240,32 @@ angular.module('collsList', ['ngCookies'])
                  где index - это индекс удаляемого элемента*/
 
                 ctrl.showMoreFilters = function () {
-                    alert("Эта функция ещё в разработке :(");
+                    ctrl.filter.more == true ? ctrl.filter.more = false : ctrl.filter.more = true;
+                };
+
+                ctrl.statistic = function () {
+
+                    var statistic = {all: ctrl.collectionSorted.length};
+
+                   alert("Cловосочетаний по фильтру: " + statistic.all);
+                };
+
+
+                ctrl.onChangeCharacteristicQuantity = function () {
+                /*     ctrl.filter.characteristic_2 = null;
+                     ctrl.filter.characteristic_attr2 = null;*/
+                };
+
+                ctrl.onChangeCharacteristicRelationToMain = function () {
+                   /* ctrl.filter.characteristic_1 = null;
+                    ctrl.filter.characteristic_2 = null;
+                    ctrl.filter.characteristic_attr2  = null ;
+                    ctrl.filter.characteristic_attr1  = null ;
+                    ctrl.filter.characteristic_divider = null;*/
+                };
+
+                ctrl.onChangeCharacteristicSubstantive_lg = function () {
+                   /* ctrl.filter.characteristic_substantive_lg_explicit = "any";*/
                 };
 
              });

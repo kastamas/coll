@@ -13,8 +13,6 @@ angular.module('collNew')
             //ctrl.attributes_without_expansion = [8,9,10,11];
             //ctrl.special_conditions = "";
 
-
-
             ctrl.condition_for_showing_extensions = function (characteristic) {
                 console.log("SPECIAL CONDITIONS!",characteristic);
                 switch (characteristic){
@@ -32,7 +30,6 @@ angular.module('collNew')
             ctrl.onChangeCharacteristicQuantity = function () {
                 delete ctrl.characteristicAttr2;
                 delete ctrl.entity.characteristic_attr2 ;
-                delete ctrl.entity.characteristic_attr2 ;
             };
 
             ctrl.onChangeCharacteristicRelationToMain = function () {
@@ -49,7 +46,7 @@ angular.module('collNew')
 
 
 
-
+            /*todo: for what?*/
             function changeSendingStatus() {
                 ctrl.sended = false;
             }
@@ -108,9 +105,14 @@ angular.module('collNew')
                 $scope.characteristicThreeFilter2 = function (item) {
                     return (item.expansion) && (item.characteristic_id == ctrl.characteristicAttr2);
                 };
-
             }).error(function () {
-                console.log("Smth wrong");
+                console.log("smth wrong");
+            });
+
+
+            //Подгружаю характеристики
+            $http.get('jsons/collocation_characteristics.json').then(function (response) {
+                ctrl.collocations_characteristics = response.data;
             });
         }])
 
