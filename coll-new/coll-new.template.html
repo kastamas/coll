@@ -286,24 +286,27 @@
 
 
             <!--ToDo: improve Notifies-->
-            <div ng-show="$ctrl.entityId == undefined">
-                <button type="submit"  title="Остались незаполненные обязательные поля!"  class="btn btn-default btn-lg" value="добавить" ng-class="{'disabled':form.$error.required}">добавить</button>
-                <div class="notification text-success"  data-ng-show="$ctrl.sended" >
+            <div data-ng-if="$ctrl.entityId == undefined">
+                <button type="submit"  title="Остались незаполненные обязательные поля!"  class="btn btn-default btn-lg" value="добавить" ng-class="{'disabled':form.$error.required}"
+                        ng-disabled="form.$error.required"
+                >добавить</button>
+
+                <div class="animation_appearance notification  text-success"  data-ng-if="$ctrl.sended" >
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                     Добавлено
                 </div>
-                <div class="notification text-danger" data-ng-show="$ctrl.sendingError">
+                <div class="animation_appearance notification  text-danger" data-ng-if="$ctrl.sendingError">
                     <span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
                      Произошла ошибка! {{$ctrl.notificationMessage}}
                 </div>
             </div>
-            <div ng-show="$ctrl.entityId != undefined">
+            <div data-ng-if="$ctrl.entityId != undefined">
                 <button type="submit" title="Остались незаполненные обязательные поля!"  class="btn btn-default btn-lg" value="добавить" ng-class="{'disabled':form.$error.required}">изменить</button>
-                <div class="notification text-success"  data-ng-show="$ctrl.sended" >
+                <div class="animation_appearance notification text-success"  data-ng-if="$ctrl.sended" >
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                     Изменено
                 </div>
-                <div class="notification text-danger" data-ng-show="$ctrl.sendingError">
+                <div class="animation_appearance notification text-danger" data-ng-if="$ctrl.sendingError">
                     <span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
                      Произошла ошибка! {{$ctrl.notificationMessage}}
                 </div>

@@ -50,7 +50,7 @@ angular.module('collEdit')
             /*collocation inf*/
             $http.get('/api/collocations/' + ctrl.entityId).success( function(data, status){
                 ctrl.entity = data;//Объект с инфой по словосочетанию
-                console.log("DATA",data);
+
                 /*set up*/
                 if (ctrl.entity.characteristic_1 != null)
                     ctrl.characteristicAttr1 = ctrl.entity.characteristic_1;
@@ -58,7 +58,8 @@ angular.module('collEdit')
                 if (ctrl.entity.characteristic_1 != null)
                     ctrl.characteristicAttr2 = ctrl.entity.characteristic_2;
                 else    ctrl.characteristicAttr2 = ctrl.entity.characteristic_attr2_explicit;
-            }).error(function ()  {console.log("Smth rong");});
+            }).error(function ()  {
+                console.log("Smth rong");});
 
 
             /*list of characteristicsTwo*/
@@ -129,10 +130,13 @@ angular.module('collEdit')
             ctrl.collectionCurrent = curr + 1;//Чтобы счёт вёлся с единицы
 
             ctrl.collectionPrevious = collection.collectionOfColls[curr - 1];
-            console.log("pred",ctrl.collectionPrevious);
             ctrl.collectionNext = collection.collectionOfColls[curr + 1];//
-            console.log("next",ctrl.collectionNext);
 
+
+            //Подгружаю характеристики
+            $http.get('jsons/collocation_characteristics.json').then(function (response) {
+                ctrl.collocations_characteristics = response.data;
+            });
 
         }])
     .component('collEdit', {

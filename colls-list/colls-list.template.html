@@ -1,22 +1,20 @@
 <div class="container closely">
-<div class="row">
-<div class="col-md-12">
+    <!--<div class="row">
+    <div class="col-md-12">
 
-<!-- for test
-    <div class="row">
-    <div class="col-md-3">
- <pre>{{$ctrl.filter | json}}</pre>
+     for test
+        <div class="row">
+        <div class="col-md-3">
+     <pre>{{$ctrl.filter | json}}</pre>
 
-    </div>    <div class="col-md-3">
-        <span>Всего словосочетаний: {{$ctrl.list.length}}</span>
-        <hr class="withoutMargin">
-        <span>в выбраном тексте: {{($ctrl.list | filter: collocationsTextFilter).length }}</span><br>
-        <span>соответствуют фильтру: {{($ctrl.list | filter: collocationsMainFilter).length }}</span>
+        </div>    <div class="col-md-3">
+            <span>Всего словосочетаний: {{$ctrl.list.length}}</span>
+            <hr class="withoutMargin">
+            <span>в выбраном тексте: {{($ctrl.list | filter: collocationsTextFilter).length }}</span><br>
+            <span>соответствуют фильтру: {{($ctrl.list | filter: collocationsMainFilter).length }}</span>
+        </div>
 
- -->
-    </div>
-
-    </div>
+        </div> -->
 
 
 <h2 class="page-header">{{ title}} <span>Всего словосочетаний: {{$ctrl.list.length}}</span>
@@ -90,7 +88,7 @@
     </div>
 
     <!----------------- filters | additionally ------------------->
-    <div ng-if="$ctrl.filter.more" class="move_down">
+    <div ng-if="$ctrl.filter.more" class="animation_appearance">
      <br>
      <h6 style="text-transform: uppercase;">определяемое слово</h6>
      <div class="row"   >
@@ -209,7 +207,7 @@
 <!----------------- table --------------------->
 <div class="container closely">
 <div ng-show=" $ctrl.list.length != '0'">
-<div ng-show="($ctrl.list | filter: collocationsTextFilter).length != 0 ">
+<div ng-show="$ctrl.collsInText.length != 0 && $ctrl.collectionFiltered.length != 0">
   <table class="table table-striped table-hover table-custom" style="border: 1px solid #ddd;">
     <thead>
       <tr>
@@ -348,10 +346,19 @@
 
 </div>
 
-<div class="container closely" ng-show="$ctrl.collsInText.length == 0">
+<div class="container closely" ng-if="$ctrl.collsInText.length == 0">
     <div class="text-message">
         <hr>
         <p>Для этого текста не было добавлено ни одного словосочетания.</p>
+        <hr>
+    </div>
+    <br>
+</div>
+
+<div class="container closely" ng-if="$ctrl.collsInText.length != 0 && $ctrl.collectionFiltered.length == 0">
+    <div class="text-message">
+        <hr>
+        <p>Нет совпадений по фильтру.</p>
         <hr>
     </div>
     <br>
