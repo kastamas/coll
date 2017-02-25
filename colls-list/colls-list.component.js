@@ -2,6 +2,13 @@
 
 angular.module('collsList', ['ngCookies'])
 
+
+    .filter('percentage', ['$filter', function ($filter) {
+        return function (input, decimals) {
+            return $filter('number')(input * 100, decimals) + '%';
+        };
+    }])
+
     .controller('CollsListCtrl', [
         '$scope','$http','$route', '$cookies', '$filter',
         function ($scope, $http, $route, $cookies, $filter) {
@@ -12,6 +19,7 @@ angular.module('collsList', ['ngCookies'])
             $http.get('/api/collocations').success(function (data, status, headers, config) {
                 console.log('This is Data of Collocations:', data,'\n\n This is Status:',status);
                 ctrl.list = data;
+                ctrl.collocationsQuantity = ctrl.list.length;
             }).error(function () {
                 console.log("Smth wrong");
             }).then(function (res) {
@@ -164,6 +172,7 @@ angular.module('collsList', ['ngCookies'])
                  };
 
 
+
                 var collectionOfColls = [];
                 var collectionFiltered;
 
@@ -186,6 +195,10 @@ angular.module('collsList', ['ngCookies'])
                 //for collection
                 ctrl.updateCollection = function () {
                     ctrl.collectionFiltered = $filter('filter')(ctrl.list, $scope.collocationsMainFilter);
+
+                    ctrl.collsInText = $filter('filter')(ctrl.list, $scope.collocationsTextFilter);
+                    ctrl.collsFilteredInPercents = (ctrl.collectionFiltered.length / ctrl.collsInText.length);
+
                     ctrl.collectionSorted = $filter('orderBy')(ctrl.collectionFiltered, ctrl.sorting.rows, ctrl.sorting.reverse);
                     collectionOfColls = [];
                     ctrl.collectionSorted.forEach(function (item) {
@@ -233,11 +246,7 @@ angular.module('collsList', ['ngCookies'])
                                 console.log("Запрос на удаление НЕ ВЫПОЛНЕН, статус: ", status);
                             });
                         }
-                };/*ToDo:refactor
-                 общий принцип - при нажатии вы можете в обработчике получить текущий объект. Затем найти в массиве ответов его индекс и с помощью функции splice удалить с этого индекса выделенный элемент из массива
-                 что-то наподобие
-                 $scope.question.answers.splice(index, 1);
-                 где index - это индекс удаляемого элемента*/
+                };/*ToDo:refactor*/
 
                 ctrl.showMoreFilters = function () {
                     ctrl.filter.more == true ? ctrl.filter.more = false : ctrl.filter.more = true;
