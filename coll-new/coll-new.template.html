@@ -31,20 +31,32 @@
 <h6>характеристика словосочетания</h6>
 
 <!--For Coll-Edit -->
-<div ng-show="$ctrl.entityId != undefined">
+<div ng-show="$ctrl.entityId != undefined && $ctrl.editTextId != true">
         <h4><span class="bold">Относится к тексту: </span>
             <span class="blue bold">{{$ctrl.entity.text_name}}</span></h4>
+    <span class="blue"><a ng-click="$ctrl.displayTextIdSwitcher()">изменить</a></span>
         <br>
 </div>
 <!--Coll-Edit end-->
 
-<div  ng-show="$ctrl.entityId == undefined">
+<!--For new-coll -->
+<div  ng-show="$ctrl.entityId == undefined || $ctrl.editTextId == true ">
 
     <label for="collText_id" class="red">Относится к тексту*</label>  <br>
-    <select id="collText_id" ng-model="$ctrl.entity.text_id" class="form-control" required>
+    <!--<select id="collText_id" ng-model="$ctrl.entity.text_id" class="form-control" required>
         <option data-ng-repeat="item in $ctrl.textsList | orderBy:'title':false " value="{{item.id}}">{{item.title}}</option>
-    </select> <br>
+    </select> -->
+    <select id="collText_id"
+            ng-model="$ctrl.entity.text_id"
+            class="form-control"
+            ng-options="item.id as item.title for item in $ctrl.textsList | orderBy:'title':false ">
+
+    </select>
+    <br>
+
+
 </div>
+<!--New-Coll end-->
 
     <label for="collName" class="red">Словосочетание*</label>  <br>
     <input class="text form-control" ng-model="$ctrl.entity.collocation" name="title" id="collName" type="text" required/>
@@ -70,17 +82,19 @@
         <input type="radio" name="char1x" ng-model="$ctrl.entity.characteristic_relation_to_main" ng-change="$ctrl.onChangeCharacteristicRelationToMain()" id="ch1xe" value="distant_postpos"  class="specRadiobutton"> <label for="ch1xe" class="btn btn-default"> дистантное постпозитивное</label>
     </div>
     <hr>
-        <label>по наличию предлога</label><br>
-        <input type="radio" name="characteristic_preposition" ng-model="$ctrl.entity.characteristic_preposition"  id="characteristic_preposition_prepositional" value="prepositional" class="specRadiobutton"> <label for="characteristic_preposition_prepositional" class="btn btn-default">предложное</label>
-        <input type="radio" name="characteristic_preposition" ng-model="$ctrl.entity.characteristic_preposition"  id="characteristic_preposition_non-prepositional" value="non-prepositional" class="specRadiobutton"> <label for="characteristic_preposition_non-prepositional" class="btn btn-default">беспредложное</label>
 
+    <label>по наличию предлога</label><br>
+    <input type="radio" name="characteristic_preposition" ng-model="$ctrl.entity.characteristic_preposition"  id="characteristic_preposition_prepositional" value="prepositional" class="specRadiobutton"> <label for="characteristic_preposition_prepositional" class="btn btn-default">предложное</label>
+    <input type="radio" name="characteristic_preposition" ng-model="$ctrl.entity.characteristic_preposition"  id="characteristic_preposition_non-prepositional" value="non-prepositional" class="specRadiobutton"> <label for="characteristic_preposition_non-prepositional" class="btn btn-default">беспредложное</label>
+    <hr>
 
-
-            <hr>
     <label><span class="red">Текущий статус словосочетания*</span></label><br>
-    <input type="radio" name="collStatus" ng-model="$ctrl.entity.status" id="status_d"  value="d" class="specRadiobutton" required> <label for="status_d" class="btn btn-default"> Разобрано</label>
-    <input type="radio" name="collStatus" ng-model="$ctrl.entity.status" id="status_a"  value="a" class="specRadiobutton" required> <label for="status_a" class="btn btn-default"> Разобрано не до конца</label>
-    <input type="radio" name="collStatus" ng-model="$ctrl.entity.status" id="status_u"  value="u" class="specRadiobutton" required> <label for="status_u" class="btn btn-default"> Не разобрано</label>
+    <input type="radio" name="collStatus" ng-model="$ctrl.entity.status" id="status_d"  value="d" class="specRadiobutton" required>
+        <label for="status_d" class="btn btn-default"> Разобрано</label>
+    <input type="radio" name="collStatus" ng-model="$ctrl.entity.status" id="status_a"  value="a" class="specRadiobutton" required>
+        <label for="status_a" class="btn btn-default"> Разобрано не до конца</label>
+    <input type="radio" name="collStatus" ng-model="$ctrl.entity.status" id="status_u"  value="u" class="specRadiobutton" required>
+        <label for="status_u" class="btn btn-default"> Не разобрано</label>
 
 
 </div>
@@ -88,38 +102,44 @@
 <!--Субстантив/Nice Code-->
 <div class="col-md-4">
         <h6>характеристика определяемого слова</h6>
-        <div>
-            <label>лексико-грамматический разряд</label><br>
-            <label  ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_lg" class="btn btn-default">
-                <input type="radio" name="characteristic_substantive_lg" ng-model="$ctrl.entity.characteristic_substantive_lg"  ng-change="$ctrl.onChangeCharacteristicSubstantive_lg()"  value="{{item.name}}" class="specRadiobutton"
-                >{{item.name_rus}}</label>
 
-            <div data-ng-show="$ctrl.entity.characteristic_substantive_lg == 'appellative'">
+            <label>лексико-грамматический разряд</label><br>
+            <element-container ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_lg" >
+                <input type="radio" name="characteristic_substantive_lg" ng-model="$ctrl.entity.characteristic_substantive_lg"  ng-change="$ctrl.onChangeCharacteristicSubstantive_lg()"  value="{{item.name}}" class="specRadiobutton" id="{{item.name}}"
+                ><label  for="{{item.name}}" class="btn btn-default">{{item.name_rus}}</label>
+            </element-container>
+            <br>
+
+            <content-container data-ng-show="$ctrl.entity.characteristic_substantive_lg == 'appellative'">
                 <br>
                 <label>дополнение к лексико-грамматическому разряду</label><br>
-                <label ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_lg_explicit" class="btn btn-default">
-                    <input type="radio" name="characteristic_substantive_lg_explicit" ng-model="$ctrl.entity.characteristic_substantive_lg_explicit"  id="characteristic_substantive_lg_explicit_real"       value="{{item.name}}"       class="specRadiobutton"
-                    >{{item.name_rus}}</label>
-            </div>
+                <element-container ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_lg_explicit">
+                    <input type="radio" name="characteristic_substantive_lg_explicit" ng-model="$ctrl.entity.characteristic_substantive_lg_explicit"  id="characteristic_substantive_lg_explicit_{{item.name}}"       value="{{item.name}}"       class="specRadiobutton">
+                    <label  class="btn btn-default" for="characteristic_substantive_lg_explicit_{{item.name}}">{{item.name_rus}}</label>
+                </element-container>
+            </content-container>
             <hr>
 
             <label>одушевлённость</label><br>
-            <label ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_animacy" class="btn btn-default">
-                <input type="radio" name="characteristic_substantive_lg_animacy" ng-model="$ctrl.entity.characteristic_substantive_animacy"      value="{{item.name}}"  class="specRadiobutton"
-                >{{item.name_rus}}</label>
+            <element-container ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_animacy">
+                <input type="radio" name="characteristic_substantive_lg_animacy" ng-model="$ctrl.entity.characteristic_substantive_animacy"  id="characteristic_substantive_animacy_{{item.name}}"    value="{{item.name}}"  class="specRadiobutton">
+                <label  class="btn btn-default" for="characteristic_substantive_animacy_{{item.name}}">{{item.name_rus}}</label>
+            </element-container>
             <br><br>
 
             <label>падеж</label><br>
-            <label ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_case" class="btn btn-default " title="{{item.name_rus}}">
-                <input type="radio"  name="characteristic_substantive_case" ng-model="$ctrl.entity.characteristic_substantive_case" value="{{item.name}}" id="characteristic_substantive_case_{{item.name}}" class="specRadiobutton"
-                >{{item.name_rus_short}}</label>
-        </div>
+            <element-container ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_case">
+                <input type="radio"  name="characteristic_substantive_case" ng-model="$ctrl.entity.characteristic_substantive_case" value="{{item.name}}" id="characteristic_substantive_case_{{item.name}}" class="specRadiobutton btn-default">
+                <label  for="characteristic_substantive_case_{{item.name}}" class="btn btn-default " title="{{item.name_rus}}">{{item.name_rus_short}}</label>
+            </element-container>
+
+
  </div>
 
 <!--Very Bad-->
 <div class="col-md-3">
     <!--Todo Improve this part. Really-->
-    <!--Случай треугольничек-->
+    <!-- Случай треугольничек-->
     <div ng-show="$ctrl.entity.characteristic_relation_to_main == 'prepos' || $ctrl.entity.characteristic_relation_to_main == 'postpos'">
         <div ng-show="$ctrl.entity.characteristic_quantity == '2xmem'">
             <label>Характеристика атрибута</label>
@@ -174,7 +194,7 @@
 
 
     </div>
-    <!--Случай кружок-->
+    <!--Случай кружок -->
     <div ng-show="$ctrl.entity.characteristic_relation_to_main == 'distant_prepos' || $ctrl.entity.characteristic_relation_to_main == 'distant_postpos' ">
         <div ng-show="$ctrl.entity.characteristic_quantity == '2xmem'">
             <label>Характеристика атрибута</label>
@@ -267,14 +287,14 @@
 
 </div>
 
-<!--For Testing
+<!--For Testing-->
 <br>
 <pre>{{$ctrl.entity | json}}</pre>
 <pre>characteristic_attr1: {{$ctrl.entity.characteristic_attr1}}</pre>
 <pre>characteristic_attr2: {{$ctrl.entity.characteristic_attr2}}</pre>
 <pre>characteristicAttr1: {{$ctrl.characteristicAttr1}}</pre>
 <pre>characteristicAttr2: {{$ctrl.characteristicAttr2}}</pre>
--->
+
 </div>
 
 

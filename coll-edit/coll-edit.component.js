@@ -13,6 +13,23 @@ angular.module('collEdit')
             ctrl.entityId = $routeParams.collId;
             console.log("Айдишенька",$routeParams.collId);
 
+            ctrl.editTextId = false;
+            ctrl.displayTextIdSwitcher = function () {
+                ctrl.editTextId == true ? ctrl.editTextId = false : ctrl.editTextId = true;
+
+
+            };
+
+            //Запрос на тексты
+            /*list of texts*/
+            $http.get('/api/texts').success(function (data, status, headers, config) {
+                ctrl.textsList = data;
+                console.log("x-Connect is here!",ctrl.textsList);
+            }).error(function () {
+                console.log("Smth wrong");
+            });
+
+
 
             ctrl.condition_for_showing_extensions = function (characteristic) {
                 //console.log("SPECIAL CONDITIONS!",characteristic);
@@ -58,6 +75,8 @@ angular.module('collEdit')
                 if (ctrl.entity.characteristic_1 != null)
                     ctrl.characteristicAttr2 = ctrl.entity.characteristic_2;
                 else    ctrl.characteristicAttr2 = ctrl.entity.characteristic_attr2_explicit;
+
+              /*  ctrl.entity.textId = */
             }).error(function ()  {
                 console.log("Smth rong");});
 
@@ -78,6 +97,8 @@ angular.module('collEdit')
                 console.log('This is Data:', data,'\n\n This is Status:',status);
                 ctrl.characteristicThreeList = data;
                 console.log(ctrl.characteristicThreeList);
+
+
 
                 //todo:optimisation
                 $scope.characteristicThreeFilter1 = function (item) {
@@ -116,21 +137,31 @@ angular.module('collEdit')
 
 
             //Работа с коллекцией
+            //list of colls
+    /*        $http.get('/api/collocations').success(function (data, status, headers, config) {
+                console.log('This is Data of Collocations:', data,'\n\n This is Status:',status);
+                ctrl.list = data;
+                ctrl.collocationsQuantity = ctrl.list.length;
+            }).error(function () {
+                console.log("Smth wrong");
+            }).then(function (res) {*/
+                var collection = $cookies.getObject('collectionOfColls');
+                var i = 0, curr = 1;
 
-            var collection = $cookies.getObject('collectionOfColls');
-            var i = 0, curr = 1;
+                collection.collectionOfColls.forEach(function (item, i) {
+                    if(item == ctrl.entityId) {
+                        curr = i;
+                    }
+                });
 
-            collection.collectionOfColls.forEach(function (item, i) {
-                if(item == ctrl.entityId) {
-                    curr = i;
-                }
-            });
+                ctrl.collectionQuantity = collection.collectionOfColls.length;//Length Считается верно хм
+                ctrl.collectionCurrent = curr + 1;//Чтобы счёт вёлся с единицы
 
-            ctrl.collectionQuantity = collection.collectionOfColls.length;//Length Считается верно хм
-            ctrl.collectionCurrent = curr + 1;//Чтобы счёт вёлся с единицы
+                ctrl.collectionPrevious = collection.collectionOfColls[curr - 1];
+                ctrl.collectionNext = collection.collectionOfColls[curr + 1];//
 
-            ctrl.collectionPrevious = collection.collectionOfColls[curr - 1];
-            ctrl.collectionNext = collection.collectionOfColls[curr + 1];//
+            /*});*/
+
 
 
             //Подгружаю характеристики

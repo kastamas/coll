@@ -228,6 +228,12 @@ class collCRUD
         $updateFields = array();
         $replacements = array();
 
+
+        if ($data['text_id']) {
+            array_push($updateFields, "text_id = :text_id");
+            $replacements["text_id"] = $data['text_id'];
+        }
+
         if ($data['status'] && strlen($data['status']) < 2) {
             array_push($updateFields, "status = :status");
             $replacements["status"] = $data['status'];

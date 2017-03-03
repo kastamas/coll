@@ -53,12 +53,16 @@ angular.module('collNew')
 
 
             ctrl.onAction = function () {
+
+
                 if (!ctrl.condition_for_showing_extensions(ctrl.characteristicAttr1))
                     ctrl.entity.characteristic_attr1_explicit = ctrl.characteristicAttr1;
                     else delete ctrl.entity.characteristic_attr1_explicit   ;
                 if (!ctrl.condition_for_showing_extensions(ctrl.characteristicAttr2))
                     ctrl.entity.characteristic_attr2_explicit = ctrl.characteristicAttr2;
                     else  delete ctrl.entity.characteristic_attr2_explicit   ;
+
+
 
                 $http.post('/api/collocations', ctrl.entity).success(function (data,status,headers,config){
                     ctrl.sendingError = false;

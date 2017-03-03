@@ -192,7 +192,7 @@ angular.module('collsList', ['ngCookies'])
                     console.log("Sort has changed!");
                 });
 
-                //for collection
+                //for collection | Refactoring in progress
                 ctrl.updateCollection = function () {
                     ctrl.collectionFiltered = $filter('filter')(ctrl.list, $scope.collocationsMainFilter);
 
@@ -253,9 +253,7 @@ angular.module('collsList', ['ngCookies'])
                 };
 
                 ctrl.statistic = function () {
-
                     var statistic = {all: ctrl.collectionSorted.length};
-
                    alert("Cловосочетаний по фильтру: " + statistic.all);
                 };
 
