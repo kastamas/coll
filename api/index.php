@@ -232,5 +232,6 @@ switch ($route[2]) {
      		}
      		break;
     default:
-        echo "<script>window.location = '/';</script>";
+        echo("NOTHING TO DO HERE\n Route 2" .$route[2]. "\n Route 3". $route[3]);
+        //echo("<script>window.location = '/';</script>");
 }

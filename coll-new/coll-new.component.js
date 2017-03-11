@@ -6,7 +6,6 @@ angular.module('collNew')
         '$scope','$http', '$location', '$routeParams', '$timeout',
         function ($scope, $http, $location,$routeParams,$timeout) {
             const ctrl = this;
-
             ctrl.entity = {};
 
             //Костыль из-за последних изменений в системе добавления/редактирования
@@ -64,7 +63,7 @@ angular.module('collNew')
 
 
 
-                $http.post('/api/collocations', ctrl.entity).success(function (data,status,headers,config){
+                $http.post('./api/collocations', ctrl.entity).success(function (data,status,headers,config){
                     ctrl.sendingError = false;
                     console.log("Connect is here!");
                     ctrl.sended = true;
@@ -80,7 +79,7 @@ angular.module('collNew')
 
 
             /*list of texts*/
-            $http.get('/api/texts').success(function (data, status, headers, config) {
+            $http.get('./api/texts').success(function (data, status, headers, config) {
                 ctrl.textsList = data;
                 console.log("x-Connect is here!",ctrl.textsList);
             }).error(function () {
@@ -88,7 +87,7 @@ angular.module('collNew')
             });
 
             /*list of characteristicsTwo*/
-            $http.get('/api/characteristics').success(function (data, status, headers, config) {
+            $http.get('./api/characteristics').success(function (data, status, headers, config) {
                 console.log('This is Data:', data,'\n\n This is Status:',status);
                 ctrl.characteristicTwoList = data;
                 console.log(ctrl.characteristicTwoList);
@@ -97,7 +96,7 @@ angular.module('collNew')
             });
 
             /*list of characteristicsThree*/
-            $http.get('/api/characteristicsExpansion').success(function (data, status, headers, config) {
+            $http.get('./api/characteristicsExpansion').success(function (data, status, headers, config) {
                 console.log('This is Data:', data,'\n\n This is Status:',status);
                 ctrl.characteristicThreeList = data;
                 console.log(ctrl.characteristicThreeList);
@@ -115,7 +114,7 @@ angular.module('collNew')
 
 
             //Подгружаю характеристики
-            $http.get('jsons/collocation_characteristics.json').then(function (response) {
+            $http.get('./jsons/collocation_characteristics.json').then(function (response) {
                 ctrl.collocations_characteristics = response.data;
             });
         }])

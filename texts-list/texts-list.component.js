@@ -8,7 +8,7 @@ angular.module('textsList',[])
             $scope.title = 'Список текстов';
 
          //запрос к бд
-         $http.get('/api/texts').success(function (data, status, headers, config) {
+         $http.get('./api/texts').success(function (data, status, headers, config) {
             console.log('This is Data:', data,'\n\n This is Status:',status);
              ctrl.list = data;
              console.log(ctrl.list);

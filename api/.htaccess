@@ -1,10 +1,11 @@
 RewriteEngine On
-ErrorDocument 404 /index.html
-RewriteRule ^texts /api/index.php
-RewriteRule ^texts/(.*)$ /api/index.php
-RewriteRule ^collocations /api/index.php
-RewriteRule ^collocations/(.*)$ /api/index.php
-RewriteRule ^characteristics /api/index.php
-RewriteRule ^characteristicsExpansion /api/index.php
-RewriteRule ^characteristics/(.*)$ /api/index.php
-RewriteRule ^characteristicsExpansion/(.*)$ /api/index.php
+ErrorDocument 404 index.html
+RewriteRule ^texts index.php
+RewriteRule ^texts/(.*)$ index.php
+RewriteRule ^collocations index.php
+RewriteRule ^collocations/(.*)$ index.php
+RewriteRule ^characteristics index.php
+RewriteRule ^characteristicsExpansion index.php
+RewriteRule ^characteristics/(.*)$ index.php
+RewriteRule ^characteristicsExpansion/(.*)$ index.php
+

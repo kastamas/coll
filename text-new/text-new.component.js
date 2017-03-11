@@ -10,7 +10,7 @@ angular.module('textNew')
             $scope.title = 'Новый текст';
 
             ctrl.sending = function () {
-                $http.post('/api/texts', ctrl.entity).success(function (data,status,headers,config){
+                $http.post('./api/texts', ctrl.entity).success(function (data,status,headers,config){
                      ctrl.notificationMessage ="текст добавлен ;)";
                      console.log("Connect is here!");
                 }).error(function  (data, status, header, config) {
