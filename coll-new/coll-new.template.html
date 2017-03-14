@@ -70,7 +70,7 @@
 
     <label>по количеству компонентов</label><br>
         <input type="radio" name="char1" ng-model="$ctrl.entity.characteristic_quantity" ng-change="$ctrl.onChangeCharacteristicQuantity()" id="ch1b" value="2xmem" class="specRadiobutton"> <label for="ch1b" class="btn btn-default"> двуxчленное</label>
-        <input type="radio" name="char1" ng-model="$ctrl.entity.characteristic_quantity" ng-change="$ctrl.onChangeCharacteristicQuantity()" id="ch1a" value="3xmem" class="specRadiobutton"> <label for="ch1a" class="btn btn-default"> трёхчленное</label>
+        <input type="radio" name="char1" ng-model="$ctrl.entity.characteristic_quantity" ng-change="$ctrl.onChangeCharacteristicQuantity()" id="ch1a" value="3xmem" class="specRadiobutton"> <label for="ch1a" class="btn btn-default"> трехчленное</label>
     <br>
 
     <div ng-show="$ctrl.entity.characteristic_quantity != undefined">  <br>
@@ -139,7 +139,7 @@
 <!--Very Bad-->
 <div class="col-md-3">
     <!--Todo Improve this part. Really-->
-    <!-- Случай треугольничек-->
+    <!-- Случай треугольничек
     <div ng-show="$ctrl.entity.characteristic_relation_to_main == 'prepos' || $ctrl.entity.characteristic_relation_to_main == 'postpos'">
         <div ng-show="$ctrl.entity.characteristic_quantity == '2xmem'">
             <label>Характеристика атрибута</label>
@@ -194,7 +194,7 @@
 
 
     </div>
-    <!--Случай кружок -->
+    <!--Случай кружок
     <div ng-show="$ctrl.entity.characteristic_relation_to_main == 'distant_prepos' || $ctrl.entity.characteristic_relation_to_main == 'distant_postpos' ">
         <div ng-show="$ctrl.entity.characteristic_quantity == '2xmem'">
             <label>Характеристика атрибута</label>
@@ -249,7 +249,7 @@
                  ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'divider'">
         </select>
     </div>
-    <!--Случай звёздочка-->
+    <!--Случай звёздочка
     <div ng-show="$ctrl.entity.characteristic_relation_to_main == 'interpos'">
         <label>Характеристика <span class="blue">первого</span> атрибута</label>
         <select
@@ -282,19 +282,73 @@
                      ng-options="item.id as item.expansion for item in $ctrl.characteristicThreeList | filter: characteristicThreeFilter2">
             </select>
         </div>
-    </div>
+    </div>-->
 
 
 </div>
 
-<!--For Testing
+
+<div class="col-md-3">
+    <div>
+        <div>
+            <label>Характеристика
+                <element-container  data-ng-if="$ctrl.entity.characteristic_quantity == '3xmem' || $ctrl.entity.characteristic_relation_to_main == 'interpos'">
+                    <span class="blue" >первого</span>
+                </element-container> атрибута
+            </label>
+            <select  ng-model="$ctrl.entity.characteristic_attr1"
+                     class="form-control"
+                     ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'attribute'">
+            </select>
+        </div>
+        <div >
+            <br>
+            <label class="red">Дополнение*</label>
+            <select ng-model="$ctrl.entity.characteristic_attr1_addition"
+                    class="form-control"
+                    ng-options="item.id as item.expansion for item in $ctrl.characteristicThreeList | filter: characteristicThreeFilter1">
+            </select>
+        </div>
+
+        <hr>
+
+        <content-container ng-if="$ctrl.entity.characteristic_quantity == '3xmem' || $ctrl.entity.characteristic_relation_to_main == 'interpos' ">
+        <div>
+            <label>Характеристика <span class="blue">второго</span> атрибута</label>
+            <select  ng-model="$ctrl.entity.characteristic_attr2"
+                     class="form-control"
+                     ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'attribute'">
+            </select>
+        </div>
+        <div>
+            <br>
+            <label class="red">Дополнение*</label>
+            <select  ng-model="$ctrl.entity.characteristic_attr2_addition"
+                     class="form-control"
+                     ng-options="item.id as item.expansion for item in $ctrl.characteristicThreeList | filter: characteristicThreeFilter2">
+            </select>
+        </div>
+        </content-container>
+
+        <div ng-if="$ctrl.entity.characteristic_relation_to_main == 'distant_prepos' || $ctrl.entity.characteristic_relation_to_main == 'distant_postpos' ">
+            <hr>
+            <label>Характеристика разделителя</label>
+            <select  ng-model="$ctrl.entity.characteristic_divider"
+                     class="form-control"
+                     ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'divider'">
+            </select>
+        </div>
+</div>
+
+<!--For Testing-->
 <br>
 <pre>{{$ctrl.entity | json}}</pre>
 <pre>characteristic_attr1: {{$ctrl.entity.characteristic_attr1}}</pre>
 <pre>characteristic_attr2: {{$ctrl.entity.characteristic_attr2}}</pre>
 <pre>characteristicAttr1: {{$ctrl.characteristicAttr1}}</pre>
 <pre>characteristicAttr2: {{$ctrl.characteristicAttr2}}</pre>
--->
+
+</div>
 </div>
 
 

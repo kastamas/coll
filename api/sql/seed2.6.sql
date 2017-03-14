@@ -17,7 +17,7 @@ SET search_path = public, pg_catalog;
 ALTER TYPE enum_characteristic_substantive_case_type ADD VALUE 'vocative';--Для нового звательного падежа
 
 -- Запрос на добавление
-ALTER TYPE enum_characteristic_relation_to_main ADD VALUE 'distant_prepos';--Для нового звательного падежа
+ALTER TYPE enum_chardacteristic_relation_to_main ADD VALUE 'distant_prepos';--Для нового звательного падежа
 
 -- Запрос на доп Enum
 ALTER TYPE enum_characteristic_relation_to_main ADD VALUE 'distant_postpos';

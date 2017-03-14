@@ -32,24 +32,21 @@ class collCRUD
         //todo: improve this
         $query_str  = "SELECT c.*,
                               t.title as text_name,
-                              ch_ex_1.expansion as expansion_1, ch_ex_1.characteristic_id as characteristic_1,
-                              ch_ex_2.expansion as expansion_2, ch_ex_2.characteristic_id as characteristic_2,
-                              ch_1.characteristic as characteristic_1_name,
-                              ch_2.characteristic as characteristic_2_name,
-                              ch_1_explicit.characteristic as characteristic_attr1_explicit_name,
-                              ch_2_explicit.characteristic as characteristic_attr2_explicit_name,
-                              ch_d.characteristic as characteristic_d_name
+                              ch_1.characteristic as ch_1_name,
+                              ch_2.characteristic as ch_2_name,
+                              ch_d.characteristic as ch_d_name,
+                              ch_ex_1.expansion as ch_addition_1_name,
+                              ch_ex_2.expansion as ch_addition_2_name
 
                         FROM " . self::$collocations . " AS c
                             INNER JOIN texts AS t ON c.text_id = t.id
-                            LEFT JOIN characteristics_expansion AS ch_ex_1 ON c.characteristic_attr1 = ch_ex_1.id
-                            LEFT JOIN characteristics_expansion AS ch_ex_2 ON c.characteristic_attr2 = ch_ex_2.id
-                            LEFT JOIN characteristics AS ch_1 ON ch_ex_1.characteristic_id = ch_1.id
-                            LEFT JOIN characteristics AS ch_2 ON ch_ex_2.characteristic_id = ch_2.id
-                            LEFT JOIN characteristics AS ch_1_explicit ON c.characteristic_attr1_explicit = ch_1_explicit.id
-                            LEFT JOIN characteristics AS ch_2_explicit ON c.characteristic_attr2_explicit = ch_2_explicit.id
+                            LEFT JOIN characteristics AS ch_1 ON c.characteristic_attr1 = ch_1.id
+                            LEFT JOIN characteristics AS ch_2 ON c.characteristic_attr2 = ch_2.id
                             LEFT JOIN characteristics AS ch_d ON c.characteristic_divider = ch_d.id
+                            LEFT JOIN characteristics_expansion AS ch_ex_1 ON c.characteristic_attr1_addition = ch_ex_1.id
+                            LEFT JOIN characteristics_expansion AS ch_ex_2 ON c.characteristic_attr2_addition = ch_ex_2.id
                         ORDER BY created_at ASC";
+
         $query = $this->pdo->prepare($query_str);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -71,7 +68,7 @@ class collCRUD
 
 
       //todo:make it more simple
-     protected function setCharsUpdateFields($data) {
+     /*protected function setCharsUpdateFields($data) {
             $updateFields = array();
             $replacements = array();
 
@@ -96,7 +93,7 @@ class collCRUD
                 $query->execute($params['replacements']);
                 return $query->fetch(PDO::FETCH_ASSOC);
             }
-        }
+        }*/
 
 
     public  function  getText($id) {
@@ -160,7 +157,7 @@ class collCRUD
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function createCharacteristic($data) {
+   /* public function createCharacteristic($data) {
 
          $query_str = "INSERT INTO " . self::$characteristics . " ( characteristic) VALUES (lower(:characteristic)) RETURNING *";
          $params = array(
@@ -169,7 +166,7 @@ class collCRUD
          $query = $this->pdo->prepare($query_str);
          $query->execute($params);
          return $query->fetch(PDO::FETCH_ASSOC);
-     }
+     }*/
 
     protected function checkText($data) {
         if (!$data['status'] || !$data['title']) {
@@ -259,7 +256,7 @@ class collCRUD
             $replacements["characteristic_relation_to_main"] = $data['characteristic_relation_to_main'];
         }
 
-        //todo: strange situation with the null values (Ты такой индус. Не стыдно?)
+        //todo: strange situation with the null values
         if ($data['characteristic_attr1']) {
             array_push($updateFields, "characteristic_attr1 = :characteristic_attr1");
             $replacements["characteristic_attr1"] = $data['characteristic_attr1'];
@@ -284,21 +281,24 @@ class collCRUD
             $replacements["characteristic_divider"] = NULL;
         }
 
-        if ($data['characteristic_attr1_explicit']) {
-            array_push($updateFields, "characteristic_attr1_explicit = :characteristic_attr1_explicit");
-            $replacements["characteristic_attr1_explicit"] = $data['characteristic_attr1_explicit'];
+        if ($data['characteristic_attr1_addition']) {
+            array_push($updateFields, "characteristic_attr1_addition = :characteristic_attr1_addition");
+            $replacements["characteristic_attr1_addition"] = $data['characteristic_attr1_addition'];
         } else {
-            array_push($updateFields, "characteristic_attr1_explicit = :characteristic_attr1_explicit");
-            $replacements["characteristic_attr1_explicit"] = NULL;
+            array_push($updateFields, "characteristic_attr1_addition = :characteristic_attr1_addition");
+            $replacements["characteristic_attr1_addition"] = NULL;
         }
 
-        if ($data['characteristic_attr2_explicit']) {
-            array_push($updateFields, "characteristic_attr2_explicit = :characteristic_attr2_explicit");
-            $replacements["characteristic_attr2_explicit"] = $data['characteristic_attr2_explicit'];
+        if ($data['characteristic_attr2_addition']) {
+            array_push($updateFields, "characteristic_attr2_addition = :characteristic_attr2_addition");
+            $replacements["characteristic_attr2_addition"] = $data['characteristic_attr2_addition'];
         } else {
-            array_push($updateFields, "characteristic_attr2_explicit = :characteristic_attr2_explicit");
-            $replacements["characteristic_attr2_explicit"] = NULL;
+            array_push($updateFields, "characteristic_attr2_addition = :characteristic_attr2_addition");
+            $replacements["characteristic_attr2_addition"] = NULL;
         }
+
+
+
 
         if ($data['characteristic_preposition']) {
             array_push($updateFields, "characteristic_preposition = :characteristic_preposition");
@@ -361,6 +361,7 @@ class collCRUD
         }
     }
 
+    //todo: you can make it better
     public function createCollocation($data) {
         $this->checkCollocation($data);//check status,text,collocation's text
         //todo:refactor query style
@@ -371,8 +372,8 @@ class collCRUD
                      characteristic_attr1, 
                      characteristic_attr2, 
                      characteristic_divider, 
-                     characteristic_attr1_explicit, 
-                     characteristic_attr2_explicit,
+                     characteristic_attr1_addition, 
+                     characteristic_attr2_addition,
                      characteristic_preposition,
                      
                      characteristic_substantive_lg,
@@ -390,8 +391,8 @@ class collCRUD
                      :characteristic_attr1, 
                      :characteristic_attr2, 
                      :characteristic_divider, 
-                     :characteristic_attr1_explicit, 
-                     :characteristic_attr2_explicit,
+                     :characteristic_attr1_addition, 
+                     :characteristic_attr2_addition,
                      :characteristic_preposition,
                      
                      :characteristic_substantive_lg,
@@ -410,8 +411,8 @@ class collCRUD
             "characteristic_relation_to_main" => $data['characteristic_relation_to_main'],
             "characteristic_attr1" => $data['characteristic_attr1'],
             "characteristic_attr2" => $data['characteristic_attr2'],
-            "characteristic_attr1_explicit" => $data['characteristic_attr1_explicit'],
-            "characteristic_attr2_explicit" => $data['characteristic_attr2_explicit'],
+            "characteristic_attr1_addition" => $data['characteristic_attr1_addition'],
+            "characteristic_attr2_addition" => $data['characteristic_attr2_addition'],
             "characteristic_divider" => $data['characteristic_divider'],
             "characteristic_preposition" => $data['characteristic_preposition'],
 

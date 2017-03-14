@@ -53,8 +53,8 @@ angular.module('collsList', ['ngCookies'])
                 /*
                     very very bad
                 */
-                ctrl.condition_for_showing_extensions = function (characteristic) {
-                    console.log("SPECIAL CONDITIONS!",characteristic);
+                /*ctrl.condition_for_showing_extensions = function (characteristic) {
+                    console.log("SPECIcharacteristic_attr1_explicitAL CONDITIONS!",characteristic);
                     switch (characteristic){
                         case undefined: return undefined; break;
                         case 8:  return false; break;
@@ -63,7 +63,7 @@ angular.module('collsList', ['ngCookies'])
                         case 11: return false; break;
                         default: return true;
                     }
-                };
+                };*/
 
                 /*list of characteristicsTwo*/
                 $http.get('/api/characteristics').success(function (data, status, headers, config) {
@@ -128,11 +128,12 @@ angular.module('collsList', ['ngCookies'])
                                    characteristic_substantive_animacy: "any",
                                    characteristic_substantive_case: "any",
 
-                                   characteristic_1: null,
-                                   characteristic_2: null,
                                    characteristic_attr1: null,
                                    characteristic_attr2: null,
                                    characteristic_divider: null,
+
+                                   characteristic_attr1_addition: null,
+                                   characteristic_attr2_addition: null,
 
                                    more: false
                     };
@@ -144,7 +145,7 @@ angular.module('collsList', ['ngCookies'])
                 {
                     $cookies.putObject('collsListFilter', ctrl.filter);
 
-                    //If it works, don't touch it
+                    //if it works, don't touch it!
                     return (item.collocation) &&
                         ((ctrl.filter.text_id != 0 && ctrl.filter.text_id != null) ? item.text_id == ctrl.filter.text_id  : " ") &&
                         ((ctrl.filter.status != "any") ? item.status == ctrl.filter.status : " ") &&
@@ -157,10 +158,12 @@ angular.module('collsList', ['ngCookies'])
                         ((ctrl.filter.characteristic_substantive_animacy != "any") ? item.characteristic_substantive_animacy == ctrl.filter.characteristic_substantive_animacy : " ") &&
                         ((ctrl.filter.characteristic_substantive_case != "any") ? item.characteristic_substantive_case == ctrl.filter.characteristic_substantive_case : " ") &&
 
-                        ((ctrl.filter.characteristic_1 != null) ? item.characteristic_1 == ctrl.filter.characteristic_1 : " ") &&
-                        ((ctrl.filter.characteristic_2 != null) ? item.characteristic_2 == ctrl.filter.characteristic_2 : " ") &&
                         ((ctrl.filter.characteristic_attr1 != null) ? item.characteristic_attr1 == ctrl.filter.characteristic_attr1 : " ") &&
                         ((ctrl.filter.characteristic_attr2 != null) ? item.characteristic_attr2 == ctrl.filter.characteristic_attr2 : " ") &&
+
+                        ((ctrl.filter.characteristic_attr1_addition != null) ? item.characteristic_attr1_addition == ctrl.filter.characteristic_attr1_addition : " ") &&
+                        ((ctrl.filter.characteristic_attr2_addition != null) ? item.characteristic_attr2_addition == ctrl.filter.characteristic_attr2_addition : " ") &&
+
                         ((ctrl.filter.characteristic_divider != null) ? item.characteristic_divider == ctrl.filter.characteristic_divider : " ")
                         ;
                  };
@@ -211,7 +214,8 @@ angular.module('collsList', ['ngCookies'])
                 };
 
                 ctrl.clearFilter = function (text_id) {
-                    ctrl.filter = {text_id: text_id,
+                    ctrl.filter = {
+                        text_id: text_id,
                         status: "any",
                         characteristic_quantity: "any",
                         characteristic_relation_to_main: "any",
@@ -222,11 +226,13 @@ angular.module('collsList', ['ngCookies'])
                         characteristic_substantive_animacy: "any",
                         characteristic_substantive_case: "any",
 
-                        characteristic_1: null,
-                        characteristic_2: null,
                         characteristic_attr1: null,
                         characteristic_attr2: null,
                         characteristic_divider: null,
+
+                        characteristic_attr1_addition: null,
+                        characteristic_attr2_addition: null,
+
 
                         more: true
                     };

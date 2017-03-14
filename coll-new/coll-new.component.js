@@ -12,30 +12,30 @@ angular.module('collNew')
             //ctrl.attributes_without_expansion = [8,9,10,11];
             //ctrl.special_conditions = "";
 
-            ctrl.condition_for_showing_extensions = function (characteristic) {
+          /*  ctrl.condition_for_showing_extensions = function (characteristic) {
                 console.log("SPECIAL CONDITIONS!",characteristic);
                 switch (characteristic){
                     case undefined: return undefined; break;
-                    case 8:  return false; break;
-                    case 9:  return false; break;
                     case 10: return false; break;
                     case 11: return false; break;
                     default: return true;
                 }
-            };
+            };*/
 
 
 
             ctrl.onChangeCharacteristicQuantity = function () {
-                delete ctrl.characteristicAttr2;
-                delete ctrl.entity.characteristic_attr2 ;
+
+                    delete ctrl.entity.characteristic_attr2;
+                    delete ctrl.entity.characteristic_attr2_addition ;
+
             };
 
             ctrl.onChangeCharacteristicRelationToMain = function () {
-                delete ctrl.characteristicAttr1;
-                delete ctrl.characteristicAttr2;
-                delete ctrl.entity.characteristic_attr2   ;
-                delete ctrl.entity.characteristic_attr1   ;
+                delete ctrl.entity.characteristic_attr1;
+                delete ctrl.entity.characteristic_attr2;
+                delete ctrl.entity.characteristic_attr1_addition   ;
+                delete ctrl.entity.characteristic_attr2_addition   ;
                 delete ctrl.entity.characteristic_divider ;
             };
 
@@ -52,15 +52,13 @@ angular.module('collNew')
 
 
             ctrl.onAction = function () {
-
-
-                if (!ctrl.condition_for_showing_extensions(ctrl.characteristicAttr1))
+              /*  if (!ctrl.condition_for_showing_extensions(ctrl.characteristicAttr1))
                     ctrl.entity.characteristic_attr1_explicit = ctrl.characteristicAttr1;
                     else delete ctrl.entity.characteristic_attr1_explicit   ;
                 if (!ctrl.condition_for_showing_extensions(ctrl.characteristicAttr2))
                     ctrl.entity.characteristic_attr2_explicit = ctrl.characteristicAttr2;
                     else  delete ctrl.entity.characteristic_attr2_explicit   ;
-
+*/
 
 
                 $http.post('./api/collocations', ctrl.entity).success(function (data,status,headers,config){
@@ -103,10 +101,10 @@ angular.module('collNew')
 
                 //todo:optimisation
                 $scope.characteristicThreeFilter1 = function (item) {
-                    return (item.expansion) && (item.characteristic_id == ctrl.characteristicAttr1);
+                    return (item.expansion) && (item.characteristic_id == ctrl.entity.characteristic_attr1);
                 };
                 $scope.characteristicThreeFilter2 = function (item) {
-                    return (item.expansion) && (item.characteristic_id == ctrl.characteristicAttr2);
+                    return (item.expansion) && (item.characteristic_id == ctrl.entity.characteristic_attr2);
                 };
             }).error(function () {
                 console.log("smth wrong");
