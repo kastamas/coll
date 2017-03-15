@@ -80,10 +80,15 @@ angular.module('collsList', ['ngCookies'])
 
                     //todo:optimisation
                     $scope.characteristicThreeFilter1 = function (item) {
-                        return (item.expansion) && (item.characteristic_id == ctrl.filter.characteristic_1);
+                        if(ctrl.filter.characteristic_attr1 != null){
+                            return (item.expansion) && (item.characteristic_id == ctrl.filter.characteristic_attr1);
+                        } else {
+                            return (item.expansion);
+                        }
                     };
+
                     $scope.characteristicThreeFilter2 = function (item) {
-                        return (item.expansion) && (item.characteristic_id == ctrl.filter.characteristic_2);
+                        return (item.expansion) && (item.characteristic_id == ctrl.filter.characteristic_attr2);
                     };
                 }).error(function () {
                     console.log("smth wrong");

@@ -95,7 +95,7 @@ angular.module('collNew')
 
             /*list of characteristicsThree*/
             $http.get('./api/characteristicsExpansion').success(function (data, status, headers, config) {
-                console.log('This is Data:', data,'\n\n This is Status:',status);
+                console.log('Expansions:', data,'\n\n This is Status:',status);
                 ctrl.characteristicThreeList = data;
                 console.log(ctrl.characteristicThreeList);
 

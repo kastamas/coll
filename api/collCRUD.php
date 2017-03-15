@@ -60,7 +60,7 @@ class collCRUD
     }
 
     public function queryCharacteristicsExpansion() {
-            $query_str = "SELECT id, expansion, characteristic_id FROM " . self::$characteristicsExpansion . " ORDER BY expansion ASC";
+            $query_str = "SELECT t.id, t.expansion, unnest(t.characteristic_ids) as characteristic_id FROM " . self::$characteristicsExpansion . " AS t ORDER BY expansion ASC LIMIT 50";
             $query = $this->pdo->prepare($query_str);
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
