@@ -1,0 +1,367 @@
+<div class="container closely">
+<h2 class="page-header">{{ title}} <span>Всего словосочетаний: {{$ctrl.list.length}}</span>
+
+        <span ng-if="$ctrl.filter.text_id != null">в выбраном тексте: {{$ctrl.collsInText.length}}</span>
+
+        <span ng-if="$ctrl.filter.text_id != null">соответствуют фильтру: {{ $ctrl.collectionFiltered.length }} |</span>
+        <span ng-if="$ctrl.filter.text_id != null" class="blue">{{ $ctrl.collsFilteredInPercents | percentage:2}}</span>
+
+</h2>
+
+<!----------------- filters ------------------->
+<div ng-show="$ctrl.list.length != '0'" id="filters">
+
+    <h6 style="text-transform: uppercase;">основные фильтры</h6>
+    <div class="row">
+        <div class="col-md-2">
+            <label for="selectTextId" class="blue">по тексту</label><br>
+            <select id="selectTextId" data-ng-model="$ctrl.filter.text_id"  ng-options="item.id as item.title for item in $ctrl.textsList | orderBy:'title':false " class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.text_id != null}">
+                <!-- <option data-ng-repeat="item in $ctrl.textsList" value="{{item.id}}">{{item.title}}</option>-->
+                <option value=''>- Все тексты -</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="selectStatus">по статусу</label><br>
+            <select id="selectStatus" data-ng-model="$ctrl.filter.status" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.status != 'any'}">
+                <option value='any'>- Любой -</option>
+                <option  value='d' >Разобрано</option>
+                <option  value='u' >Не разобрано</option>
+                <option  value='a' >Разобрано не до конца</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="characteristic_quantity">по кол. компонентов</label><br>
+            <select id="characteristic_quantity" data-ng-model="$ctrl.filter.characteristic_quantity" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_quantity != 'any'}">
+                <option value='any'>- Любое -</option>
+                <option  value='2xmem' >двуxчленное</option>
+                <option  value='3xmem' >трехчленное</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="characteristic_relation_to_main">по отношению</label><br>
+            <select id="characteristic_relation_to_main" data-ng-model="$ctrl.filter.characteristic_relation_to_main" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_relation_to_main != 'any'}">
+                <option  value='any' >- Любое -</option>
+                <option  value='prepos'   >препозитивное</option>
+                <option  value='interpos'  >интерпозитивное</option>
+                <option  value='postpos' >постпозитивное</option>
+                <option  value='distant_prepos'  >дистантное препозитивное</option>
+                <option  value='distant_postpos'  >дистантное постпозитивное</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="characteristic_preposition">по наличию предлога</label><br>
+            <select id="characteristic_preposition" data-ng-model="$ctrl.filter.characteristic_preposition" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_preposition != 'any'}">
+                <option  value='any'>- Любое -</option>
+                <option  value='prepositional'   >предложное</option>
+                <option  value='non-prepositional'  >беспредложное</option>
+            </select>
+        </div>
+        <div class="col-md-2" style="margin-top: 20px;">
+            <span class="blue" ng-show="!$ctrl.filter.more"><a ng-click="$ctrl.showMoreFilters()">Больше фильтров</a></span><!--todo: You can do it better-->
+            <span class="blue" ng-show="$ctrl.filter.more"><a ng-click="$ctrl.showMoreFilters()">Меньше фильтров</a></span><!--todo: You can do it better-->
+            <span class="blue"><a ng-click="$ctrl.statistic()">Статистика</a></span>
+        </div>
+    </div>
+
+    <!----------------- filters | additionally ------------------->
+    <div ng-if="$ctrl.filter.more" class="animation_appearance">
+     <br>
+     <h6 style="text-transform: uppercase;">определяемое слово</h6>
+     <div class="row"   >
+        <div class="col-md-2">
+            <label for="characteristic_substantive_lg" class="cell-limited" style="width: 170px; margin-bottom: 0px;" title="лексико-грамматический разряд">лексико-грамматический разряд</label><br>
+            <select id="characteristic_substantive_lg" data-ng-model="$ctrl.filter.characteristic_substantive_lg" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_substantive_lg != 'any'}">
+                <option value='any'>- Любой -</option>
+                <option ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_lg"
+                    value="{{item.name}}">{{item.name_rus}}</option>
+            </select>
+        </div>
+        <div class="col-md-2"> <!--Todo:RemoveCrutch-->
+                <label for="characteristic_substantive_lg_explicit">дополнение к л-г разряду</label><br>
+                <select id="characteristic_substantive_lg_explicit" data-ng-model="$ctrl.filter.characteristic_substantive_lg_explicit" class="form-control" ng-class="{'filter-active': $ctrl.filter.characteristic_substantive_lg_explicit != 'any'}">
+                    <option value='any'>- Любой -</option>
+                    <option ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_lg_explicit"
+                         value="{{item.name}}">{{item.name_rus}}</option>
+                </select>
+        </div>
+        <div class="col-md-2">
+            <label for="characteristic_substantive_animacy" >одушевлённость</label><br>
+            <select id="characteristic_substantive_animacy" data-ng-model="$ctrl.filter.characteristic_substantive_animacy" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_substantive_animacy != 'any'}">
+                <option value='any'>- Любая -</option>
+                <option ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_animacy"
+                        value="{{item.name}}">{{item.name_rus}}</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="characteristic_substantive_case" >падеж</label><br>
+            <select id="characteristic_substantive_case" data-ng-model="$ctrl.filter.characteristic_substantive_case" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_substantive_case != 'any'}">
+                <option value='any'>- Любой -</option>
+                <option ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_case"
+                        value="{{item.name}}">{{item.name_rus}}</option>
+            </select>
+        </div>
+    </div>
+
+
+    <br>
+    <h6 style="text-transform: uppercase;">характеристики</h6>
+    <div class="row">
+        <div class="col-md-2">
+            <label for="characteristic_1" >первый атрибут</label><br>
+            <select id="characteristic_1" data-ng-model="$ctrl.filter.characteristic_attr1" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_attr1 != null}"
+                    ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'attribute'"
+            >
+                <option value=''>- Любой -</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="characteristic_attr1" class="cell-limited" style="width: 170px; margin-bottom: 0px;" title="дополнение первого атрибута">дополнение первого атрибута</label><br>
+            <select id="characteristic_attr1" data-ng-model="$ctrl.filter.characteristic_attr1_addition" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_attr1_addition != null}"
+                    ng-options="item.id as item.expansion for item in $ctrl.characteristicThreeList | filter: characteristicThreeFilter1"
+
+            >
+                <option value=''>- Любое -</option>
+            </select>
+        </div>
+
+
+        <div class="col-md-2">
+            <label for="characteristic_2" >второй атрибут</label><br>
+            <select id="characteristic_2" data-ng-model="$ctrl.filter.characteristic_attr2" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_attr2 != null}"
+                    ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'attribute'"
+            >
+                <option value=''>- Любой -</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="characteristic_attr2" class="cell-limited" style="width: 170px; margin-bottom: 0px;" title="дополнение второго атрибута">дополнение второго атрибута</label><br>
+            <select id="characteristic_attr2" data-ng-model="$ctrl.filter.characteristic_attr2_addition" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_attr2_addition != null}"
+                    ng-options="item.id as item.expansion for item in $ctrl.characteristicThreeList | filter: characteristicThreeFilter2"
+            >
+                <option value=''>- Любое -</option>
+            </select>
+        </div>
+
+
+        <div class="col-md-2"
+             ng-class="{dis: $ctrl.filter.characteristic_relation_to_main != 'distant_prepos' &&
+                                  $ctrl.filter.characteristic_relation_to_main != 'distant_postpos'}">
+            <label for="selectDivider"
+            >разделитель</label><br>
+            <select id="selectDivider" data-ng-model="$ctrl.filter.characteristic_divider" class="form-control"
+                    ng-class="{'filter-active': $ctrl.filter.characteristic_divider != null}"
+                    ng-options="itabledem.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'divider'"
+            >
+                <option value=''>- Любой -</option>
+            </select>
+            <!--
+            ng-disabled="$ctrl.filter.characteristic_relation_to_main != 'distant_prepos' &&
+                                 $ctrl.filter.characteristic_relation_to_main != 'distant_postpos'"
+                                 -->
+        </div>
+        <div class="col-md-2" style="margin-top: 20px;">
+            <span class="blue"><a ng-click="$ctrl.clearFilter($ctrl.filter.text_id)">Сбросить фильтры</a></span>
+        </div>
+    </div>
+    </div>
+</div>
+<br>
+
+</div>
+
+<!----------------- table --------------------->
+<div class="container closely">
+<div ng-show=" $ctrl.list.length != '0'">
+<div ng-show="$ctrl.collsInText.length != 0 && $ctrl.collectionFiltered.length != 0">
+
+  <table class="table table-striped table-hover table-custom" style="border: 1px solid #ddd;">
+    <thead>
+      <tr>
+        <th > </th>
+        <th ng-show="$ctrl.filter.text_id == null">Текст</th>
+        <th>Словосочетание</th>
+        <th></th><!--edit-->
+        <th></th><!--del-->
+        <th title="Номер страницы"><a ng-click="$ctrl.sort('page_number')">
+          <div class="text-nowrap"
+            >#Стр.
+            <span ng-show="$ctrl.sorting.rows == 'page_number'" class="glyphicon"  ng-class="{'glyphicon-menu-up' : $ctrl.sorting.reverse, 'glyphicon-menu-down' : !$ctrl.sorting.reverse}" aria-hidden="true"></span>
+          </div></a>
+        </th>
+        <th>Х-ка по количеству компонентов</th>
+        <th>Х-ка по отношению к главному слову</th>
+        <th>Х-ка по наличию предлога</th>
+        <!-- characteristics begin -->
+        <th  class = "text-nowrap" style = "border-left: 1px solid #ddd;">Первый атрибут</th>
+        <!--  <th>?</th>-->
+        <th  class = "text-nowrap" style = "border-left: 1px solid #ddd;"
+             ng-hide="$ctrl.filter.characteristic_quantity == '2xmem' &&
+                     ($ctrl.filter.characteristic_relation_to_main != 'interpos' &&
+                      $ctrl.filter.characteristic_relation_to_main != 'any')"
+        >Второй атрибут</th>
+        <!--  <th>?</th>-->
+        <th  class = "text-nowrap" style = "border-left: 1px solid #ddd; "
+             ng-hide = "$ctrl.filter.characteristic_relation_to_main != 'any' &&
+                        $ctrl.filter.characteristic_relation_to_main != 'distant_prepos' &&
+                        $ctrl.filter.characteristic_relation_to_main != 'distant_postpos'"
+        >Разделитель</th>
+        <!-- characteristics end -->
+        <!-- substantive begin -->
+            <th style="border-right: 1px solid #ddd; width: 1px; box-sizing: border-box;"></th><!--crutch-->
+            <th  class="text-nowrap" colspan="4">Определяемое слово</th>
+        <!-- substantive end -->
+        <th class="text-nowrap"><a ng-click="$ctrl.sort('created_at')">
+            <div class="text-nowrap"
+            >Добавлено
+            <span ng-show="$ctrl.sorting.rows == 'created_at'"
+                  class="glyphicon"
+                  ng-class="{'glyphicon-menu-up' : $ctrl.sorting.reverse, 'glyphicon-menu-down' : !$ctrl.sorting.reverse}"
+                  aria-hidden="true"></span>
+            </div></a>
+        </th>
+      </tr>
+      </thead>
+
+
+      <tbody>
+          <!--<tr data-ng-repeat="item in $ctrl.collectionSorted">-->
+          <tr data-ng-repeat="item in $ctrl.collectionSorted | limitTo: pageSize : (currentPage -1) * pageSize">
+              <!--Status todo:removeCrutch -->
+                  <td  class="c danger"    title="Не разобрано"          ng-if="item.status == 'u'" ></td>
+                  <td  class="c success"  title="Разобрано"             ng-if="item.status == 'd'" ></td>
+                  <td  class="c info"     title="Разобрано не до конца" ng-if="item.status == 'a'" ></td>
+
+              <td title="{{item.text_name}}"
+                  ng-show="$ctrl.filter.text_id == null"
+                  >{{item.text_name}}</td>
+              <td title="{{item.collocation}}"
+                  class="text-nowrap"
+                  ><div class="cell-limited" style="width: 180px;">{{item.collocation}}</div></td>
+              <td title="редактировать"><a href="#/colls/edit/{{item.id}}">ред.</a></td>
+              <td title="удалить" class="red"><a class="red" ng-click="$ctrl.delete(item.id, item.collocation)">уд.</a></td>
+              <td>{{item.page_number}}</td>
+
+              <!--charact_relation_to_main todo:removeCrutch-->
+                  <td class=" "  ng-if="item.characteristic_quantity == '2xmem'"  >двуxчленное</td>
+                  <td class=" "  ng-if="item.characteristic_quantity == '3xmem'"  >трехчленное</td>
+                  <td            ng-if="item.characteristic_quantity == NULL"></td>
+
+
+              <!--charact_quantity todo:removeCrutch-->
+                  <td class=" "  ng-if="item.characteristic_relation_to_main == 'prepos'"   >препозитивное </td>
+                  <td class=" "  ng-if="item.characteristic_relation_to_main == 'postpos'"  >постпозитивное</td>
+                  <td class=" "  ng-if="item.characteristic_relation_to_main == 'interpos'" >интерпозитивное</td>
+                  <td class=" "  ng-if="item.characteristic_relation_to_main == 'distant_prepos'"  >дистантное препозитивное</td>
+                  <td class=" "  ng-if="item.characteristic_relation_to_main == 'distant_postpos'"  >дистантное постпозитивное</td>
+                  <td            ng-if="item.characteristic_relation_to_main == NULL"></td>
+
+
+              <!--charact_preposition  todo:removeCrutch-->
+                  <td class=" "  ng-if="item.characteristic_preposition == 'prepositional'"   >предложное </td>
+                  <td class=" "  ng-if="item.characteristic_preposition == 'non-prepositional'"  >беспредложное</td>
+                  <td            ng-if="item.characteristic_preposition == NULL"></td>
+
+              <!-- Extra characteristics begin  Order is Changed Due To comfortoble-->
+                  <td style="border-left: 1px solid #ddd;"
+                    >{{item.ch_addition_1_name}} {{item.ch_1_name}}</td>
+                  <td style="border-left: 1px solid #ddd;" ng-hide="$ctrl.filter.characteristic_quantity == '2xmem' &&
+                                                                   ($ctrl.filter.characteristic_relation_to_main != 'interpos' &&
+                                                                    $ctrl.filter.characteristic_relation_to_main != 'any')"
+                    >{{item.ch_addition_2_name}} {{item.ch_2_name}}</td>
+                  <td style="border-left: 1px solid #ddd;"
+                      ng-hide = "$ctrl.filter.characteristic_relation_to_main != 'any' &&
+                                $ctrl.filter.characteristic_relation_to_main != 'distant_prepos' &&
+                        $ctrl.filter.characteristic_relation_to_main != 'distant_postpos'"
+                  >{{item.ch_d_name}}</td>
+
+                <!--Substantive-->
+                  <td style="border-right: 1px solid #ddd;"></td><!--crutch-->
+                  <td ng-if="item.characteristic_substantive_lg == 'appellative'">нарицательное</td>
+                  <td ng-if="item.characteristic_substantive_lg == 'own'">собственное</td>
+                  <td ng-if="item.characteristic_substantive_lg == NULL"></td>
+
+                  <td ng-if="item.characteristic_substantive_lg_explicit == 'real'">вещественное</td>
+                  <td ng-if="item.characteristic_substantive_lg_explicit == 'specific'">конкретное   </td>
+                  <td ng-if="item.characteristic_substantive_lg_explicit == 'collective'">собирательное</td>
+                  <td ng-if="item.characteristic_substantive_lg_explicit == 'abstract'">абстрактное  </td>
+                  <td ng-if="item.characteristic_substantive_lg_explicit ==  NULL"></td>
+
+
+                  <td ng-if="item.characteristic_substantive_animacy == 'animated'">   одушевлённое</td>
+                  <td ng-if="item.characteristic_substantive_animacy == 'not-animated'">неодушевлённое</td>
+                  <td ng-if="item.characteristic_substantive_animacy == NULL"></td>
+
+                  <td ng-if="item.characteristic_substantive_case == 'nominative'">И.П.</td>
+                  <td ng-if="item.characteristic_substantive_case == 'genitive'">Р.П.</td>
+                  <td ng-if="item.characteristic_substantive_case == 'dative'">Д.П.</td>
+                  <td ng-if="item.characteristic_substantive_case == 'accusative'">В.П.</td>
+                  <td ng-if="item.characteristic_substantive_case == 'instrumental'">Т.П.</td>
+                  <td ng-if="item.characteristic_substantive_case == 'prepositional'">П.П.</td>
+                  <td ng-if="item.characteristic_substantive_case == 'vocative'">Зв.П.</td>
+                  <td ng-if="item.characteristic_substantive_case == NULL"></td>
+              <!--Substantive-->
+              <!-- Extra characteristics end -->
+              <td>{{item.created_at | limitTo:'10' | date:'dd/MM/yyyy'}}</td>
+          </tr>
+      </tbody>
+    </table>
+    <!-- pagination -->
+    <paging
+         page="currentPage"
+         page-size="pageSize"
+         total="$ctrl.collectionSorted.length"
+         paging-action="DoCtrlPagingAct('Paging Clicked', page, pageSize, total)"
+         text-next="следующая"
+         text-prev="предыдущая"
+         text-title-page="Страница {page}"
+         show-prev-next="true"
+         ul-class="pagination"
+         active-class="active"
+         disabled-class="disabled"
+    >
+    </paging>
+
+</div>
+
+
+<!----------------- footer --------------------->
+</div>
+
+
+</div>
+
+<div class="container closely" ng-if="$ctrl.collsInText.length == 0">
+    <div class="text-message">
+        <hr>
+        <p>Для этого текста не было добавлено ни одного словосочетания.</p>
+        <hr>
+    </div>
+    <br>
+</div>
+
+<div class="container closely" ng-if="$ctrl.collsInText.length != 0 && $ctrl.collectionFiltered.length == 0">
+    <div class="text-message">
+        <hr>
+        <p>Нет совпадений по фильтру.</p>
+        <hr>
+    </div>
+    <br>
+</div>
+
+
+<!----------------- message if empty ------------------->
+<div class="text-message"  ng-show="$ctrl.list.length == '0'">
+    <p>Пусто. <a href="#/colls/new">Добавить словосочетание.</a></p>
+</div>

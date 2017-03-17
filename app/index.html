@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="collApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Анализ Словосочетаний</title>
+
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css" />
+    <link rel="stylesheet" href="app.css" />
+
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+
+    <script src="bower_components/angular-paging/dist/paging.min.js"></script>
+
+
+    <script src="components/angularjs-dropdown-multiselect.js"></script>
+
+    <script src="app.module.js"></script>
+
+    <script src="texts/texts-list.component.js"></script>
+    <script src="texts/text-item.component.js"></script>
+    <script src="texts/text-new.component.js"></script>
+    <script src="texts/text-edit.component.js"></script>
+
+    <script src="colls/colls.module.js"></script>
+    <script src="colls/colls-list.component.js"></script>
+    <script src="colls/coll-new.component.js"></script>
+    <script src="colls/coll-edit.component.js"></script>
+
+
+    <script src="main-page/main-page.module.js"></script>
+    <script src="main-page/main-page.component.js"></script>
+</head>
+<body>
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="#/">The coll project</a>
+            <ul class="nav">
+                <li><a href="#/colls">список словосочетаний</a></li>
+                <li><a href="#/colls/new">+ словосочетание</a></li>
+                <li><a href="#/texts">список текстов</a></li>
+                <li><a href="#/texts/new">+ текст</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!--
+    <div class="container">
+
+
+    </div>
+-->
+
+        <div ng-view ng-cloak style=" margin-bottom:4em"></div>
+
+   <!-- <div class="container">
+        <footer class="navbar navbar-fixed-bottom">
+            <div class="navbar-inner">
+                <div class="container" >
+                    <p style="margin: 0px;">version: 2.6 last update: 26/02/17</p>
+                </div>
+            </div>
+        </footer>
+    </div>-->
+</body>
+</html>
