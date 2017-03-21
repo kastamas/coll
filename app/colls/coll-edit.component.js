@@ -21,8 +21,8 @@ angular.module('colls')
 
             };
 
-            //Запрос на тексты
-            /*list of texts*/
+            // Запрос на тексты
+            /* list of texts*/
             $http.get('/api/texts').success(function (data, status, headers, config) {
                 ctrl.textsList = data;
                 console.log("x-Connect is here!",ctrl.textsList);
@@ -30,19 +30,6 @@ angular.module('colls')
                 console.log("Smth wrong");
             });
 
-
-
-           /* ctrl.condition_for_showing_extensions = function (characteristic) {
-                //console.log("SPECIAL CONDITIONS!",characteristic);
-                switch (characteristic){
-                    case undefined: return undefined; break;
-                    case 8:  return false; break;
-                    case 9:  return false; break;
-                    case 10: return false; break;
-                    case 11: return false; break;
-                    default: return true;
-                }
-            };*/
 
 
 
@@ -173,6 +160,6 @@ angular.module('colls')
         }])
     .component('collEdit', {
         //templateUrl: 'coll-edit/coll-edit.template.html', //todo:crutch
-        templateUrl:'colls/coll-new.template.html',
+        templateUrl:'colls/coll-item.template.html',
         controller: 'CollEditCtrl'
     });

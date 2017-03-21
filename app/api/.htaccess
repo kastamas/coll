@@ -8,4 +8,5 @@ RewriteRule ^characteristics index.php
 RewriteRule ^characteristicsExpansion index.php
 RewriteRule ^characteristics/(.*)$ index.php
 RewriteRule ^characteristicsExpansion/(.*)$ index.php
+RewriteRule ^htmlParseSpec index.php
 

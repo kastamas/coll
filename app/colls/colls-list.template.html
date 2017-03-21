@@ -155,14 +155,12 @@
         </div>
 
 
-        <div class="col-md-2"
-             ng-class="{dis: $ctrl.filter.characteristic_relation_to_main != 'distant_prepos' &&
-                                  $ctrl.filter.characteristic_relation_to_main != 'distant_postpos'}">
+        <div class="col-md-2">
             <label for="selectDivider"
             >разделитель</label><br>
             <select id="selectDivider" data-ng-model="$ctrl.filter.characteristic_divider" class="form-control"
                     ng-class="{'filter-active': $ctrl.filter.characteristic_divider != null}"
-                    ng-options="itabledem.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'divider'"
+                    ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'divider'"
             >
                 <option value=''>- Любой -</option>
             </select>

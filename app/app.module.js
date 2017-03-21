@@ -7,6 +7,7 @@ angular.module('collApp', [
     'angularjs-dropdown-multiselect',
     'ngAnimate',
     'bw.paging',
+    'oi.file',
 
     'mainPage',
 
@@ -36,17 +37,14 @@ angular.module('collApp', [
         })
         .when('/colls/new',{
             template: '<coll-new  ng-cloak>'
+        }).when('/colls/new-bulk',{
+            template: '<coll-new-bulk  ng-cloak>'
         })
         .when('/colls/edit/:collId',{
             template: '<coll-edit  ng-cloak>'
         })
 
-        /*.when('/chars', {
-         template: '<chars-list  ng-cloak>'
-         })
-         .when('/chars/new',{
-         template: '<chars-new  ng-cloak>'
-         })*/
+
 
         .when('/',{
             template: '<main-page>'

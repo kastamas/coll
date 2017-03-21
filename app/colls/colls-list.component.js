@@ -33,19 +33,10 @@ angular.module('colls')
                 console.log("Smth wrong");
             });
 
-
-
             // uploading characteristics from json
             $http.get('jsons/collocation_characteristics.json').then(function (response) {
                 ctrl.collocations_characteristics = response.data;
             });
-
-            //characteristics todo: wtf?
-            /*$http.get('/api/characteristics').success(function (data, status, headers, config) {
-                ctrl.charactsList = data;
-            }).error(function () {
-                console.log("Smth wrong");
-            });*/
 
             // list of characteristics
             $http.get('/api/characteristics').success(function (data, status, headers, config) {
@@ -119,6 +110,7 @@ angular.module('colls')
                                more: false
                 };
                 $cookies.putObject('collsListFilter', ctrl.filter);
+                console.log("filter", JSON.stringify(ctrl.filter));
             }
 
             //todo:remove this bicycle from india
@@ -144,9 +136,10 @@ angular.module('colls')
 
                     ((ctrl.filter.characteristic_attr1_addition != null) ? item.characteristic_attr1_addition == ctrl.filter.characteristic_attr1_addition : " ") &&
                     ((ctrl.filter.characteristic_attr2_addition != null) ? item.characteristic_attr2_addition == ctrl.filter.characteristic_attr2_addition : " ") &&
+                    ((ctrl.filter.characteristic_divider != null) ? item.characteristic_divider == ctrl.filter.characteristic_divider : " ");
 
-                    ((ctrl.filter.characteristic_divider != null) ? item.characteristic_divider == ctrl.filter.characteristic_divider : " ")
-                    ;
+                    /*((ctrl.filter.characteristic_divider != null) ? item.characteristic_divider == ctrl.filter.characteristic_divider : " ")*/
+
              };
 
              $scope.collocationsTextFilter = function (item) {//Only for counting

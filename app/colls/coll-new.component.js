@@ -11,12 +11,63 @@ angular.module('colls')
             ctrl.entity = {};
 
 
+            /*(function (object) {
 
+            })*/
+
+            function sendQuery(object){
+                $http.post('./api/collocations', object).success(function (data,status,headers,config){
+                    ctrl.sendingError = false;
+                    console.log("Connect is here!");
+                    ctrl.sended = true;
+                    $timeout(changeSendingStatus, 3000);//todo: it's a crutch, i suppose
+                }).error(function  (data, status, header, config) {
+                    ctrl.sended = false;
+                    ctrl.sendingError = true;
+                    ctrl.notificationMessage = "Код ошибки: " + status;
+                    console.log("Smth wrong");
+                });
+            }
+
+            /**
+             * для загрузки файлов
+             */
+            ctrl.bulkMode = false;
+            ctrl.bulkStatus = false;
+            ctrl.bulkShowColls = false;
+            $scope.file = {};
+            $scope.options = {
+                //Вызывается для каждого выбранного файла
+                change: function (file) {
+                    //В file содержится информация о файле
+                    //Загружаем на сервер
+                    file.$upload('./api/htmlParseSpec', file).then(function (response) {
+                        ctrl.resulting = response.data;
+                        ctrl.bulkStatus = true;
+                    });
+                }
+            };
+
+            ctrl.showBulkAddition = function () {
+                if(ctrl.bulkMode){
+                    ctrl.bulkMode = false;
+                    ctrl.bulkStatus = false;
+                    ctrl.bulkShowColls = false;
+                } else {
+                    ctrl.bulkMode = true;
+                }
+            };
+
+            ctrl.showBulkResult = function () {
+                ctrl.bulkShowColls == true ? ctrl.bulkShowColls = false : ctrl.bulkShowColls = true;
+            };
+
+
+
+            /* On Change functions*/
             ctrl.onChangeCharacteristicQuantity = function () {
-
                 delete ctrl.entity.characteristic_attr2;
                 delete ctrl.entity.characteristic_attr2_addition ;
-
             };
 
             ctrl.onChangeCharacteristicRelationToMain = function () {
@@ -39,53 +90,73 @@ angular.module('colls')
             }
 
 
+            function Test() {
+                this.text_id = ctrl.entity.text_id;
+                this.status = ctrl.entity.status;
+
+            }
+
+            Test.create = function (collocation, page_number) {
+                var object = new Test;
+                object.collocation = collocation;
+                object.page_number = page_number;
+
+                return object
+            };
+
+            function  TestFactory() {
+
+            }
+
             ctrl.onAction = function () {
-                /*  if (!ctrl.condition_for_showing_extensions(ctrl.characteristicAttr1))
-                 ctrl.entity.characteristic_attr1_explicit = ctrl.characteristicAttr1;
-                 else delete ctrl.entity.characteristic_attr1_explicit   ;
-                 if (!ctrl.condition_for_showing_extensions(ctrl.characteristicAttr2))
-                 ctrl.entity.characteristic_attr2_explicit = ctrl.characteristicAttr2;
-                 else  delete ctrl.entity.characteristic_attr2_explicit   ;
-                 */
+                if(ctrl.bulkStatus) {
+                   ctrl.resulting.forEach(function (item) {
 
 
-                $http.post('./api/collocations', ctrl.entity).success(function (data,status,headers,config){
-                    ctrl.sendingError = false;
-                    console.log("Connect is here!");
-                    ctrl.sended = true;
-                    $timeout(changeSendingStatus, 3000);//todo: it's a crutch, i suppose
-                }).error(function  (data, status, header, config) {
-                    ctrl.sended = false;
-                    ctrl.sendingError = true;
-                    ctrl.notificationMessage = "Код ошибки: " + status;
-                    console.log("Smth wrong");
-                });
+                       var testobject = {};
 
+                       for (var key in ctrl.entity) {
+                           testobject[key] = ctrl.entity[key]
+                       }
+
+                       testobject.collocation = item.collocation;
+                       testobject.page_number = item.page_number;
+/*
+
+
+
+*/
+
+                       console.log("Res", JSON.stringify(testobject));
+
+
+                        sendQuery(testobject);
+
+                   });
+                }
+                else {
+                    sendQuery(ctrl.entity);
+                }
             };
 
 
             /*list of texts*/
             $http.get('./api/texts').success(function (data, status, headers, config) {
                 ctrl.textsList = data;
-                console.log("x-Connect is here!",ctrl.textsList);
             }).error(function () {
                 console.log("Smth wrong");
             });
 
             /*list of characteristicsTwo*/
             $http.get('./api/characteristics').success(function (data, status, headers, config) {
-                console.log('This is Data:', data,'\n\n This is Status:',status);
                 ctrl.characteristicTwoList = data;
-                console.log(ctrl.characteristicTwoList);
             }).error(function () {
                 console.log("Smth wrong");
             });
 
             /*list of characteristicsThree*/
             $http.get('./api/characteristicsExpansion').success(function (data, status, headers, config) {
-                console.log('Expansions:', data,'\n\n This is Status:',status);
                 ctrl.characteristicThreeList = data;
-                console.log(ctrl.characteristicThreeList);
 
                 //todo:optimisation
                 $scope.characteristicThreeFilter1 = function (item) {
@@ -106,6 +177,6 @@ angular.module('colls')
         }])
 
 .component('collNew', {
-    templateUrl: 'colls/coll-new.template.html',
+    templateUrl: 'colls/coll-item.template.html',
     controller: 'CollNewCtrl'
 });
