@@ -3,25 +3,24 @@
 angular.module('colls')
 
 
-
     .controller('CollNewCtrl', [
-        '$scope','$http', '$location', '$routeParams', '$timeout',
-        function ($scope, $http, $location,$routeParams,$timeout) {
+        '$scope', '$http', '$location', '$routeParams', '$timeout',
+        function ($scope, $http, $location, $routeParams, $timeout) {
             const ctrl = this;
             ctrl.entity = {};
 
 
             /*(function (object) {
 
-            })*/
+             })*/
 
-            function sendQuery(object){
-                $http.post('./api/collocations', object).success(function (data,status,headers,config){
+            function sendQuery(object) {
+                $http.post('./api/collocations', object).success(function (data, status, headers, config) {
                     ctrl.sendingError = false;
                     console.log("Connect is here!");
                     ctrl.sended = true;
                     $timeout(changeSendingStatus, 3000);//todo: it's a crutch, i suppose
-                }).error(function  (data, status, header, config) {
+                }).error(function (data, status, header, config) {
                     ctrl.sended = false;
                     ctrl.sendingError = true;
                     ctrl.notificationMessage = "Код ошибки: " + status;
@@ -30,26 +29,52 @@ angular.module('colls')
             }
 
             /**
-             * для загрузки файлов
+             * добавление через файл
              */
+            ctrl.bulk = {
+                mode: false,
+                status: false,
+                show: false,
+                file: {},
+                permit: {
+                    allowedType: ["html","htm"],
+                    errorBadType: "Расширение файла должно быть .html или .htm"
+                        },
+                fileName :"",
+                errors: {}
+            };
+
             ctrl.bulkMode = false;
             ctrl.bulkStatus = false;
             ctrl.bulkShowColls = false;
+
             $scope.file = {};
             $scope.options = {
                 //Вызывается для каждого выбранного файла
                 change: function (file) {
                     //В file содержится информация о файле
                     //Загружаем на сервер
-                    file.$upload('./api/htmlParseSpec', file).then(function (response) {
-                        ctrl.resulting = response.data;
-                        ctrl.bulkStatus = true;
-                    });
+
+                    file.$upload('./api/htmlParseSpec', file, ctrl.bulk.permit).then(
+                        function (response) {
+                            console.log('upload success', response);
+                            ctrl.resulting = response.data;
+                            ctrl.bulkStatus = true;
+                            ctrl.bulk.fileName = response.item.filename;
+                            ctrl.bulk.errors = {};// обнуляем
+                        },
+                        function (data) {
+                            console.log('upload error', data);
+                            ctrl.bulk.errors = angular.isArray(ctrl.bulk.errors) ? ctrl.bulk.errors.concat(data.response) : [].concat(data.response);
+                            ctrl.bulkStatus = false;
+                            ctrl.resulting = {};
+                        }
+                    );
                 }
             };
 
             ctrl.showBulkAddition = function () {
-                if(ctrl.bulkMode){
+                if (ctrl.bulkMode) {
                     ctrl.bulkMode = false;
                     ctrl.bulkStatus = false;
                     ctrl.bulkShowColls = false;
@@ -63,19 +88,18 @@ angular.module('colls')
             };
 
 
-
             /* On Change functions*/
             ctrl.onChangeCharacteristicQuantity = function () {
                 delete ctrl.entity.characteristic_attr2;
-                delete ctrl.entity.characteristic_attr2_addition ;
+                delete ctrl.entity.characteristic_attr2_addition;
             };
 
             ctrl.onChangeCharacteristicRelationToMain = function () {
                 delete ctrl.entity.characteristic_attr1;
                 delete ctrl.entity.characteristic_attr2;
-                delete ctrl.entity.characteristic_attr1_addition   ;
-                delete ctrl.entity.characteristic_attr2_addition   ;
-                delete ctrl.entity.characteristic_divider ;
+                delete ctrl.entity.characteristic_attr1_addition;
+                delete ctrl.entity.characteristic_attr2_addition;
+                delete ctrl.entity.characteristic_divider;
             };
 
             ctrl.onChangeCharacteristicSubstantive_lg = function () {
@@ -83,8 +107,6 @@ angular.module('colls')
             };
 
 
-
-            /*todo: for what?*/
             function changeSendingStatus() {
                 ctrl.sended = false;
             }
@@ -104,35 +126,26 @@ angular.module('colls')
                 return object
             };
 
-            function  TestFactory() {
-
-            }
-
             ctrl.onAction = function () {
-                if(ctrl.bulkStatus) {
-                   ctrl.resulting.forEach(function (item) {
+                if (ctrl.bulkStatus) {
+                    ctrl.resulting.forEach(function (item) {
 
 
-                       var testobject = {};
+                        var testobject = {};
 
-                       for (var key in ctrl.entity) {
-                           testobject[key] = ctrl.entity[key]
-                       }
+                        for (var key in ctrl.entity) {
+                            testobject[key] = ctrl.entity[key]
+                        }
 
-                       testobject.collocation = item.collocation;
-                       testobject.page_number = item.page_number;
-/*
+                        testobject.collocation = item.collocation;
+                        testobject.page_number = item.page_number;
 
-
-
-*/
-
-                       console.log("Res", JSON.stringify(testobject));
+                        console.log("Res", JSON.stringify(testobject));
 
 
                         sendQuery(testobject);
 
-                   });
+                    });
                 }
                 else {
                     sendQuery(ctrl.entity);
@@ -176,7 +189,7 @@ angular.module('colls')
             });
         }])
 
-.component('collNew', {
-    templateUrl: 'colls/coll-item.template.html',
-    controller: 'CollNewCtrl'
-});
+    .component('collNew', {
+        templateUrl: 'colls/coll-item.template.html',
+        controller: 'CollNewCtrl'
+    });

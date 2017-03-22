@@ -79,11 +79,14 @@ switch ($route[2]) {
                     $spans = $td->getElementsByTagName('span');
                     $pageNumber = $spans[0]->nodeValue;
                     $collocation = $spans[3]->nodeValue;
+
                     if (count($spans) == 0 || $collocation == null) {
                         continue;
                     }
 
-                    $result[] = array("page_number"=>$pageNumber, "collocation" =>$collocation);
+                    $pageNumber = preg_replace('/[^0-9]/','',$pageNumber);// best finded solution for removing non-breakable space
+
+                    $result[] = array("page_number"=>$pageNumber, "collocation"=>$collocation);
                 }
             }
 
@@ -92,7 +95,6 @@ switch ($route[2]) {
             header('HTTP/ 400 NO_SUCH_API');
         }
         break;
-
 
     case 'collocations':
         if ($route[3]) {
@@ -158,6 +160,7 @@ switch ($route[2]) {
             }
         }
         break;
+
     case 'characteristics':
         if ($route[3]) {
             if (is_numeric($route[3])) {
@@ -209,6 +212,7 @@ switch ($route[2]) {
             }
         }
         break;
+
     case 'characteristicsExpansion':
         if ($route[3]) {
             header('HTTP/ 400 NO_SUCH_API');
@@ -225,6 +229,7 @@ switch ($route[2]) {
             }
         }
         break;
+
     default:
         echo("<script>window.location = '/';</script>");
 }

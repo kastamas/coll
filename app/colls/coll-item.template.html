@@ -38,20 +38,28 @@
             <!--For Bulk-->
             <content-container  ng-if="$ctrl.bulkMode">
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-sm-2">
                         <label class="btn btn-default btn-file">
-                            Выберите Файл <input type="file" oi-file="options" style="display: none;">
+                            Выберите Файл<input type="file" oi-file="options" style="display: none;">
                         </label>
                     </div>
+
                     <content-container ng-if="$ctrl.bulkStatus" >
-                        <div class="col-md-2">
-                            <p class="small">Добавлено в очередь <span class="blue">{{$ctrl.resulting.length}}</span> СС</p>
+                        <div class="col-sm-3 small">
+                            Файл-источник: <span>{{$ctrl.bulk.fileName}}</span>
+                            <br>
+                            Добавлено в очередь <span>{{$ctrl.resulting.length}}</span> СС
+                            <span ng-if=" $ctrl.bulkShowColls"><a ng-click="$ctrl.showBulkResult()">скрыть </a></span>
+                            <span ng-if="!$ctrl.bulkShowColls"><a ng-click="$ctrl.showBulkResult()">показать </a></span>
                         </div>
-                        <div class="col-md-3">
-                            <span ng-if=" $ctrl.bulkShowColls"><a ng-click="$ctrl.showBulkResult()">скрыть словосочетания</a></span>
-                            <span ng-if="!$ctrl.bulkShowColls"><a ng-click="$ctrl.showBulkResult()">показать словосочетания</a></span>
-                        </div>
+
                     </content-container>
+                    <div class="col-sm-5 error-area" ng-if="$ctrl.bulk.errors.length">
+                        <div class="alert alert-error" >
+                            <span ng-repeat="error in $ctrl.bulk.errors"><element-container class="red">Ошибка!:</element-container
+                            > {{error.msg}}<button class="close" ng-click="$ctrl.bulk.errors.length=0">&times;</button><br/></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="row" ng-if="$ctrl.bulkShowColls">
                     <div class="col-md-6">
@@ -68,10 +76,8 @@
                     </div>
                 </div>
                 <hr>
-
             </content-container>
             <!---->
-
             <div class="row">
                 <div class="col-md-5">
 
