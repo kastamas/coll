@@ -57,9 +57,10 @@ footer:hover{
     opacity: 1;
 }
 .navbar{
-    background: #f8f8f8;
+    background: #f1f1f1;
     min-height:30px;
     margin-bottom:0px;
+    border-radius: 0px;
 }
 .navbar li{
     float: left;
@@ -262,10 +263,7 @@ th{
     right:0px;
 }
 
-.navbar{
-    background: #EFEFFF;
-    border-radius: 0px;
-}
+
  .informer{
     position: absolute;
      width: 100px;
