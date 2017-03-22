@@ -77,21 +77,25 @@ switch ($route[2]) {
                 $tds = $tr->getElementsByTagName('td');
                 foreach ($tds as $td) {
                     $spans = $td->getElementsByTagName('span');
-                    $pageNumber = $spans[0]->nodeValue;
-                    $collocation = $spans[3]->nodeValue;
+                    $pageNumber = $spans[0]->nodeValue . $spans[1]->nodeValue;//склейка
+                    $collocation = $spans[2]->nodeValue . $spans[3]->nodeValue . $spans[4]->nodeValue;//склейка
 
                     if (count($spans) == 0 || $collocation == null) {
                         continue;
                     }
 
-                    $pageNumber = preg_replace('/[^0-9]/','',$pageNumber);// best finded solution for removing non-breakable space
+                    $pageNumber = preg_replace('/[^0-9]/','',$pageNumber);// best finded solution for removing non-breakable html spaces from numerals
+
+                    /*$collocation = ; */
+                    $collocation = str_replace("&nbsp;",'',htmlentities($collocation));
 
                     $result[] = array("page_number"=>$pageNumber, "collocation"=>$collocation);
                 }
             }
 
             echo json_encode($result,JSON_UNESCAPED_UNICODE);
-        } else {
+        }
+        else {
             header('HTTP/ 400 NO_SUCH_API');
         }
         break;

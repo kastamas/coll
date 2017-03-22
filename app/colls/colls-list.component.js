@@ -213,7 +213,7 @@ angular.module('colls')
             };
 
             // pagination set up
-            $scope.currentPage = 1;
+            $scope.currentPage = 3;
             $scope.pageSize = 10;
 
 
