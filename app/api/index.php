@@ -76,6 +76,8 @@ switch ($route[2]) {
             foreach ($trs as $tr) {
                 $tds = $tr->getElementsByTagName('td');
                 foreach ($tds as $td) {
+
+
                     $spans = $td->getElementsByTagName('span');
                     $pageNumber = $spans[0]->nodeValue . $spans[1]->nodeValue;//склейка
                     $collocation = $spans[2]->nodeValue . $spans[3]->nodeValue . $spans[4]->nodeValue;//склейка
@@ -85,9 +87,8 @@ switch ($route[2]) {
                     }
 
                     $pageNumber = preg_replace('/[^0-9]/','',$pageNumber);// best finded solution for removing non-breakable html spaces from numerals
-
-                    /*$collocation = ; */
                     $collocation = str_replace("&nbsp;",'',htmlentities($collocation));
+
 
                     $result[] = array("page_number"=>$pageNumber, "collocation"=>$collocation);
                 }

@@ -41,12 +41,65 @@ angular.module('colls')
                     errorBadType: "Расширение файла должно быть .html или .htm"
                         },
                 fileName :"",
-                errors: {}
+                errors: {},
+
+                editing: undefined,
+
+
+                edit: function (id) {
+                    ctrl.bulk.editing = id;
+                },
+                save: function (status) {
+
+                    if (status){
+                        //получаю доступ к объекту и меняю его
+                        //топорнейшее решение Todo: improve
+                        ctrl.resulting.forEach(function (item,i) {
+                            if (i === ctrl.bulk.editing) {
+                                if(ctrl.bulk.newValueColl){
+                                    ctrl.resulting[i].collocation = ctrl.bulk.newValueColl;
+                                }
+                                if(ctrl.bulk.newValuePage){
+                                    ctrl.resulting[i].page_number = ctrl.bulk.newValuePage;
+                                }
+
+                            }
+                        });
+                    }
+                    ctrl.bulk.editing = undefined;
+                    ctrl.bulk.newValueColl = undefined;
+                    ctrl.bulk.newValuePage = undefined;
+                },
+                delete: function (item_id) {
+                    ctrl.resulting.forEach(function (item,i) {
+                        if (i === item_id) {
+                            ctrl.resulting.splice(i,1);
+                        }
+                    });
+                },
+                showAddition:  function () {
+                    if (ctrl.bulk.mode) {
+                        ctrl.bulk.mode = false;
+                        ctrl.bulk.status = false;
+                        ctrl.bulk.show = false;
+                    } else {
+                        ctrl.bulk.mode = true;
+                    }
+                },
+                showResult: function () {
+                    ctrl.bulk.show == true ? ctrl.bulk.show = false : ctrl.bulk.show = true;
+                },
+                keyCatcher: function (keyEvent) { // todo: there is a way to grow
+                    if (keyEvent.which === 13) // enter
+                        ctrl.bulk.save(true);
+                    if (keyEvent.which === 27)// esc
+                        ctrl.bulk.save(false);
+                    console.log(keyEvent);
+                }
             };
 
-            ctrl.bulkMode = false;
-            ctrl.bulkStatus = false;
-            ctrl.bulkShowColls = false;
+
+
 
             $scope.file = {};
             $scope.options = {
@@ -59,33 +112,20 @@ angular.module('colls')
                         function (response) {
                             console.log('upload success', response);
                             ctrl.resulting = response.data;
-                            ctrl.bulkStatus = true;
+                            ctrl.bulk.status = true;
                             ctrl.bulk.fileName = response.item.filename;
                             ctrl.bulk.errors = {};// обнуляем
                         },
                         function (data) {
                             console.log('upload error', data);
                             ctrl.bulk.errors = angular.isArray(ctrl.bulk.errors) ? ctrl.bulk.errors.concat(data.response) : [].concat(data.response);
-                            ctrl.bulkStatus = false;
+                            ctrl.bulk.status = false;
                             ctrl.resulting = {};
                         }
                     );
                 }
             };
 
-            ctrl.showBulkAddition = function () {
-                if (ctrl.bulkMode) {
-                    ctrl.bulkMode = false;
-                    ctrl.bulkStatus = false;
-                    ctrl.bulkShowColls = false;
-                } else {
-                    ctrl.bulkMode = true;
-                }
-            };
-
-            ctrl.showBulkResult = function () {
-                ctrl.bulkShowColls == true ? ctrl.bulkShowColls = false : ctrl.bulkShowColls = true;
-            };
 
 
             /* On Change functions*/
@@ -127,7 +167,7 @@ angular.module('colls')
             };
 
             ctrl.onAction = function () {
-                if (ctrl.bulkStatus) {
+                if (ctrl.bulk.status) {
                     ctrl.resulting.forEach(function (item) {
 
 

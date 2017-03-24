@@ -23,20 +23,20 @@
     </div>
     <!--->
     <!--For Bulk-->
-    <div ng-if="$ctrl.bulkMode">
-        <h2 class="page-header">Добавление словосочетаний <span class="blue"><a ng-click="$ctrl.showBulkAddition()">вернуться к обычному добавлению</a></span>
+    <div ng-if="$ctrl.bulk.mode">
+        <h2 class="page-header">Добавление словосочетаний <span class="blue"><a ng-click="$ctrl.bulk.showAddition()">вернуться к обычному добавлению</a></span>
         </h2>
     </div>
     <!---->
 
-    <h2 ng-if="$ctrl.entityId == undefined && !$ctrl.bulkMode" class="page-header">Добавление словосочетания <span
-            class="blue"><a ng-click="$ctrl.showBulkAddition()">добавить из файла</a></span></h2>
+    <h2 ng-if="$ctrl.entityId == undefined && !$ctrl.bulk.mode" class="page-header">Добавление словосочетания <span
+            class="blue"><a ng-click="$ctrl.bulk.showAddition()">добавить из файла</a></span></h2>
 
     <div ng-if="$ctrl.textsList.length != '0'">
         <form name="form" ng-submit="$ctrl.onAction()" class="stylish-form" novalidate>
 
             <!--For Bulk-->
-            <content-container  ng-if="$ctrl.bulkMode">
+            <content-container  ng-if="$ctrl.bulk.mode">
                 <div class="row">
                     <div class="col-sm-2">
                         <label class="btn btn-default btn-file">
@@ -44,13 +44,13 @@
                         </label>
                     </div>
 
-                    <content-container ng-if="$ctrl.bulkStatus" >
-                        <div class="col-sm-3 small">
+                    <content-container ng-if="$ctrl.bulk.status" >
+                        <div class="col-sm-4 small">
                             Файл-источник: <span>{{$ctrl.bulk.fileName}}</span>
                             <br>
                             Добавлено в очередь <span>{{$ctrl.resulting.length}}</span> СС
-                            <span ng-if=" $ctrl.bulkShowColls"><a ng-click="$ctrl.showBulkResult()">скрыть </a></span>
-                            <span ng-if="!$ctrl.bulkShowColls"><a ng-click="$ctrl.showBulkResult()">показать </a></span>
+                            <span ng-if=" $ctrl.bulk.show"><a ng-click="$ctrl.bulk.showResult()">скрыть </a></span>
+                            <span ng-if="!$ctrl.bulk.show"><a ng-click="$ctrl.bulk.showResult()">показать </a></span>
                         </div>
 
                     </content-container>
@@ -61,17 +61,33 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" ng-if="$ctrl.bulkShowColls">
+                <div class="row" ng-if="$ctrl.bulk.show">
                     <div class="col-md-6">
-                        <table>
+                        <table class="table table-striped table-custom">
+                            <thead>
                             <tr>
                                 <th>Словосочетание</th>
                                 <th>Страница</th>
+                                <th></th>
+                                <th></th>
                             </tr>
-                            <tr ng-repeat="item in $ctrl.resulting">
-                                <td>{{item.collocation}}</td>
-                                <td>{{item.page_number}}</td>
+                            </thead>
+                            <tbody>
+                            <tr data-ng-repeat="item in $ctrl.resulting">
+                               <!-- <td>{{item.collocation}}</td>-->
+                                <td ng-if=" $ctrl.bulk.editing != $index">{{item.collocation}}</td>
+                                <td ng-if=" $ctrl.bulk.editing != $index">{{item.page_number}}</td>
+
+                                <td ng-if=" $ctrl.bulk.editing == $index"><input type="text"   ng-value="item.collocation"  ng-model="$ctrl.bulk.newValueColl" ng-keypress="$ctrl.bulk.keyCatcher($event)"></td>
+                                <td ng-if=" $ctrl.bulk.editing == $index"><input type="number" ng-value="item.page_number"  ng-model="$ctrl.bulk.newValuePage" ng-keypress="$ctrl.bulk.keyCatcher($event)"></td>
+                                <input ng-if=" $ctrl.bulk.editing == $index" type="hidden" ng-keypress="$ctrl.bulk.keyCatcher($event)">
+
+                                <td ng-if=" $ctrl.bulk.editing != $index"><a ng-click="$ctrl.bulk.edit($index)">редактировать</a></td>
+                                <td ng-if=" $ctrl.bulk.editing != $index"><a ng-click="$ctrl.bulk.delete($index)">убрать</a></td>
+                                <td ng-if=" $ctrl.bulk.editing == $index"><a ng-click="$ctrl.bulk.save(true)" >сохранить</a></td>
+                                <td ng-if=" $ctrl.bulk.editing == $index"><a ng-click="$ctrl.bulk.save(false)">отмена</a></td>
                             </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -96,9 +112,7 @@
                     <div ng-show="$ctrl.entityId == undefined || $ctrl.editTextId == true ">
 
                         <label for="collText_id" class="red">Относится к тексту*</label> <br>
-                        <!--<select id="collText_id" ng-model="$ctrl.entity.text_id" class="form-control" required>
-                            <option data-ng-repeat="item in $ctrl.textsList | orderBy:'title':false " value="{{item.id}}">{{item.title}}</option>
-                        </select> -->
+
                         <select id="collText_id"
                                 ng-model="$ctrl.entity.text_id"
                                 class="form-control"
@@ -106,7 +120,7 @@
                                 required>
 
                         </select>
-                        <element-container ng-if="!$ctrl.bulkMode">
+                        <element-container ng-if="!$ctrl.bulk.mode">
                             <br>
                         </element-container>
 
@@ -114,7 +128,7 @@
 
                     </div>
                     <!--New-Coll end-->
-                    <content-container ng-if="!$ctrl.bulkMode">
+                    <content-container ng-if="!$ctrl.bulk.mode">
                         <label for="collName" class="red">Словосочетание*</label> <br>
                         <input class="text form-control" ng-model="$ctrl.entity.collocation" name="title" id="collName"
                                type="text" required/>
@@ -320,7 +334,7 @@
                 <button type="submit" title="Остались незаполненные обязательные поля!" class="btn btn-default btn-lg"
                         value="добавить" ng-class="{'disabled':form.$error.required}"
                         ng-disabled="form.$error.required"
-                        ng-if="!$ctrl.bulkMode"
+                        ng-if="!$ctrl.bulk.mode"
                 >добавить
                 </button>
 
@@ -328,7 +342,7 @@
                 <button type="submit" title="Остались незаполненные обязательные поля!" class="btn btn-default btn-lg"
                         value="добавить" ng-class="{'disabled':form.$error.required}"
                         ng-disabled="form.$error.required"
-                        ng-if="$ctrl.bulkMode"
+                        ng-if="$ctrl.bulk.mode"
                 >добавить {{$ctrl.resulting.length}} СС
                 </button>
                 <!---->
