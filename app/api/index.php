@@ -103,13 +103,28 @@ switch ($route[2]) {
 
     case 'collocations':
         if ($route[3]) {
-            if (is_numeric($route[3])) {
+            //if (is_numeric($route[3])) {
+            if ($route[3]) {
+
                 if ($method === 'GET') {
-                    $result = $collCRUD->getCollocation($route[3]);
+                    $explodedString = explode("?", $route[3]);
+                    $id = $explodedString[0];
+                    $options = json_decode(urldecode($explodedString[1]), true);
+
+                    $result = $collCRUD->getCollocation($id);
                     if ($result === false) {
                         header('HTTP/ 404 NOT_FOUND ');
                         exit();
                     }
+                    //echo json_encode($result);
+
+                    $surroundings = $collCRUD->getCollocationSurroundings($id, $options);
+                    if ($surroundings === false) {
+                        header('HTTP/ 400 QUERY_ERROR');
+                        exit();
+                    }
+                    $result["surroundings"] = $surroundings;
+
                     echo json_encode($result);
                 }
                 if ($method === 'PUT') {
@@ -165,6 +180,8 @@ switch ($route[2]) {
             }
         }
         break;
+
+
 
     case 'characteristics':
         if ($route[3]) {

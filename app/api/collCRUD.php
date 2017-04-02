@@ -102,6 +102,170 @@ class collCRUD
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getCollocationSurroundings($id, $options) {
+        $params = $this->setCollocationFilterFields($options);//filter
+        $fields = join(' AND ',$params['fields']);
+
+        if (count($params['fields']) == 0) {
+            // запрос на общее число сс
+            $query_str = "SELECT COUNT(id) as total  FROM " . self::$collocations;
+
+        } else {
+            // запрос на общее число сс c фильтром
+            $query_str = "SELECT COUNT(id) as total  FROM " . self::$collocations . " WHERE " . $fields;
+        }
+        $query = $this->pdo->prepare($query_str);
+        $query->execute($params['replacements']);
+        $total = $query->fetch(PDO::FETCH_ASSOC);
+
+
+
+     /*
+        if (count($params['fields']) == 0) {
+            $query_str = "SELECT id FROM " . self::$collocations . "  ORDER BY " . $options['rows'] ." " . $direction;//highlighted warning is ok
+        } else {
+            /HARDCODE
+            if($options['rows'] == 'page_number'){
+                $query_str = "SELECT id FROM " . self::$collocations . " WHERE " . $fields . " ORDER BY " . $options['rows'] ." " . $direction . " , created_at " . $direction ;//highlighted warning is ok todo:fix
+            } else {
+                $query_str = "SELECT id FROM " . self::$collocations . " WHERE " . $fields . " ORDER BY  " . $options['rows'] ." " . $direction;//highlighted warning is ok todo:fix
+            }
+        }*/
+        if($options['reverse']){
+            $direction = "DESC";
+        } else {
+            $direction = "ASC";
+        }
+
+        if ($options['rows']== "page_number"){
+            $order = "page_number ".$direction." , created_at ".$direction;
+        } else {
+            $order = "created_at ".$direction;
+        }
+
+        if (count($params['fields']) == 0) {
+            $query_str = "SELECT id FROM " . self::$collocations . "  ORDER BY " . $order;//highlighted warning is ok
+        } else {
+            $query_str = "SELECT id FROM " . self::$collocations . " WHERE " . $fields . " ORDER BY  " . $order;//highlighted warning is ok todo:fix
+        }
+
+        $query = $this->pdo->prepare($query_str);
+        $query->execute($params['replacements']);
+
+        $collection = $query->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+        //перебор отфильтрованного и отсортированного массива айдишников словосочетаний
+        foreach($collection as $key => $value){
+            if($value["id"] == $id) {
+                $current = $key + 1;
+                break;
+            }
+        }
+
+        $prev = $collection[$current - 2];
+        $next = $collection[$current];
+
+        $surroundings = $total;
+        $surroundings["previous"] = $prev["id"];
+        $surroundings["next"] = $next["id"];
+        $surroundings["current"] = $current;
+
+        return $surroundings;
+    }
+
+    /*indian boy*/
+    public function setCollocationFilterFields($data){
+        $updateFields = [];
+        $replacements = [];
+
+        if ($data['text_id']) {
+            array_push($updateFields, "text_id = :text_id");
+            $replacements["text_id"] = $data['text_id'];
+        }
+
+        if ($data['status'] && strlen($data['status']) < 2) {
+            array_push($updateFields, "status = :status");
+            $replacements["status"] = $data['status'];
+        }
+
+        if ($data['collocation']) {
+            array_push($updateFields, "collocation = :collocation");
+            $replacements["collocation"] = $data['collocation'];
+        }
+
+        if ($data['page_number']) {
+            array_push($updateFields, "page_number = :page_number");
+            $replacements["page_number"] = $data['page_number'];
+        }
+
+        if ($data['characteristic_quantity'] != 'any') {
+            array_push($updateFields, "characteristic_quantity = :characteristic_quantity");
+            $replacements["characteristic_quantity"] = $data['characteristic_quantity'];
+        }
+
+        if ($data['characteristic_relation_to_main'] != 'any') {
+            array_push($updateFields, "characteristic_relation_to_main = :characteristic_relation_to_main");
+            $replacements["characteristic_relation_to_main"] = $data['characteristic_relation_to_main'];
+        }
+
+        //todo: strange situation with the null values
+        if ($data['characteristic_attr1']) {
+            array_push($updateFields, "characteristic_attr1 = :characteristic_attr1");
+            $replacements["characteristic_attr1"] = $data['characteristic_attr1'];
+        }
+
+        if ($data['characteristic_attr2']) {
+            array_push($updateFields, "characteristic_attr2 = :characteristic_attr2");
+            $replacements["characteristic_attr2"] = $data['characteristic_attr2'];
+        }
+
+        if ($data['characteristic_divider']) {
+            array_push($updateFields, "characteristic_divider = :characteristic_divider");
+            $replacements["characteristic_divider"] = $data['characteristic_divider'];
+        }
+
+        if ($data['characteristic_attr1_addition']) {
+            array_push($updateFields, "characteristic_attr1_addition = :characteristic_attr1_addition");
+            $replacements["characteristic_attr1_addition"] = $data['characteristic_attr1_addition'];
+        }
+
+        if ($data['characteristic_attr2_addition']) {
+            array_push($updateFields, "characteristic_attr2_addition = :characteristic_attr2_addition");
+            $replacements["characteristic_attr2_addition"] = $data['characteristic_attr2_addition'];
+        }
+
+
+        if ($data['characteristic_preposition'] != 'any') {
+            array_push($updateFields, "characteristic_preposition = :characteristic_preposition");
+            $replacements["characteristic_preposition"] = $data['characteristic_preposition'];
+        }
+
+
+        if ($data['characteristic_substantive_lg'] != 'any') {
+            array_push($updateFields, "characteristic_substantive_lg = :characteristic_substantive_lg");
+            $replacements["characteristic_substantive_lg"] = $data['characteristic_substantive_lg'];
+        }
+
+        if ($data['characteristic_substantive_lg_explicit'] != 'any')  {
+            array_push($updateFields, "characteristic_substantive_lg_explicit = :characteristic_substantive_lg_explicit");
+            $replacements["characteristic_substantive_lg_explicit"] = $data['characteristic_substantive_lg_explicit'];
+        }
+
+        if ($data['characteristic_substantive_animacy'] != 'any') {
+            array_push($updateFields, "characteristic_substantive_animacy = :characteristic_substantive_animacy");
+            $replacements["characteristic_substantive_animacy"] = $data['characteristic_substantive_animacy'];
+        }
+
+        if ($data['characteristic_substantive_case'] != 'any') {
+            array_push($updateFields, "characteristic_substantive_case = :characteristic_substantive_case");
+            $replacements["characteristic_substantive_case"] = $data['characteristic_substantive_case'];
+        }
+
+        return array('fields' => $updateFields, 'replacements' => $replacements);
+    }
+
     public function deleteCollocation($id) {
         $query_str = "DELETE FROM  " . self::$collocations . " WHERE id = :id ";
 
@@ -128,7 +292,7 @@ class collCRUD
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 
-   /* public function createCharacteristic($data) {
+   /* public function createCharacteeristic($data) {
 
          $query_str = "INSERT INTO " . self::$characteristics . " ( characteristic) VALUES (lower(:characteristic)) RETURNING *";
          $params = array(
@@ -315,6 +479,7 @@ class collCRUD
 
         return array('fields' => $updateFields, 'replacements' => $replacements);
     }
+
 
     public function updateCollocation($data) {
 

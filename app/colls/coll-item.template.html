@@ -1,12 +1,12 @@
 <!--For Coll-Edit | Arrows-->
-<div ng-show="$ctrl.entityId != undefined">
-    <a href="#/colls/edit/{{$ctrl.collectionPrevious}}" ng-show="$ctrl.collectionPrevious !==undefined">
+<div ng-if="$ctrl.entityId != undefined">
+    <a href="#/colls/edit/{{$ctrl.entity.surroundings.previous}}" ng-if="$ctrl.entity.surroundings.previous !== null">
         <div class="page__navigation left-align" title="предыдущее">
             <span class="collection_prev glyphicon glyphicon-menu-left" aria-hidden="true"></span>
         </div>
     </a>
 
-    <a href="#/colls/edit/{{$ctrl.collectionNext}}" ng-show="$ctrl.collectionNext!==undefined">
+    <a href="#/colls/edit/{{$ctrl.entity.surroundings.next}}" ng-if="$ctrl.entity.surroundings.next !== null">
         <div class="page__navigation right-align" title="следующее">
             <span class="collection_prev glyphicon glyphicon-menu-right" aria-hidden="true"></span>
         </div>
@@ -18,8 +18,10 @@
 <div class="container">
     <!--For Edit-->
     <div ng-if="$ctrl.entityId != undefined">
-        <h2 class="page-header">Изменение словосочетания <span class="blue">{{$ctrl.collectionCurrent}}</span><span>/{{$ctrl.collectionQuantity}}</span>
+        <h2 class="page-header">Изменение словосочетания <span class="blue">{{$ctrl.entity.surroundings.current}}</span><span>/{{$ctrl.entity.surroundings.total}}</span>
         </h2>
+
+
     </div>
     <!--->
     <!--For Bulk-->

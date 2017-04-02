@@ -17,6 +17,79 @@ angular.module('colls')
 
             const ctrl = this;
 
+
+
+            // sorting set up
+            if($cookies.getObject('collsListSort')){
+                ctrl.sorting = $cookies.getObject('collsListSort');
+            } else {
+                ctrl.sorting = {rows:"created_at", reverse:true};
+                $cookies.putObject('collsListSort', ctrl.sorting);
+            }
+
+            // filter set up
+            if($cookies.getObject('collsListFilter')){
+                ctrl.filter = $cookies.getObject('collsListFilter');
+            }  else{
+                ctrl.filter = {
+                    text_id: null,
+                    status: "any",
+                    characteristic_quantity: "any",
+                    characteristic_relation_to_main: "any",
+                    characteristic_preposition: "any",
+
+                    characteristic_substantive_lg: "any",
+                    characteristic_substantive_lg_explicit: "any",
+                    characteristic_substantive_animacy: "any",
+                    characteristic_substantive_case: "any",
+
+                    characteristic_attr1: null,
+                    characteristic_attr2: null,
+                    characteristic_divider: null,
+
+                    characteristic_attr1_addition: null,
+                    characteristic_attr2_addition: null,
+
+                    more: false
+                };
+                $cookies.putObject('collsListFilter', ctrl.filter);
+                console.log("filter", JSON.stringify(ctrl.filter));
+            }
+
+            ctrl.showMoreFilters = function () {
+                ctrl.filter.more == true ? ctrl.filter.more = false : ctrl.filter.more = true;
+            };
+
+            ctrl.resetFilter = function (text_id) {
+                ctrl.filter = {
+                    text_id: text_id,
+                    status: "any",
+                    characteristic_quantity: "any",
+                    characteristic_relation_to_main: "any",
+                    characteristic_preposition: "any",
+
+                    characteristic_substantive_lg: "any",
+                    characteristic_substantive_lg_explicit: "any",
+                    characteristic_substantive_animacy: "any",
+                    characteristic_substantive_case: "any",
+
+                    characteristic_attr1: null,
+                    characteristic_attr2: null,
+                    characteristic_divider: null,
+
+                    characteristic_attr1_addition: null,
+                    characteristic_attr2_addition: null,
+
+
+                    more: true
+                };
+            };
+
+            ctrl.statistic = function () {
+                var statistic = {all: ctrl.collectionSorted.length};
+                alert("Cловосочетаний по фильтру: " + statistic.all);
+            };
+
             //list of colls
             $http.get('/api/collocations').success(function (data, status, headers, config) {
                 ctrl.list = data;
@@ -68,51 +141,6 @@ angular.module('colls')
 
 
 
-
-
-
-
-            // sorting set up
-            if($cookies.getObject('collsListSort')){
-                ctrl.sorting = $cookies.getObject('collsListSort');
-            } else {
-                ctrl.sorting = {rows:"created_at", reverse:true};
-                $cookies.putObject('collsListSort', ctrl.sorting);
-            }
-
-
-
-
-
-
-            // filter set up
-            if($cookies.getObject('collsListFilter')){
-                ctrl.filter = $cookies.getObject('collsListFilter');
-            }  else{
-                ctrl.filter = {text_id: null,
-                               status: "any",
-                               characteristic_quantity: "any",
-                               characteristic_relation_to_main: "any",
-                               characteristic_preposition: "any",
-
-                               characteristic_substantive_lg: "any",
-                               characteristic_substantive_lg_explicit: "any",
-                               characteristic_substantive_animacy: "any",
-                               characteristic_substantive_case: "any",
-
-                               characteristic_attr1: null,
-                               characteristic_attr2: null,
-                               characteristic_divider: null,
-
-                               characteristic_attr1_addition: null,
-                               characteristic_attr2_addition: null,
-
-                               more: false
-                };
-                $cookies.putObject('collsListFilter', ctrl.filter);
-                console.log("filter", JSON.stringify(ctrl.filter));
-            }
-
             //todo:remove this bicycle from india
             $scope.collocationsMainFilter = function (item)
             {
@@ -137,9 +165,6 @@ angular.module('colls')
                     ((ctrl.filter.characteristic_attr1_addition != null) ? item.characteristic_attr1_addition == ctrl.filter.characteristic_attr1_addition : " ") &&
                     ((ctrl.filter.characteristic_attr2_addition != null) ? item.characteristic_attr2_addition == ctrl.filter.characteristic_attr2_addition : " ") &&
                     ((ctrl.filter.characteristic_divider != null) ? item.characteristic_divider == ctrl.filter.characteristic_divider : " ");
-
-                    /*((ctrl.filter.characteristic_divider != null) ? item.characteristic_divider == ctrl.filter.characteristic_divider : " ")*/
-
              };
 
              $scope.collocationsTextFilter = function (item) {//Only for counting
@@ -187,30 +212,7 @@ angular.module('colls')
                 console.log("New Collection", collection);
             };
 
-            ctrl.clearFilter = function (text_id) {
-                ctrl.filter = {
-                    text_id: text_id,
-                    status: "any",
-                    characteristic_quantity: "any",
-                    characteristic_relation_to_main: "any",
-                    characteristic_preposition: "any",
 
-                    characteristic_substantive_lg: "any",
-                    characteristic_substantive_lg_explicit: "any",
-                    characteristic_substantive_animacy: "any",
-                    characteristic_substantive_case: "any",
-
-                    characteristic_attr1: null,
-                    characteristic_attr2: null,
-                    characteristic_divider: null,
-
-                    characteristic_attr1_addition: null,
-                    characteristic_attr2_addition: null,
-
-
-                    more: true
-                };
-            };
 
             // pagination set up
             $scope.currentPage = 3;
@@ -243,15 +245,8 @@ angular.module('colls')
                     }
             };
 
-            ctrl.showMoreFilters = function () {
-                ctrl.filter.more == true ? ctrl.filter.more = false : ctrl.filter.more = true;
-            };
-
-            ctrl.statistic = function () {
-                var statistic = {all: ctrl.collectionSorted.length};
-                alert("Cловосочетаний по фильтру: " + statistic.all);
-            };
         });
+
     }])
 
     .component('collsList', {

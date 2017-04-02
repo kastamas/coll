@@ -1,4 +1,5 @@
 <?php
+/*todo: it should be refactored!*/
 require_once "config.php";
 
 class fileActions

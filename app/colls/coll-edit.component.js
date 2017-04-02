@@ -9,23 +9,17 @@ angular.module('colls')
             const ctrl = this;
 
             ctrl.entity = {};
-
             ctrl.entityId = $routeParams.collId;
-            console.log("Айдишенька",$routeParams.collId);
-            console.log("Айдишенька",$routeParams);
-
             ctrl.editTextId = false;
+
             ctrl.displayTextIdSwitcher = function () {
                 ctrl.editTextId == true ? ctrl.editTextId = false : ctrl.editTextId = true;
-
-
             };
 
             // Запрос на тексты
             /* list of texts*/
             $http.get('/api/texts').success(function (data, status, headers, config) {
                 ctrl.textsList = data;
-                console.log("x-Connect is here!",ctrl.textsList);
             }).error(function () {
                 console.log("Smth wrong");
             });
@@ -52,9 +46,21 @@ angular.module('colls')
                 delete ctrl.entity.characteristic_substantive_lg_explicit;
             };
 
-            /*collocation inf*/
-            $http.get('/api/collocations/' + ctrl.entityId).success( function(data, status){
+            //get filter & sort from cookies
+            const filter = $cookies.getObject('collsListFilter');
+            const sort = $cookies.getObject('collsListSort');
+            var options = filter;
+                options.reverse = sort.reverse;
+                options.rows = sort.rows;
+
+            var parameters = encodeURIComponent(JSON.stringify(options));
+            console.log("Параметры", parameters);
+
+            /* collocation inf*/
+            var queryString = "/api/collocations/" + ctrl.entityId+"?"+parameters;
+            $http.get(queryString ).success( function(data, status){
                 ctrl.entity = data;//Объект с инфой по словосочетанию
+                console.log("RESPONSE", ctrl.entity);
 
                 /*set up*/
                 if (ctrl.entity.characteristic_1 != null)
@@ -64,29 +70,23 @@ angular.module('colls')
                     ctrl.characteristicAttr2 = ctrl.entity.characteristic_2;
                 else    ctrl.characteristicAttr2 = ctrl.entity.characteristic_attr2_explicit;
 
-              /*  ctrl.entity.textId = */
+
+
             }).error(function ()  {
-                console.log("Smth rong");});
+                console.log("Smth rong");
+            });
 
 
             /*list of characteristicsTwo*/
             $http.get('/api/characteristics').success(function (data, status, headers, config) {
-                console.log('This is Data:', data,'\n\n This is Status:',status);
                 ctrl.characteristicTwoList = data;
-
-
-                console.log(ctrl.characteristicTwoList);
             }).error(function () {
                 console.log("Smth wrong");
             });
 
             /*list of characteristicsThree*/
             $http.get('/api/characteristicsExpansion').success(function (data, status, headers, config) {
-                console.log('This is Data:', data,'\n\n This is Status:',status);
                 ctrl.characteristicThreeList = data;
-                console.log(ctrl.characteristicThreeList);
-
-
 
                 //todo:optimisation
                 $scope.characteristicThreeFilter1 = function (item) {
@@ -122,35 +122,6 @@ angular.module('colls')
                     ctrl.notificationMessage = "Код ошибки: " + status;
                 });
             };
-
-
-            //Работа с коллекцией
-            //list of colls
-    /*        $http.get('/api/collocations').success(function (data, status, headers, config) {
-                console.log('This is Data of Collocations:', data,'\n\n This is Status:',status);
-                ctrl.list = data;
-                ctrl.collocationsQuantity = ctrl.list.length;
-            }).error(function () {
-                console.log("Smth wrong");
-            }).then(function (res) {*/
-                var collection = $cookies.getObject('collectionOfColls');
-                var i = 0, curr = 1;
-
-                collection.collectionOfColls.forEach(function (item, i) {
-                    if(item == ctrl.entityId) {
-                        curr = i;
-                    }
-                });
-
-                ctrl.collectionQuantity = collection.collectionOfColls.length;//Length Считается верно хм
-                ctrl.collectionCurrent = curr + 1;//Чтобы счёт вёлся с единицы
-
-                ctrl.collectionPrevious = collection.collectionOfColls[curr - 1];
-                ctrl.collectionNext = collection.collectionOfColls[curr + 1];//
-
-            /*});*/
-
-
 
             //Подгружаю характеристики
             $http.get('jsons/collocation_characteristics.json').then(function (response) {
