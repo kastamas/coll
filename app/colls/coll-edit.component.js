@@ -57,7 +57,7 @@ angular.module('colls')
             console.log("Параметры", parameters);
 
             /* collocation inf*/
-            var queryString = "/api/collocations/" + ctrl.entityId+"?"+parameters;
+            var queryString = "/api/collocation/" + ctrl.entityId+"?"+parameters;
             $http.get(queryString ).success( function(data, status){
                 ctrl.entity = data;//Объект с инфой по словосочетанию
                 console.log("RESPONSE", ctrl.entity);
@@ -112,7 +112,7 @@ angular.module('colls')
                     ctrl.entity.characteristic_attr2_explicit = ctrl.characteristicAttr2;
                 else  delete ctrl.entity.characteristic_attr2_explicit   ;
 */
-                $http.put('/api/collocations/' + ctrl.entityId, ctrl.entity).success(function () {
+                $http.put('/api/collocation/' + ctrl.entityId, ctrl.entity).success(function () {
                     ctrl.sendingError = false;
                     ctrl.sended = true;
                     $timeout(changeSendingStatus, 3000);//todo: it's a crutch, i suppose

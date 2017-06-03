@@ -27,10 +27,16 @@ class collCRUD
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function queryCollocations() {
+    public function queryCollocations($options) {
+        $params = $this->setCollocationFilterFields($options);//filter
+        $fields = join(' AND ',$params['fields']);
 
-        //todo: improve this
-        $query_str  = "SELECT c.*,
+
+        $order = $this->setCollocationSortingFields($options);
+
+        //ToDo:improve this
+        if (count($params['fields']) == 0) {
+            $query_str  = "SELECT c.*,
                               t.title as text_name,
                               ch_1.characteristic as ch_1_name,
                               ch_2.characteristic as ch_2_name,
@@ -45,10 +51,29 @@ class collCRUD
                             LEFT JOIN characteristics AS ch_d ON c.characteristic_divider = ch_d.id
                             LEFT JOIN characteristics_expansion AS ch_ex_1 ON c.characteristic_attr1_addition = ch_ex_1.id
                             LEFT JOIN characteristics_expansion AS ch_ex_2 ON c.characteristic_attr2_addition = ch_ex_2.id
-                        ORDER BY created_at ASC";
+                        ORDER BY " . $order;
+        } else {
+            $query_str  = "SELECT c.*,
+                              t.title as text_name,
+                              ch_1.characteristic as ch_1_name,
+                              ch_2.characteristic as ch_2_name,
+                              ch_d.characteristic as ch_d_name,
+                              ch_ex_1.expansion as ch_addition_1_name,
+                              ch_ex_2.expansion as ch_addition_2_name
+
+                        FROM " . self::$collocations . " AS c
+                            INNER JOIN texts AS t ON c.text_id = t.id
+                            LEFT JOIN characteristics AS ch_1 ON c.characteristic_attr1 = ch_1.id
+                            LEFT JOIN characteristics AS ch_2 ON c.characteristic_attr2 = ch_2.id
+                            LEFT JOIN characteristics AS ch_d ON c.characteristic_divider = ch_d.id
+                            LEFT JOIN characteristics_expansion AS ch_ex_1 ON c.characteristic_attr1_addition = ch_ex_1.id
+                            LEFT JOIN characteristics_expansion AS ch_ex_2 ON c.characteristic_attr2_addition = ch_ex_2.id
+                        WHERE  " .$fields. "   
+                        ORDER BY " . $order;
+        }
 
         $query = $this->pdo->prepare($query_str);
-        $query->execute();
+        $query->execute($params['replacements']);
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -100,6 +125,7 @@ class collCRUD
         $query->execute($params);
 
         return $query->fetch(PDO::FETCH_ASSOC);
+
     }
 
     public function getCollocationSurroundings($id, $options) {
@@ -118,35 +144,12 @@ class collCRUD
         $query->execute($params['replacements']);
         $total = $query->fetch(PDO::FETCH_ASSOC);
 
-
-
-     /*
-        if (count($params['fields']) == 0) {
-            $query_str = "SELECT id FROM " . self::$collocations . "  ORDER BY " . $options['rows'] ." " . $direction;//highlighted warning is ok
-        } else {
-            /HARDCODE
-            if($options['rows'] == 'page_number'){
-                $query_str = "SELECT id FROM " . self::$collocations . " WHERE " . $fields . " ORDER BY " . $options['rows'] ." " . $direction . " , created_at " . $direction ;//highlighted warning is ok todo:fix
-            } else {
-                $query_str = "SELECT id FROM " . self::$collocations . " WHERE " . $fields . " ORDER BY  " . $options['rows'] ." " . $direction;//highlighted warning is ok todo:fix
-            }
-        }*/
-        if($options['reverse']){
-            $direction = "DESC";
-        } else {
-            $direction = "ASC";
-        }
-
-        if ($options['rows']== "page_number"){
-            $order = "page_number ".$direction." , created_at ".$direction;
-        } else {
-            $order = "created_at ".$direction;
-        }
+        $order = $this->setCollocationSortingFields($options);
 
         if (count($params['fields']) == 0) {
             $query_str = "SELECT id FROM " . self::$collocations . "  ORDER BY " . $order;//highlighted warning is ok
         } else {
-            $query_str = "SELECT id FROM " . self::$collocations . " WHERE " . $fields . " ORDER BY  " . $order;//highlighted warning is ok todo:fix
+            $query_str = "SELECT id FROM " . self::$collocations . " WHERE " .$fields. " ORDER BY  " . $order;//highlighted warning is ok todo:fix
         }
 
         $query = $this->pdo->prepare($query_str);
@@ -173,6 +176,20 @@ class collCRUD
         $surroundings["current"] = $current;
 
         return $surroundings;
+    }
+
+    public function setCollocationSortingFields($options){
+        if($options['reverse']){
+            $direction = "DESC";
+        } else {
+            $direction = "ASC";
+        }
+
+        if ($options['rows']== "page_number"){
+            return ("page_number ".$direction." , created_at ".$direction);
+        } else {
+            return ("created_at ".$direction);
+        }
     }
 
     /*indian boy*/

@@ -9,7 +9,7 @@
 </h2>
 
 <!----------------- filters ------------------->
-<div ng-show="$ctrl.list.length != '0'" id="filters">
+<div ng-show="$ctrl.list.length != null" id="filters">
 
     <h6 style="text-transform: uppercase;">основные фильтры</h6>
     <div class="row">
@@ -181,7 +181,7 @@
 
 <!----------------- table --------------------->
 <div class="container closely">
-<div ng-show=" $ctrl.list.length != '0'">
+<div ng-show=" $ctrl.list != null">
 <div ng-show="$ctrl.collsInText.length != 0 && $ctrl.collectionFiltered.length != 0">
 
   <table class="table table-striped table-hover table-custom" style="border: 1px solid #ddd;">
@@ -232,10 +232,10 @@
       </tr>
       </thead>
 
-
+      <pre>{{$ctrl.filter | json}}</pre>
       <tbody>
-          <!--<tr data-ng-repeat="item in $ctrl.collectionSorted">-->
-          <tr data-ng-repeat="item in $ctrl.collectionSorted | limitTo: pageSize : (currentPage -1) * pageSize">
+
+          <tr data-ng-repeat="item in $ctrl.list | limitTo: pageSize : (currentPage -1) * pageSize">
               <!--Status todo:removeCrutch -->
                   <td  class="c danger"    title="Не разобрано"          ng-if="item.status == 'u'" ></td>
                   <td  class="c success"  title="Разобрано"             ng-if="item.status == 'd'" ></td>
@@ -319,7 +319,7 @@
     <paging
          page="currentPage"
          page-size="pageSize"
-         total="$ctrl.collectionSorted.length"
+         total="$ctrl.list.length"
          paging-action="DoCtrlPagingAct('Paging Clicked', page, pageSize, total)"
          text-next="следующая"
          text-prev="предыдущая"
@@ -360,6 +360,6 @@
 
 
 <!----------------- message if empty ------------------->
-<div class="text-message"  ng-show="$ctrl.list.length == '0'">
+<div class="text-message"  ng-show="$ctrl.list == null">
     <p>Пусто. <a href="#/colls/new">Добавить словосочетание.</a></p>
 </div>

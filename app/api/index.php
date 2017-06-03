@@ -102,86 +102,92 @@ switch ($route[2]) {
         break;
 
     case 'collocations':
-        if ($route[3]) {
-            //if (is_numeric($route[3])) {
             if ($route[3]) {
-
                 if ($method === 'GET') {
                     $explodedString = explode("?", $route[3]);
-                    $id = $explodedString[0];
-                    $options = json_decode(urldecode($explodedString[1]), true);
+                    $options = json_decode(urldecode($explodedString[1]),true);
 
-                    $result = $collCRUD->getCollocation($id);
+                    $result = $collCRUD->queryCollocations($options);
                     if ($result === false) {
-                        header('HTTP/ 404 NOT_FOUND ');
+                        header('HTTP/ 400 GET_ERROR');
                         exit();
                     }
-                    //echo json_encode($result);
-
-                    $surroundings = $collCRUD->getCollocationSurroundings($id, $options);
-                    if ($surroundings === false) {
-                        header('HTTP/ 400 QUERY_ERROR');
-                        exit();
-                    }
-                    $result["surroundings"] = $surroundings;
-
                     echo json_encode($result);
                 }
-                if ($method === 'PUT') {
+
+                if ($method === 'POST') {
                     $data = json_decode(file_get_contents('php://input'), true);
+
                     if ($data === null) {
                         header('HTTP/ 400 INCORRECT_INPUT');
                         exit();
                     } else {
-                        $result = $collCRUD->updateCollocation($data);
+                        $result = $collCRUD->createCollocation($data);
                         if ($result === false) {
-                            header('HTTP/ 400 UPDATE_ERROR');
+                            header('HTTP/ 400 CREATE_ERROR');
                             exit();
                         }
                         echo json_encode($result);
                     }
                 }
-                if ($method === 'DELETE') {
-                    //todo:add more security
-                    $result = $collCRUD->deleteCollocation($route[3]);
-                    if ($result === false) {
-                        header('HTTP/ 404 NOT_FOUND');
-                        exit();
-                    }
-                    echo json_encode($result);
-                }
             } else {
                 echo json_encode(array('error' => 'INCORRECT_ID_OR_METHOD'));
             }
-        } else {
+
+        break;
+
+    case 'collocation': {
+        if ($route[3]) {
+
             if ($method === 'GET') {
-                $result = $collCRUD->queryCollocations();
+                $explodedString = explode("?", $route[3]);
+                $id = $explodedString[0];
+                $options = json_decode(urldecode($explodedString[1]), true);
+
+                $result = $collCRUD->getCollocation($id);
                 if ($result === false) {
-                    header('HTTP/ 400 GET_ERROR');
+                    header('HTTP/ 404 NOT_FOUND ');
                     exit();
                 }
+                //echo json_encode($result);
+
+                $surroundings = $collCRUD->getCollocationSurroundings($id, $options);
+                if ($surroundings === false) {
+                    header('HTTP/ 400 QUERY_ERROR');
+                    exit();
+                }
+                $result["surroundings"] = $surroundings;
+
                 echo json_encode($result);
             }
-
-            if ($method === 'POST') {
+            if ($method === 'PUT') {
                 $data = json_decode(file_get_contents('php://input'), true);
-
                 if ($data === null) {
                     header('HTTP/ 400 INCORRECT_INPUT');
                     exit();
                 } else {
-                    $result = $collCRUD->createCollocation($data);
+                    $result = $collCRUD->updateCollocation($data);
                     if ($result === false) {
-                        header('HTTP/ 400 CREATE_ERROR');
+                        header('HTTP/ 400 UPDATE_ERROR');
                         exit();
                     }
                     echo json_encode($result);
                 }
             }
+            if ($method === 'DELETE') {
+                //todo:add more security
+                $result = $collCRUD->deleteCollocation($route[3]);
+                if ($result === false) {
+                    header('HTTP/ 404 NOT_FOUND');
+                    exit();
+                }
+                echo json_encode($result);
+            }
+        } else {
+            echo json_encode(array('error' => 'INCORRECT_ID_OR_METHOD'));
         }
-        break;
-
-
+    }
+    break;
 
     case 'characteristics':
         if ($route[3]) {

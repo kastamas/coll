@@ -4,6 +4,7 @@ RewriteRule ^texts index.php
 RewriteRule ^texts/(.*)$ index.php
 RewriteRule ^collocations index.php
 RewriteRule ^collocations/(.*)$ index.php
+RewriteRule ^collocation/(.*)$ index.php
 RewriteRule ^characteristics index.php
 RewriteRule ^characteristicsExpansion index.php
 RewriteRule ^characteristics/(.*)$ index.php

@@ -91,12 +91,21 @@ angular.module('colls')
             };
 
             //list of colls
-            $http.get('/api/collocations').success(function (data, status, headers, config) {
-                ctrl.list = data;
-                ctrl.collocationsQuantity = ctrl.list.length;//stupid
-            }).error(function () {
-                console.log("Smth wrong");
-            }).then(function (res) {
+            ctrl.updateCollection = function () {
+                var options = ctrl.filter;
+                    options.reverse = ctrl.sorting.reverse;
+                    options.rows = ctrl.sorting.rows;
+
+                var parameters = encodeURIComponent(JSON.stringify(options));
+                $http.get('/api/collocations/?'+parameters).success(function (data, status, headers, config) {
+                    ctrl.list = data;
+                    ctrl.collocationsQuantity = ctrl.list.length;//stupid
+                }).error(function () {
+                    console.log("Smth wrong");
+                });
+
+            };
+
 
             //list of texts
             $http.get('/api/texts').success(function (data, status, headers, config) {
@@ -142,7 +151,7 @@ angular.module('colls')
 
 
             //todo:remove this bicycle from india
-            $scope.collocationsMainFilter = function (item)
+           /* $scope.collocationsMainFilter = function (item)
             {
                 $cookies.putObject('collsListFilter', ctrl.filter);
 
@@ -165,23 +174,22 @@ angular.module('colls')
                     ((ctrl.filter.characteristic_attr1_addition != null) ? item.characteristic_attr1_addition == ctrl.filter.characteristic_attr1_addition : " ") &&
                     ((ctrl.filter.characteristic_attr2_addition != null) ? item.characteristic_attr2_addition == ctrl.filter.characteristic_attr2_addition : " ") &&
                     ((ctrl.filter.characteristic_divider != null) ? item.characteristic_divider == ctrl.filter.characteristic_divider : " ");
-             };
+             };*/
 
-             $scope.collocationsTextFilter = function (item) {//Only for counting
+            /* $scope.collocationsTextFilter = function (item) {//Only for counting
                  return (item.collocation) &&
                         ((ctrl.filter.text_id != 0 && ctrl.filter.text_id != null) ?
                         item.text_id == ctrl.filter.text_id  : " ");
-             };
+             };*/
 
 
 
-            var collectionOfColls = [];
-            var collectionFiltered;
 
             //Слежка за Filter
             $scope.$watchCollection(angular.bind(ctrl, function () {
                 return ctrl.filter;
             }), function( ) {
+                $cookies.putObject('collsListFilter', ctrl.filter);
                 ctrl.updateCollection();
                 console.log("Filter has changed!");
             });
@@ -195,6 +203,7 @@ angular.module('colls')
             });
 
             //for collection | Refactoring in progress
+             /*
             ctrl.updateCollection = function () {
                 ctrl.collectionFiltered = $filter('filter')(ctrl.list, $scope.collocationsMainFilter);
 
@@ -211,7 +220,7 @@ angular.module('colls')
                 $cookies.putObject('collectionOfColls', collection);
                 console.log("New Collection", collection);
             };
-
+*/
 
 
             // pagination set up
@@ -231,7 +240,7 @@ angular.module('colls')
 
             ctrl.delete = function (item_id, collocation) {
                 if( confirm("Словосочетание «"+ collocation + "» будет удалено.") ) {
-                        $http.delete('/api/collocations/' + item_id).success(function (data, status) {
+                        $http.delete('/api/collocation/' + item_id).success(function (data, status) {
                             //топорнейшее решение, но должно сработать
                             ctrl.list.forEach(function (item,i) {
                                 if (item.id === item_id) {
@@ -244,9 +253,6 @@ angular.module('colls')
                         });
                     }
             };
-
-        });
-
     }])
 
     .component('collsList', {
