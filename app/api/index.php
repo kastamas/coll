@@ -137,7 +137,6 @@ switch ($route[2]) {
         break;
 
     case 'collocation': {
-    if ($route[3]) {
         if ($route[3]) {
 
             if ($method === 'GET') {
@@ -187,32 +186,6 @@ switch ($route[2]) {
         } else {
             echo json_encode(array('error' => 'INCORRECT_ID_OR_METHOD'));
         }
-        } else {
-                      if ($method === 'GET') {
-                          $result = $collCRUD->queryCollocations();
-                          if ($result === false) {
-                              header('HTTP/ 400 GET_ERROR');
-                              exit();
-                          }
-                          echo json_encode($result);
-                      }
-
-                      if ($method === 'POST') {
-                          $data = json_decode(file_get_contents('php://input'), true);
-
-                          if ($data === null) {
-                              header('HTTP/ 400 INCORRECT_INPUT');
-                              exit();
-                          } else {
-                              $result = $collCRUD->createCollocation($data);
-                              if ($result === false) {
-                                  header('HTTP/ 400 CREATE_ERROR');
-                                  exit();
-                              }
-                              echo json_encode($result);
-                          }
-                      }
-
     }
     break;
 
