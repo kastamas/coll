@@ -15,7 +15,7 @@ angular.module('colls')
              })*/
 
             function sendQuery(object) {
-                $http.post('./api/collocations', object).success(function (data, status, headers, config) {
+                $http.post('./api/collocation', object).success(function (data, status, headers, config) {
                     ctrl.sendingError = false;
                     console.log("Connect is here!");
                     ctrl.sended = true;
