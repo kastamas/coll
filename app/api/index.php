@@ -136,7 +136,7 @@ switch ($route[2]) {
 
         break;
 
-    case 'collocation': {
+    case 'collocation':
     if ($route[3]) {
 
 
@@ -289,4 +289,5 @@ switch ($route[2]) {
 
     default:
         echo("<script>window.location = '/';</script>");
+
 }
