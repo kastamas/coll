@@ -11,22 +11,23 @@
 - Uses *POD* And *postgreSQL* (version 9.2.x) and all it on Apache (that's important!)
 - Routing system between back and front is build on `.htaccess` relations 
 - No migrations systems is enabled. 
+- db *config* lies in `app/api/config.php`
 
 AngularJS and some other modules installing via 
 
-### How to initialize environment
+## How to initialize environment
 
 0. Install [LAMP](http://help.ubuntu.ru/wiki/apachemysqlphp), but instead of *MySql* you should install *PostgreSQL*
-2. Enable .htaccess in Apache HTTP server
+2. Enable `.htaccess` in Apache HTTP server
 1. Do the git clone in your folder which *Apache* can see (by default it's `/var/www/html`)
 2. Install bower, Do the bower update 
-4. Configure PostgreSQL 
-5. Create new db user for PostgreSQL (if it's necessary) and database `coll`
+4. Configure *PostgreSQL* 
+5. Create new db user *postgres* for *PostgreSQL* and database `coll`
 6. Migrate dump (you can get it from *production*)
 
 that's it!
 
 _in case of any exeptions and errors_
  1. look at the apache's error logs
- 2. look at the dev's browser's console (i prefer chrome)
+ 2. look at the browser's developers console (i prefer chrome)
  3. look at the versions of software packages. Like i said before, it's *important*!
