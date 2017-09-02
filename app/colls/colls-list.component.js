@@ -111,10 +111,13 @@ angular.module('colls')
 
             ctrl.updateCounters = function() {
                 ctrl.collocationsTotalQuantity = ctrl.quantity.total[0].count;
-                ctrl.collocationsTotalInTextQuantity = ctrl.quantity.totalInText[0].count;
-                ctrl.collocationsFilteredQuantity = ctrl.list.length;
 
-                ctrl.collsFilteredInPercents = (ctrl.collocationsFilteredQuantity / ctrl.collocationsTotalInTextQuantity);
+                if (ctrl.filter.text_id){
+                    ctrl.collocationsTotalInTextQuantity = ctrl.quantity.totalInText[0].count;
+                    ctrl.collocationsFilteredQuantity = ctrl.list.length;
+
+                    ctrl.collsFilteredInPercents = (ctrl.collocationsFilteredQuantity / ctrl.collocationsTotalInTextQuantity);
+                }
             };
 
             //list of texts
@@ -159,38 +162,6 @@ angular.module('colls')
             });
 
 
-
-            //todo:remove this bicycle from india
-           /* $scope.collocationsMainFilter = function (item)
-            {
-                $cookies.putObject('collsListFilter', ctrl.filter);
-
-                //if it works, don't touch it!
-                return (item.collocation) &&
-                    ((ctrl.filter.text_id != 0 && ctrl.filter.text_id != null) ? item.text_id == ctrl.filter.text_id  : " ") &&
-                    ((ctrl.filter.status != "any") ? item.status == ctrl.filter.status : " ") &&
-                    ((ctrl.filter.characteristic_quantity != "any") ? item.characteristic_quantity == ctrl.filter.characteristic_quantity : " ") &&
-                    ((ctrl.filter.characteristic_relation_to_main != "any") ? item.characteristic_relation_to_main == ctrl.filter.characteristic_relation_to_main : " ") &&
-                    ((ctrl.filter.characteristic_preposition != "any") ? item.characteristic_preposition == ctrl.filter.characteristic_preposition : " ") &&
-
-                    ((ctrl.filter.characteristic_substantive_lg != "any") ? item.characteristic_substantive_lg == ctrl.filter.characteristic_substantive_lg : " ") &&
-                    ((ctrl.filter.characteristic_substantive_lg_explicit != "any") ? item.characteristic_substantive_lg_explicit == ctrl.filter.characteristic_substantive_lg_explicit : " ") &&
-                    ((ctrl.filter.characteristic_substantive_animacy != "any") ? item.characteristic_substantive_animacy == ctrl.filter.characteristic_substantive_animacy : " ") &&
-                    ((ctrl.filter.characteristic_substantive_case != "any") ? item.characteristic_substantive_case == ctrl.filter.characteristic_substantive_case : " ") &&
-
-                    ((ctrl.filter.characteristic_attr1 != null) ? item.characteristic_attr1 == ctrl.filter.characteristic_attr1 : " ") &&
-                    ((ctrl.filter.characteristic_attr2 != null) ? item.characteristic_attr2 == ctrl.filter.characteristic_attr2 : " ") &&
-
-                    ((ctrl.filter.characteristic_attr1_addition != null) ? item.characteristic_attr1_addition == ctrl.filter.characteristic_attr1_addition : " ") &&
-                    ((ctrl.filter.characteristic_attr2_addition != null) ? item.characteristic_attr2_addition == ctrl.filter.characteristic_attr2_addition : " ") &&
-                    ((ctrl.filter.characteristic_divider != null) ? item.characteristic_divider == ctrl.filter.characteristic_divider : " ");
-             };*/
-
-            /* $scope.collocationsTextFilter = function (item) {//Only for counting
-                 return (item.collocation) &&
-                        ((ctrl.filter.text_id != 0 && ctrl.filter.text_id != null) ?
-                        item.text_id == ctrl.filter.text_id  : " ");
-             };*/
 
             var collectionOfColls = [];
             var collectionFiltered;

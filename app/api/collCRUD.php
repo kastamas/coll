@@ -29,10 +29,9 @@ class collCRUD
 
     public function queryCollocations($options) {
 
-        $params = $this->setCollocationFilterFields($options);//filter
-        $fields = join(' AND ',$params['fields']);
-
+        $params = $this->setCollocationFilterFields($options); // filter
         $order = $this->setCollocationSortingFields($options);
+
 
         //ToDo:improve this
         if (count($params['fields']) == 0) {
@@ -54,6 +53,16 @@ class collCRUD
                             LEFT JOIN characteristics_expansion AS ch_ex_2 ON c.characteristic_attr2_addition = ch_ex_2.id
                         ORDER BY " . $order;
         } else {
+
+            function addPrefix($item) {
+                return("c.".$item);
+            }
+
+            $params['fields'] = array_map("addPrefix", $params['fields']);
+
+            $fields = join(' AND ',$params['fields']);
+
+
             $query_str  = "SELECT c.*,
                               t.title as text_name,
                               ch_1.characteristic as ch_1_name,
@@ -77,6 +86,7 @@ class collCRUD
         $query->execute($params['replacements']);
 
         return $query->fetchAll(PDO::FETCH_ASSOC);
+         //return $fields;
     }
 
     public  function queryCollocationsTotal() {
@@ -228,7 +238,7 @@ class collCRUD
         }
 
         if ($data['status'] != 'any') {
-            array_push($updateFields, "status = :status");
+            array_push($updateFields,"status = :status");
             $replacements["status"] = $data['status'];
         }
 
@@ -336,17 +346,6 @@ class collCRUD
         $query->execute($params);
         return $query->fetch(PDO::FETCH_ASSOC);
     }
-
-   /* public function createCharacteeristic($data) {
-
-         $query_str = "INSERT INTO " . self::$characteristics . " ( characteristic) VALUES (lower(:characteristic)) RETURNING *";
-         $params = array(
-             "characteristic" => $data['characteristic']
-         );
-         $query = $this->pdo->prepare($query_str);
-         $query->execute($params);
-         return $query->fetch(PDO::FETCH_ASSOC);
-     }*/
 
     protected function checkText($data) {
         if (!$data['status'] || !$data['title']) {
@@ -611,6 +610,8 @@ class collCRUD
 
         return $query->fetch(PDO::FETCH_ASSOC);
     }
+
+
 
     protected function checkCollocation($data) {
         if (!$data['collocation'] || !$data['status'] || !$data['text_id']) {
