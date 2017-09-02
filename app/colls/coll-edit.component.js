@@ -3,7 +3,7 @@
 angular.module('colls')
 
     .controller('CollEditCtrl', [
-        '$scope','$http', '$location', '$routeParams', '$cookies',
+        '$scope', '$http', '$location', '$routeParams', '$cookies',
 
         function ($scope, $http, $location, $routeParams, $cookies) {
             const ctrl = this;
@@ -25,21 +25,19 @@ angular.module('colls')
             });
 
 
-
-
             ctrl.onChangeCharacteristicQuantity = function () {
-                if(ctrl.entity.characteristic_relation_to_main != 'interpos'){
+                if (ctrl.entity.characteristic_relation_to_main != 'interpos') {
                     delete ctrl.entity.characteristic_attr2;
-                    delete ctrl.entity.characteristic_attr2_addition ;
+                    delete ctrl.entity.characteristic_attr2_addition;
                 }
             };
 
             ctrl.onChangeCharacteristicRelationToMain = function () {
                 delete ctrl.entity.characteristic_attr1;
                 delete ctrl.entity.characteristic_attr2;
-                delete ctrl.entity.characteristic_attr1_addition   ;
-                delete ctrl.entity.characteristic_attr2_addition   ;
-                delete ctrl.entity.characteristic_divider ;
+                delete ctrl.entity.characteristic_attr1_addition;
+                delete ctrl.entity.characteristic_attr2_addition;
+                delete ctrl.entity.characteristic_divider;
             };
 
             ctrl.onChangeCharacteristicSubstantive_lg = function () {
@@ -50,17 +48,15 @@ angular.module('colls')
             const filter = $cookies.getObject('collsListFilter');
             const sort = $cookies.getObject('collsListSort');
             var options = filter;
-                options.reverse = sort.reverse;
-                options.rows = sort.rows;
+            options.reverse = sort.reverse;
+            options.rows = sort.rows;
 
             var parameters = encodeURIComponent(JSON.stringify(options));
-            console.log("Параметры", parameters);
 
             /* collocation inf*/
-            var queryString = "/api/collocation/" + ctrl.entityId+"?"+parameters;
-            $http.get(queryString ).success( function(data, status){
+            var queryString = "/api/collocation/" + ctrl.entityId + "?" + parameters;
+            $http.get(queryString).success(function (data, status) {
                 ctrl.entity = data;//Объект с инфой по словосочетанию
-                console.log("RESPONSE", ctrl.entity);
 
                 /*set up*/
                 if (ctrl.entity.characteristic_1 != null)
@@ -71,8 +67,7 @@ angular.module('colls')
                 else    ctrl.characteristicAttr2 = ctrl.entity.characteristic_attr2_explicit;
 
 
-
-            }).error(function ()  {
+            }).error(function () {
                 console.log("Smth rong");
             });
 
@@ -105,13 +100,6 @@ angular.module('colls')
             }
 
             ctrl.onAction = function () {
-      /*          if (!ctrl.condition_for_showing_extensions(ctrl.characteristicAttr1))
-                    ctrl.entity.characteristic_attr1_explicit = ctrl.characteristicAttr1;
-                else delete ctrl.entity.characteristic_attr1_explicit   ;
-                if (!ctrl.condition_for_showing_extensions(ctrl.characteristicAttr2))
-                    ctrl.entity.characteristic_attr2_explicit = ctrl.characteristicAttr2;
-                else  delete ctrl.entity.characteristic_attr2_explicit   ;
-*/
                 $http.put('/api/collocation/' + ctrl.entityId, ctrl.entity).success(function () {
                     ctrl.sendingError = false;
                     ctrl.sended = true;
@@ -130,7 +118,6 @@ angular.module('colls')
 
         }])
     .component('collEdit', {
-        //templateUrl: 'coll-edit/coll-edit.template.html', //todo:crutch
-        templateUrl:'colls/coll-item.template.html',
+        templateUrl: 'colls/coll-item.template.html',
         controller: 'CollEditCtrl'
     });
