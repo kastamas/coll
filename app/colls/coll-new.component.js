@@ -10,10 +10,6 @@ angular.module('colls')
             ctrl.entity = {};
 
 
-            /*(function (object) {
-
-             })*/
-
             function sendQuery(object) {
                 $http.post('./api/collocations', object).success(function (data, status, headers, config) {
                     ctrl.sendingError = false;

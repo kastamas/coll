@@ -28,14 +28,15 @@ class collCRUD
     }
 
     public function queryCollocations($options) {
+
         $params = $this->setCollocationFilterFields($options);//filter
         $fields = join(' AND ',$params['fields']);
-
 
         $order = $this->setCollocationSortingFields($options);
 
         //ToDo:improve this
         if (count($params['fields']) == 0) {
+
             $query_str  = "SELECT c.*,
                               t.title as text_name,
                               ch_1.characteristic as ch_1_name,
@@ -68,14 +69,38 @@ class collCRUD
                             LEFT JOIN characteristics AS ch_d ON c.characteristic_divider = ch_d.id
                             LEFT JOIN characteristics_expansion AS ch_ex_1 ON c.characteristic_attr1_addition = ch_ex_1.id
                             LEFT JOIN characteristics_expansion AS ch_ex_2 ON c.characteristic_attr2_addition = ch_ex_2.id
-                        WHERE  " .$fields. "   
+                        WHERE  " . $fields . "   
                         ORDER BY " . $order;
         }
 
         $query = $this->pdo->prepare($query_str);
         $query->execute($params['replacements']);
+
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public  function queryCollocationsTotal() {
+        $query_str = "SELECT COUNT(id) FROM " . self::$collocations;
+        $query = $this->pdo->prepare($query_str);
+        $query->execute();
+
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public  function queryCollocationsTotalInText($options) {
+
+
+        $query_str = "SELECT COUNT(id) FROM " . self::$collocations . " WHERE text_id = :text_id";
+        $params = array(
+            "text_id" =>  $options['text_id']
+
+        );
+        $query = $this->pdo->prepare($query_str);
+        $query->execute($params);
+
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
 	public function queryCharacteristics() {
         $query_str = "SELECT id, type, characteristic FROM " . self::$characteristics . " ORDER BY characteristic ASC";
@@ -149,7 +174,7 @@ class collCRUD
         if (count($params['fields']) == 0) {
             $query_str = "SELECT id FROM " . self::$collocations . "  ORDER BY " . $order;//highlighted warning is ok
         } else {
-            $query_str = "SELECT id FROM " . self::$collocations . " WHERE " .$fields. " ORDER BY  " . $order;//highlighted warning is ok todo:fix
+            $query_str = "SELECT id FROM " . self::$collocations . " WHERE " . $fields . " ORDER BY  " . $order;//highlighted warning is ok todo:fix
         }
 
         $query = $this->pdo->prepare($query_str);
@@ -202,7 +227,7 @@ class collCRUD
             $replacements["text_id"] = $data['text_id'];
         }
 
-        if ($data['status'] && strlen($data['status']) < 2) {
+        if ($data['status'] != 'any') {
             array_push($updateFields, "status = :status");
             $replacements["status"] = $data['status'];
         }
@@ -280,7 +305,10 @@ class collCRUD
             $replacements["characteristic_substantive_case"] = $data['characteristic_substantive_case'];
         }
 
-        return array('fields' => $updateFields, 'replacements' => $replacements);
+        return array(
+            'fields' => $updateFields,
+            'replacements' => $replacements
+        );
     }
 
     public function deleteCollocation($id) {

@@ -112,7 +112,17 @@ switch ($route[2]) {
                         header('HTTP/ 400 GET_ERROR');
                         exit();
                     }
-                    echo json_encode($result);
+
+                    $quantity = array(
+                        'total' => $collCRUD->queryCollocationsTotal(),
+                        'totalInText' => $collCRUD->queryCollocationsTotalInText($options)
+                    );
+
+
+                    echo json_encode( $data = array(
+                                         'data' => $result,
+                                         'quantity' => $quantity
+                                        ));
                 }
 
                 if ($method === 'POST') {

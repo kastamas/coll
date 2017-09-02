@@ -1,13 +1,16 @@
 <div class="container closely">
-<h2 class="page-header">{{ title}} <span>Всего словосочетаний: {{$ctrl.list.length}}</span>
 
-        <span ng-if="$ctrl.filter.text_id != null">в выбраном тексте: {{$ctrl.collsInText.length}}</span>
+<!-- Counter -->
+<h2 class="page-header">{{ title}} <span>Всего словосочетаний: {{$ctrl.collocationsTotalQuantity}}</span>
 
-        <span ng-if="$ctrl.filter.text_id != null">соответствуют фильтру: {{ $ctrl.collectionFiltered.length }} |</span>
+        <span ng-if="$ctrl.filter.text_id != null">в выбраном тексте: {{$ctrl.collocationsTotalInTextQuantity}}</span>
+
+        <span ng-if="$ctrl.filter.text_id != null">соответствуют фильтру: {{ $ctrl.collocationsFilteredQuantity}} |</span>
         <span ng-if="$ctrl.filter.text_id != null" class="blue">{{ $ctrl.collsFilteredInPercents | percentage:2}}</span>
 
 </h2>
 
+    <pre>{{$ctrl.collsFilteredInPercents}}</pre>
 <!----------------- filters ------------------->
 <div ng-show="$ctrl.list.length != null" id="filters">
 
@@ -64,7 +67,7 @@
         <div class="col-md-2" style="margin-top: 20px;">
             <span class="blue" ng-show="!$ctrl.filter.more"><a ng-click="$ctrl.showMoreFilters()">Больше фильтров</a></span><!--todo: You can do it better-->
             <span class="blue" ng-show="$ctrl.filter.more"><a ng-click="$ctrl.showMoreFilters()">Меньше фильтров</a></span><!--todo: You can do it better-->
-            <span class="blue"><a ng-click="$ctrl.statistic()">Статистика</a></span>
+            <span ><a class="text-muted" ng-click="$ctrl.statistic()">Статистика</a></span>
         </div>
     </div>
 

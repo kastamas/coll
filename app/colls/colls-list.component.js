@@ -98,14 +98,24 @@ angular.module('colls')
 
                 var parameters = encodeURIComponent(JSON.stringify(options));
                 $http.get('/api/collocations/?'+parameters).success(function (data, status, headers, config) {
-                    ctrl.list = data;
-                    ctrl.collocationsQuantity = ctrl.list.length;//stupid
+                    ctrl.list = data.data;
+                    ctrl.quantity = data.quantity;
+
+                    ctrl.updateCounters();
+
                 }).error(function () {
                     console.log("Smth wrong");
                 });
 
             };
 
+            ctrl.updateCounters = function() {
+                ctrl.collocationsTotalQuantity = ctrl.quantity.total[0].count;
+                ctrl.collocationsTotalInTextQuantity = ctrl.quantity.totalInText[0].count;
+                ctrl.collocationsFilteredQuantity = ctrl.list.length;
+
+                ctrl.collsFilteredInPercents = (ctrl.collocationsFilteredQuantity / ctrl.collocationsTotalInTextQuantity);
+            };
 
             //list of texts
             $http.get('/api/texts').success(function (data, status, headers, config) {
@@ -182,6 +192,8 @@ angular.module('colls')
                         item.text_id == ctrl.filter.text_id  : " ");
              };*/
 
+            var collectionOfColls = [];
+            var collectionFiltered;
 
 
 
