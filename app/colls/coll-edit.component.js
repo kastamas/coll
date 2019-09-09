@@ -2,7 +2,6 @@
 
 angular
   .module("colls")
-
   .controller("CollEditCtrl", [
     "$scope",
     "$http",

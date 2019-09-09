@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/kastamas/coll#readme",
   "dependencies": {
+    "bower": "^1.8.8",
     "prettier": "^1.18.2"
+  },
+  "prettier": {
+    "tabWidth": 2
   }
 }
