@@ -1,50 +1,75 @@
 <div class="container">
-<div class="row">
-<div class="col-md-12">
-    <h2 class="page-header">Изменение текста</h2>
+  <div class="row">
+    <div class="col-md-12">
+      <h2 class="page-header">Изменение текста</h2>
 
-    <form novalidate ng-submit="$ctrl.sending()">
+      <form novalidate ng-submit="$ctrl.sending()">
         <div class="row">
-        <div class="col-md-5">
-            <label for="textName">Название*</label>  <br>
-            <input class="text form-control" ng-model="$ctrl.entity.title" name="title" id="textName" type="text" required/> <br>
-        </div>
-        <div class="col-md-5">
-            <label for="textStatus">Текущий статус*</label>  <br>
-            <select id="textStatus" ng-model="$ctrl.entity.status" class="form-control">
-                <option value="u">Не разобран</option>
-                <option value="d">Разобран</option>
-                <option value="a">Разобран не до конца</option>
-            </select>  <br><br>
-        </div>
-        <div class="col-md-2">
+          <div class="col-md-5">
+            <label for="textName">Название*</label> <br />
+            <input
+              class="text form-control"
+              ng-model="$ctrl.entity.title"
+              name="title"
+              id="textName"
+              type="text"
+              required
+            />
+            <br />
+          </div>
+          <div class="col-md-5">
+            <label for="textStatus">Текущий статус*</label> <br />
+            <select
+              id="textStatus"
+              ng-model="$ctrl.entity.status"
+              class="form-control"
+            >
+              <option value="u">Не разобран</option>
+              <option value="d">Разобран</option>
+              <option value="a">Разобран не до конца</option>
+            </select>
+            <br /><br />
+          </div>
+          <div class="col-md-2">
             <div style="margin: 24px 0px">
-            <button type="submit" value="добавить" class="btn btn-default">изменить</button>
-            <div class="notification" ng-style="" >{{$ctrl.notificationMessage}}</div>
-                </div>
-        </div>
-        </div>
-
-        <div class="row">
-        <div class="col-md-12">
-            <label for="textName">Текст</label>    <br>
-            <textarea id="textText" ng-model="$ctrl.entity.text" name="text" class="form-control" resize="vertical">
-
-            </textarea> <br><br>
-        </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <label for="textName">Библиографическая информация</label><br>
-                <textarea ng-model="$ctrl.entity.bibliography" name="text"  class="form-control">
-
-                </textarea> <br><br>
+              <button type="submit" value="добавить" class="btn btn-default">
+                изменить
+              </button>
+              <div class="notification" ng-style="">
+                {{$ctrl.notificationMessage}}
+              </div>
             </div>
+          </div>
         </div>
 
+        <div class="row">
+          <div class="col-md-12">
+            <label for="textName">Текст</label> <br />
+            <textarea
+              id="textText"
+              ng-model="$ctrl.entity.text"
+              name="text"
+              class="form-control"
+              resize="vertical"
+            >
+            </textarea>
+            <br /><br />
+          </div>
+        </div>
 
-    </form>
-</div>
-</div>
+        <div class="row">
+          <div class="col-md-12">
+            <label for="textName">Библиографическая информация</label><br />
+            <textarea
+              ng-model="$ctrl.entity.bibliography"
+              name="text"
+              class="form-control"
+            >
+            </textarea>
+            <br /><br />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

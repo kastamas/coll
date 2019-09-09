@@ -44,6 +44,9 @@ angular.module('collApp', [
             template: '<coll-edit  ng-cloak>'
         })
 
+        .when('/admin', {
+            template: '<'
+        })
 
 
         .when('/',{

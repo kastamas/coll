@@ -1,3 +1,3 @@
-'use strict';
+"use strict";
 
-angular.module('mainPage', []);
+angular.module("mainPage", []);

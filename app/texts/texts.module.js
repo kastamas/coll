@@ -1,3 +1,3 @@
-'use strict';
+"use strict";
 
-angular.module('texts', []);
+angular.module("texts", []);

@@ -1,0 +1,22 @@
+{
+  "name": "coll",
+  "version": "1.0.0",
+  "description": "### Front-end - Written on js with AngularJS 1.5.8  - Uses **bower** package manager for _vendor_ libraries like AngularJS, etc.  - Don't uses such good thing as webpack (so, you got to add new `script` or `style` files manually in `app/index.html` such a shame :( )",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kastamas/coll.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kastamas/coll/issues"
+  },
+  "homepage": "https://github.com/kastamas/coll#readme",
+  "dependencies": {
+    "prettier": "^1.18.2"
+  }
+}

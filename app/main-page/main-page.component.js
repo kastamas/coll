@@ -1,8 +1,5 @@
-'use strict';
+"use strict";
 
-angular.module('mainPage')
-
-    .component('mainPage', {
-        templateUrl: 'main-page/main-page.template.html'
-
-    });
+angular.module("mainPage").component("mainPage", {
+  templateUrl: "main-page/main-page.template.html"
+});
