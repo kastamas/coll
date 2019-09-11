@@ -6,9 +6,12 @@ angular
   .controller("TextsListCtrl", [
     "$scope",
     "$http",
-    function($scope, $http) {
+    "$window",
+    function($scope, $http, $window) {
       const ctrl = this;
       $scope.title = "Список текстов";
+
+      ctrl.isAdmin = $window.localStorage.getItem('isAdmin');
 
       //запрос к бд
       $http

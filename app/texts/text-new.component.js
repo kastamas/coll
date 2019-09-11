@@ -8,11 +8,14 @@ angular
     "$http",
     "$location",
     "$routeParams",
-    function($scope, $http, $location, $routeParams) {
+    "$window",
+    function($scope, $http, $location, $routeParams, $window) {
       const ctrl = this;
 
       ctrl.entity = {};
       $scope.title = "Новый текст";
+
+      ctrl.isAdmin = $window.localStorage.getItem('isAdmin');
 
       ctrl.sending = function() {
         $http

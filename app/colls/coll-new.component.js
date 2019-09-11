@@ -9,9 +9,12 @@ angular
     "$location",
     "$routeParams",
     "$timeout",
-    function($scope, $http, $location, $routeParams, $timeout) {
+    "$window",
+    function($scope, $http, $location, $routeParams, $timeout, $window) {
       const ctrl = this;
       ctrl.entity = {};
+
+      ctrl.isAdmin = $window.localStorage.getItem('isAdmin');
 
       function sendQuery(object) {
         $http

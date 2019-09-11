@@ -8,9 +8,11 @@ angular
     "$location",
     "$routeParams",
     "$cookies",
-
-    function($scope, $http, $location, $routeParams, $cookies) {
+    "$window",
+    function($scope, $http, $location, $routeParams, $cookies, $window) {
       const ctrl = this;
+
+      ctrl.isAdmin = $window.localStorage.getItem('isAdmin');
 
       ctrl.entity = {};
       ctrl.entityId = $routeParams.collId;

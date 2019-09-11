@@ -18,8 +18,11 @@ angular
     "$route",
     "$cookies",
     "$filter",
-    function($scope, $http, $route, $cookies, $filter) {
+    "$window",
+    function($scope, $http, $route, $cookies, $filter, $window) {
       const ctrl = this;
+
+      ctrl.isAdmin = $window.localStorage.getItem('isAdmin');
 
       // sorting set up
       if ($cookies.getObject("collsListSort")) {

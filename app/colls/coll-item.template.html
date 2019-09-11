@@ -1,515 +1,493 @@
-<!--For Coll-Edit | Arrows-->
-<div ng-if="$ctrl.entityId != undefined">
-  <a
-    href="#/colls/edit/{{$ctrl.entity.surroundings.previous}}"
-    ng-if="$ctrl.entity.surroundings.previous !== null"
-  >
-    <div class="page__navigation left-align" title="предыдущее">
-      <span
-        class="collection_prev glyphicon glyphicon-menu-left"
-        aria-hidden="true"
-      ></span>
-    </div>
-  </a>
-
-  <a
-    href="#/colls/edit/{{$ctrl.entity.surroundings.next}}"
-    ng-if="$ctrl.entity.surroundings.next !== null"
-  >
-    <div class="page__navigation right-align" title="следующее">
-      <span
-        class="collection_prev glyphicon glyphicon-menu-right"
-        aria-hidden="true"
-      ></span>
-    </div>
-  </a>
-</div>
-<!--Coll-Edit end-->
-
-<div class="container">
-  <!--For Edit-->
+<div data-ng-if="$ctrl.isAdmin">
+  <!--For Coll-Edit | Arrows-->
   <div ng-if="$ctrl.entityId != undefined">
-    <h2 class="page-header">
-      Изменение словосочетания
-      <span class="blue">{{$ctrl.entity.surroundings.current}}</span
-      ><span>/{{$ctrl.entity.surroundings.total}}</span>
-    </h2>
+    <a
+      href="#/colls/edit/{{$ctrl.entity.surroundings.previous}}"
+      ng-if="$ctrl.entity.surroundings.previous !== null"
+    >
+      <div class="page__navigation left-align" title="предыдущее">
+        <span
+          class="collection_prev glyphicon glyphicon-menu-left"
+          aria-hidden="true"
+        ></span>
+      </div>
+    </a>
+
+    <a
+      href="#/colls/edit/{{$ctrl.entity.surroundings.next}}"
+      ng-if="$ctrl.entity.surroundings.next !== null"
+    >
+      <div class="page__navigation right-align" title="следующее">
+        <span
+          class="collection_prev glyphicon glyphicon-menu-right"
+          aria-hidden="true"
+        ></span>
+      </div>
+    </a>
   </div>
-  <!--->
+  <!--Coll-Edit end-->
+
+  <div class="container">
+    <!--For Edit-->
+    <div ng-if="$ctrl.entityId != undefined">
+      <h2 class="page-header">
+        Изменение словосочетания
+        <span class="blue">{{$ctrl.entity.surroundings.current}}</span
+        ><span>/{{$ctrl.entity.surroundings.total}}</span>
+      </h2>
+    </div>
+    <!---->
     <!--For Bulk-->
-  <div ng-if="$ctrl.bulk.mode">
-    <h2 class="page-header">
-      Добавление словосочетаний
+    <div ng-if="$ctrl.bulk.mode">
+      <h2 class="page-header">
+        Добавление словосочетаний
+        <span class="blue"
+          ><a ng-click="$ctrl.bulk.showAddition()"
+            >вернуться к обычному добавлению</a
+          ></span
+        >
+      </h2>
+    </div>
+    <!---->
+
+    <h2
+      ng-if="$ctrl.entityId == undefined && !$ctrl.bulk.mode"
+      class="page-header"
+    >
+      Добавление словосочетания
       <span class="blue"
-        ><a ng-click="$ctrl.bulk.showAddition()"
-          >вернуться к обычному добавлению</a
-        ></span
+        ><a ng-click="$ctrl.bulk.showAddition()">добавить из файла</a></span
       >
     </h2>
-  </div>
-  <!---->
 
-  <h2
-    ng-if="$ctrl.entityId == undefined && !$ctrl.bulk.mode"
-    class="page-header"
-  >
-    Добавление словосочетания
-    <span class="blue"
-      ><a ng-click="$ctrl.bulk.showAddition()">добавить из файла</a></span
-    >
-  </h2>
-
-  <div ng-if="$ctrl.textsList.length != '0'">
-    <form
-      name="form"
-      ng-submit="$ctrl.onAction()"
-      class="stylish-form"
-      novalidate
-    >
-      <!--For Bulk-->
-      <content-container ng-if="$ctrl.bulk.mode">
-        <div class="row">
-          <div class="col-sm-2">
-            <label class="btn btn-default btn-file">
-              Выберите Файл<input
-                type="file"
-                oi-file="options"
-                style="display: none;"
-              />
-            </label>
-          </div>
-
-          <content-container ng-if="$ctrl.bulk.status">
-            <div class="col-sm-4 small">
-              Файл-источник: <span>{{$ctrl.bulk.fileName}}</span>
-              <br />
-              Добавлено в очередь <span>{{$ctrl.resulting.length}}</span> СС
-              <span ng-if=" $ctrl.bulk.show"
-                ><a ng-click="$ctrl.bulk.showResult()">скрыть </a></span
-              >
-              <span ng-if="!$ctrl.bulk.show"
-                ><a ng-click="$ctrl.bulk.showResult()">показать </a></span
-              >
+    <div ng-if="$ctrl.textsList.length != '0'">
+      <form
+        name="form"
+        ng-submit="$ctrl.onAction()"
+        class="stylish-form"
+        novalidate
+      >
+        <!--For Bulk-->
+        <content-container ng-if="$ctrl.bulk.mode">
+          <div class="row">
+            <div class="col-sm-2">
+              <label class="btn btn-default btn-file">
+                Выберите Файл<input
+                  type="file"
+                  oi-file="options"
+                  style="display: none;"
+                />
+              </label>
             </div>
-          </content-container>
-          <div class="col-sm-5 error-area" ng-if="$ctrl.bulk.errors.length">
-            <div class="alert alert-error">
-              <span ng-repeat="error in $ctrl.bulk.errors"
-                ><element-container class="red">Ошибка!:</element-container>
-                {{error.msg}}<button
-                  class="close"
-                  ng-click="$ctrl.bulk.errors.length=0"
+
+            <content-container ng-if="$ctrl.bulk.status">
+              <div class="col-sm-4 small">
+                Файл-источник: <span>{{$ctrl.bulk.fileName}}</span>
+                <br />
+                Добавлено в очередь <span>{{$ctrl.resulting.length}}</span> СС
+                <span ng-if=" $ctrl.bulk.show"
+                  ><a ng-click="$ctrl.bulk.showResult()">скрыть </a></span
                 >
-                  &times;</button
-                ><br
-              /></span>
+                <span ng-if="!$ctrl.bulk.show"
+                  ><a ng-click="$ctrl.bulk.showResult()">показать </a></span
+                >
+              </div>
+            </content-container>
+            <div class="col-sm-5 error-area" ng-if="$ctrl.bulk.errors.length">
+              <div class="alert alert-error">
+                <span ng-repeat="error in $ctrl.bulk.errors"
+                  ><element-container class="red">Ошибка!:</element-container>
+                  {{error.msg}}<button
+                    class="close"
+                    ng-click="$ctrl.bulk.errors.length=0"
+                  >
+                    &times;</button
+                  ><br
+                /></span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row" ng-if="$ctrl.bulk.show">
-          <div class="col-md-6">
-            <table class="table table-striped table-custom">
-              <thead>
-                <tr>
-                  <th>Словосочетание</th>
-                  <th>Страница</th>
-                  <th></th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr data-ng-repeat="item in $ctrl.resulting">
-                  <!-- <td>{{item.collocation}}</td>-->
-                  <td ng-if=" $ctrl.bulk.editing != $index">
-                    {{item.collocation}}
-                  </td>
-                  <td ng-if=" $ctrl.bulk.editing != $index">
-                    {{item.page_number}}
-                  </td>
+          <div class="row" ng-if="$ctrl.bulk.show">
+            <div class="col-md-6">
+              <table class="table table-striped table-custom">
+                <thead>
+                  <tr>
+                    <th>Словосочетание</th>
+                    <th>Страница</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-ng-repeat="item in $ctrl.resulting">
+                    <!-- <td>{{item.collocation}}</td>-->
+                    <td ng-if=" $ctrl.bulk.editing != $index">
+                      {{item.collocation}}
+                    </td>
+                    <td ng-if=" $ctrl.bulk.editing != $index">
+                      {{item.page_number}}
+                    </td>
 
-                  <td ng-if=" $ctrl.bulk.editing == $index">
+                    <td ng-if=" $ctrl.bulk.editing == $index">
+                      <input
+                        type="text"
+                        ng-value="item.collocation"
+                        ng-model="$ctrl.bulk.newValueColl"
+                        ng-keypress="$ctrl.bulk.keyCatcher($event)"
+                      />
+                    </td>
+                    <td ng-if=" $ctrl.bulk.editing == $index">
+                      <input
+                        type="number"
+                        ng-value="item.page_number"
+                        ng-model="$ctrl.bulk.newValuePage"
+                        ng-keypress="$ctrl.bulk.keyCatcher($event)"
+                      />
+                    </td>
                     <input
-                      type="text"
-                      ng-value="item.collocation"
-                      ng-model="$ctrl.bulk.newValueColl"
+                      ng-if=" $ctrl.bulk.editing == $index"
+                      type="hidden"
                       ng-keypress="$ctrl.bulk.keyCatcher($event)"
                     />
-                  </td>
-                  <td ng-if=" $ctrl.bulk.editing == $index">
-                    <input
-                      type="number"
-                      ng-value="item.page_number"
-                      ng-model="$ctrl.bulk.newValuePage"
-                      ng-keypress="$ctrl.bulk.keyCatcher($event)"
-                    />
-                  </td>
-                  <input
-                    ng-if=" $ctrl.bulk.editing == $index"
-                    type="hidden"
-                    ng-keypress="$ctrl.bulk.keyCatcher($event)"
-                  />
 
-                  <td ng-if=" $ctrl.bulk.editing != $index">
-                    <a ng-click="$ctrl.bulk.edit($index)">редактировать</a>
-                  </td>
-                  <td ng-if=" $ctrl.bulk.editing != $index">
-                    <a ng-click="$ctrl.bulk.delete($index)">убрать</a>
-                  </td>
-                  <td ng-if=" $ctrl.bulk.editing == $index">
-                    <a ng-click="$ctrl.bulk.save(true)">сохранить</a>
-                  </td>
-                  <td ng-if=" $ctrl.bulk.editing == $index">
-                    <a ng-click="$ctrl.bulk.save(false)">отмена</a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                    <td ng-if=" $ctrl.bulk.editing != $index">
+                      <a ng-click="$ctrl.bulk.edit($index)">редактировать</a>
+                    </td>
+                    <td ng-if=" $ctrl.bulk.editing != $index">
+                      <a ng-click="$ctrl.bulk.delete($index)">убрать</a>
+                    </td>
+                    <td ng-if=" $ctrl.bulk.editing == $index">
+                      <a ng-click="$ctrl.bulk.save(true)">сохранить</a>
+                    </td>
+                    <td ng-if=" $ctrl.bulk.editing == $index">
+                      <a ng-click="$ctrl.bulk.save(false)">отмена</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <hr />
-      </content-container>
-      <!---->
-      <div class="row">
-        <div class="col-md-5">
-          <h6>характеристика словосочетания</h6>
+          <hr />
+        </content-container>
+        <!---->
+        <div class="row">
+          <div class="col-md-5">
+            <h6>характеристика словосочетания</h6>
 
-          <!--For Coll-Edit -->
-          <div ng-if="$ctrl.entityId != undefined && $ctrl.editTextId != true">
-            <h4>
-              <span class="bold">Относится к тексту: </span>
-              <span class="blue bold">{{$ctrl.entity.text_name}}</span>
-            </h4>
-            <span class="blue"
-              ><a ng-click="$ctrl.displayTextIdSwitcher()">изменить</a></span
+            <!--For Coll-Edit -->
+            <div
+              ng-if="$ctrl.entityId != undefined && $ctrl.editTextId != true"
             >
-            <br />
-          </div>
-          <!--Coll-Edit end-->
-
-          <!--For new-coll -->
-          <div
-            ng-show="$ctrl.entityId == undefined || $ctrl.editTextId == true "
-          >
-            <label for="collText_id" class="red">Относится к тексту*</label>
-            <br />
-
-            <select
-              id="collText_id"
-              ng-model="$ctrl.entity.text_id"
-              class="form-control"
-              ng-options="item.id as item.title for item in $ctrl.textsList | orderBy:'title':false "
-              required
-            >
-            </select>
-            <element-container ng-if="!$ctrl.bulk.mode">
+              <h4>
+                <span class="bold">Относится к тексту: </span>
+                <span class="blue bold">{{$ctrl.entity.text_name}}</span>
+              </h4>
+              <span class="blue"
+                ><a ng-click="$ctrl.displayTextIdSwitcher()">изменить</a></span
+              >
               <br />
-            </element-container>
-          </div>
-          <!--New-Coll end-->
-          <content-container ng-if="!$ctrl.bulk.mode">
-            <label for="collName" class="red">Словосочетание*</label> <br />
+            </div>
+            <!--Coll-Edit end-->
+
+            <!--For new-coll -->
+            <div
+              ng-show="$ctrl.entityId == undefined || $ctrl.editTextId == true "
+            >
+              <label for="collText_id" class="red">Относится к тексту*</label>
+              <br />
+
+              <select
+                id="collText_id"
+                ng-model="$ctrl.entity.text_id"
+                class="form-control"
+                ng-options="item.id as item.title for item in $ctrl.textsList | orderBy:'title':false "
+                required
+              >
+              </select>
+              <element-container ng-if="!$ctrl.bulk.mode">
+                <br />
+              </element-container>
+            </div>
+            <!--New-Coll end-->
+            <content-container ng-if="!$ctrl.bulk.mode">
+              <label for="collName" class="red">Словосочетание*</label> <br />
+              <input
+                class="text form-control"
+                ng-model="$ctrl.entity.collocation"
+                name="title"
+                id="collName"
+                type="text"
+                required
+              />
+              <br />
+
+              <label for="collName">Номер страницы</label> <br />
+              <input
+                class="text form-control"
+                min="1"
+                max="5000"
+                ng-model="$ctrl.entity.page_number"
+                name="title"
+                id="collPageNumber"
+                type="number"
+              />
+            </content-container>
+            <hr />
+
+            <label>по количеству компонентов</label><br />
             <input
-              class="text form-control"
-              ng-model="$ctrl.entity.collocation"
-              name="title"
-              id="collName"
-              type="text"
+              type="radio"
+              name="char1"
+              ng-model="$ctrl.entity.characteristic_quantity"
+              ng-change="$ctrl.onChangeCharacteristicQuantity()"
+              id="ch1b"
+              value="2xmem"
+              class="specRadiobutton"
+            />
+            <label for="ch1b" class="btn btn-default"> двуxчленное</label>
+            <input
+              type="radio"
+              name="char1"
+              ng-model="$ctrl.entity.characteristic_quantity"
+              ng-change="$ctrl.onChangeCharacteristicQuantity()"
+              id="ch1a"
+              value="3xmem"
+              class="specRadiobutton"
+            />
+            <label for="ch1a" class="btn btn-default"> трехчленное</label>
+            <br />
+
+            <div ng-show="$ctrl.entity.characteristic_quantity != undefined">
+              <br />
+              <label>по отношению к главному слову</label><br />
+              <input
+                type="radio"
+                name="char1x"
+                ng-model="$ctrl.entity.characteristic_relation_to_main"
+                ng-change="$ctrl.onChangeCharacteristicRelationToMain()"
+                id="ch1xa"
+                value="prepos"
+                class="specRadiobutton"
+              />
+              <label for="ch1xa" class="btn btn-default"> препозитивное</label>
+              <input
+                type="radio"
+                name="char1x"
+                ng-model="$ctrl.entity.characteristic_relation_to_main"
+                ng-change="$ctrl.onChangeCharacteristicRelationToMain()"
+                id="ch1xc"
+                value="interpos"
+                class="specRadiobutton"
+              />
+              <label for="ch1xc" class="btn btn-default">
+                интерпозитивное</label
+              >
+              <input
+                type="radio"
+                name="char1x"
+                ng-model="$ctrl.entity.characteristic_relation_to_main"
+                ng-change="$ctrl.onChangeCharacteristicRelationToMain()"
+                id="ch1xb"
+                value="postpos"
+                class="specRadiobutton"
+              />
+              <label for="ch1xb" class="btn btn-default"> постпозитивное</label>
+              <input
+                type="radio"
+                name="char1x"
+                ng-model="$ctrl.entity.characteristic_relation_to_main"
+                ng-change="$ctrl.onChangeCharacteristicRelationToMain()"
+                id="ch1xd"
+                value="distant_prepos"
+                class="specRadiobutton"
+              />
+              <label for="ch1xd" class="btn btn-default">
+                дистантное препозитивное</label
+              >
+              <input
+                type="radio"
+                name="char1x"
+                ng-model="$ctrl.entity.characteristic_relation_to_main"
+                ng-change="$ctrl.onChangeCharacteristicRelationToMain()"
+                id="ch1xe"
+                value="distant_postpos"
+                class="specRadiobutton"
+              />
+              <label for="ch1xe" class="btn btn-default">
+                дистантное постпозитивное</label
+              >
+            </div>
+            <hr />
+
+            <label>по наличию предлога</label><br />
+            <input
+              type="radio"
+              name="characteristic_preposition"
+              ng-model="$ctrl.entity.characteristic_preposition"
+              id="characteristic_preposition_prepositional"
+              value="prepositional"
+              class="specRadiobutton"
+            />
+            <label
+              for="characteristic_preposition_prepositional"
+              class="btn btn-default"
+              >предложное</label
+            >
+            <input
+              type="radio"
+              name="characteristic_preposition"
+              ng-model="$ctrl.entity.characteristic_preposition"
+              id="characteristic_preposition_non-prepositional"
+              value="non-prepositional"
+              class="specRadiobutton"
+            />
+            <label
+              for="characteristic_preposition_non-prepositional"
+              class="btn btn-default"
+              >беспредложное</label
+            >
+            <hr />
+
+            <label
+              ><span class="red">Текущий статус словосочетания*</span></label
+            ><br />
+            <input
+              type="radio"
+              name="collStatus"
+              ng-model="$ctrl.entity.status"
+              id="status_d"
+              value="d"
+              class="specRadiobutton"
               required
             />
-            <br />
-
-            <label for="collName">Номер страницы</label> <br />
-            <input
-              class="text form-control"
-              min="1"
-              max="5000"
-              ng-model="$ctrl.entity.page_number"
-              name="title"
-              id="collPageNumber"
-              type="number"
-            />
-          </content-container>
-          <hr />
-
-          <label>по количеству компонентов</label><br />
-          <input
-            type="radio"
-            name="char1"
-            ng-model="$ctrl.entity.characteristic_quantity"
-            ng-change="$ctrl.onChangeCharacteristicQuantity()"
-            id="ch1b"
-            value="2xmem"
-            class="specRadiobutton"
-          />
-          <label for="ch1b" class="btn btn-default"> двуxчленное</label>
-          <input
-            type="radio"
-            name="char1"
-            ng-model="$ctrl.entity.characteristic_quantity"
-            ng-change="$ctrl.onChangeCharacteristicQuantity()"
-            id="ch1a"
-            value="3xmem"
-            class="specRadiobutton"
-          />
-          <label for="ch1a" class="btn btn-default"> трехчленное</label>
-          <br />
-
-          <div ng-show="$ctrl.entity.characteristic_quantity != undefined">
-            <br />
-            <label>по отношению к главному слову</label><br />
+            <label for="status_d" class="btn btn-default"> Разобрано</label>
             <input
               type="radio"
-              name="char1x"
-              ng-model="$ctrl.entity.characteristic_relation_to_main"
-              ng-change="$ctrl.onChangeCharacteristicRelationToMain()"
-              id="ch1xa"
-              value="prepos"
+              name="collStatus"
+              ng-model="$ctrl.entity.status"
+              id="status_a"
+              value="a"
               class="specRadiobutton"
+              required
             />
-            <label for="ch1xa" class="btn btn-default"> препозитивное</label>
-            <input
-              type="radio"
-              name="char1x"
-              ng-model="$ctrl.entity.characteristic_relation_to_main"
-              ng-change="$ctrl.onChangeCharacteristicRelationToMain()"
-              id="ch1xc"
-              value="interpos"
-              class="specRadiobutton"
-            />
-            <label for="ch1xc" class="btn btn-default"> интерпозитивное</label>
-            <input
-              type="radio"
-              name="char1x"
-              ng-model="$ctrl.entity.characteristic_relation_to_main"
-              ng-change="$ctrl.onChangeCharacteristicRelationToMain()"
-              id="ch1xb"
-              value="postpos"
-              class="specRadiobutton"
-            />
-            <label for="ch1xb" class="btn btn-default"> постпозитивное</label>
-            <input
-              type="radio"
-              name="char1x"
-              ng-model="$ctrl.entity.characteristic_relation_to_main"
-              ng-change="$ctrl.onChangeCharacteristicRelationToMain()"
-              id="ch1xd"
-              value="distant_prepos"
-              class="specRadiobutton"
-            />
-            <label for="ch1xd" class="btn btn-default">
-              дистантное препозитивное</label
+            <label for="status_a" class="btn btn-default">
+              Разобрано не до конца</label
             >
             <input
               type="radio"
-              name="char1x"
-              ng-model="$ctrl.entity.characteristic_relation_to_main"
-              ng-change="$ctrl.onChangeCharacteristicRelationToMain()"
-              id="ch1xe"
-              value="distant_postpos"
+              name="collStatus"
+              ng-model="$ctrl.entity.status"
+              id="status_u"
+              value="u"
               class="specRadiobutton"
+              required
             />
-            <label for="ch1xe" class="btn btn-default">
-              дистантное постпозитивное</label
-            >
+            <label for="status_u" class="btn btn-default"> Не разобрано</label>
           </div>
-          <hr />
 
-          <label>по наличию предлога</label><br />
-          <input
-            type="radio"
-            name="characteristic_preposition"
-            ng-model="$ctrl.entity.characteristic_preposition"
-            id="characteristic_preposition_prepositional"
-            value="prepositional"
-            class="specRadiobutton"
-          />
-          <label
-            for="characteristic_preposition_prepositional"
-            class="btn btn-default"
-            >предложное</label
-          >
-          <input
-            type="radio"
-            name="characteristic_preposition"
-            ng-model="$ctrl.entity.characteristic_preposition"
-            id="characteristic_preposition_non-prepositional"
-            value="non-prepositional"
-            class="specRadiobutton"
-          />
-          <label
-            for="characteristic_preposition_non-prepositional"
-            class="btn btn-default"
-            >беспредложное</label
-          >
-          <hr />
+          <!-- Substantive -->
+          <div class="col-md-4">
+            <h6>характеристика определяемого слова</h6>
 
-          <label><span class="red">Текущий статус словосочетания*</span></label
-          ><br />
-          <input
-            type="radio"
-            name="collStatus"
-            ng-model="$ctrl.entity.status"
-            id="status_d"
-            value="d"
-            class="specRadiobutton"
-            required
-          />
-          <label for="status_d" class="btn btn-default"> Разобрано</label>
-          <input
-            type="radio"
-            name="collStatus"
-            ng-model="$ctrl.entity.status"
-            id="status_a"
-            value="a"
-            class="specRadiobutton"
-            required
-          />
-          <label for="status_a" class="btn btn-default">
-            Разобрано не до конца</label
-          >
-          <input
-            type="radio"
-            name="collStatus"
-            ng-model="$ctrl.entity.status"
-            id="status_u"
-            value="u"
-            class="specRadiobutton"
-            required
-          />
-          <label for="status_u" class="btn btn-default"> Не разобрано</label>
-        </div>
-
-        <!-- Substantive -->
-        <div class="col-md-4">
-          <h6>характеристика определяемого слова</h6>
-
-          <label>лексико-грамматический разряд</label><br />
-          <element-container
-            ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_lg"
-          >
-            <input
-              type="radio"
-              name="characteristic_substantive_lg"
-              ng-model="$ctrl.entity.characteristic_substantive_lg"
-              ng-change="$ctrl.onChangeCharacteristicSubstantive_lg()"
-              value="{{item.name}}"
-              class="specRadiobutton"
-              id="{{item.name}}"
-            /><label for="{{item.name}}" class="btn btn-default"
-              >{{item.name_rus}}</label
-            >
-          </element-container>
-          <br />
-
-          <content-container
-            data-ng-show="$ctrl.entity.characteristic_substantive_lg == 'appellative'"
-          >
-            <br />
-            <label>дополнение к лексико-грамматическому разряду</label><br />
+            <label>лексико-грамматический разряд</label><br />
             <element-container
-              ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_lg_explicit"
+              ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_lg"
             >
               <input
                 type="radio"
-                name="characteristic_substantive_lg_explicit"
-                ng-model="$ctrl.entity.characteristic_substantive_lg_explicit"
-                id="characteristic_substantive_lg_explicit_{{item.name}}"
+                name="characteristic_substantive_lg"
+                ng-model="$ctrl.entity.characteristic_substantive_lg"
+                ng-change="$ctrl.onChangeCharacteristicSubstantive_lg()"
+                value="{{item.name}}"
+                class="specRadiobutton"
+                id="{{item.name}}"
+              /><label for="{{item.name}}" class="btn btn-default"
+                >{{item.name_rus}}</label
+              >
+            </element-container>
+            <br />
+
+            <content-container
+              data-ng-show="$ctrl.entity.characteristic_substantive_lg == 'appellative'"
+            >
+              <br />
+              <label>дополнение к лексико-грамматическому разряду</label><br />
+              <element-container
+                ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_lg_explicit"
+              >
+                <input
+                  type="radio"
+                  name="characteristic_substantive_lg_explicit"
+                  ng-model="$ctrl.entity.characteristic_substantive_lg_explicit"
+                  id="characteristic_substantive_lg_explicit_{{item.name}}"
+                  value="{{item.name}}"
+                  class="specRadiobutton"
+                />
+                <label
+                  class="btn btn-default"
+                  for="characteristic_substantive_lg_explicit_{{item.name}}"
+                  >{{item.name_rus}}</label
+                >
+              </element-container>
+            </content-container>
+            <hr />
+
+            <label>одушевлённость</label><br />
+            <element-container
+              ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_animacy"
+            >
+              <input
+                type="radio"
+                name="characteristic_substantive_lg_animacy"
+                ng-model="$ctrl.entity.characteristic_substantive_animacy"
+                id="characteristic_substantive_animacy_{{item.name}}"
                 value="{{item.name}}"
                 class="specRadiobutton"
               />
               <label
                 class="btn btn-default"
-                for="characteristic_substantive_lg_explicit_{{item.name}}"
+                for="characteristic_substantive_animacy_{{item.name}}"
                 >{{item.name_rus}}</label
               >
             </element-container>
-          </content-container>
-          <hr />
+            <br /><br />
 
-          <label>одушевлённость</label><br />
-          <element-container
-            ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_animacy"
-          >
-            <input
-              type="radio"
-              name="characteristic_substantive_lg_animacy"
-              ng-model="$ctrl.entity.characteristic_substantive_animacy"
-              id="characteristic_substantive_animacy_{{item.name}}"
-              value="{{item.name}}"
-              class="specRadiobutton"
-            />
-            <label
-              class="btn btn-default"
-              for="characteristic_substantive_animacy_{{item.name}}"
-              >{{item.name_rus}}</label
+            <label>падеж</label><br />
+            <element-container
+              ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_case"
             >
-          </element-container>
-          <br /><br />
-
-          <label>падеж</label><br />
-          <element-container
-            ng-repeat="item in $ctrl.collocations_characteristics.characteristic_substantive_case"
-          >
-            <input
-              type="radio"
-              name="characteristic_substantive_case"
-              ng-model="$ctrl.entity.characteristic_substantive_case"
-              value="{{item.name}}"
-              id="characteristic_substantive_case_{{item.name}}"
-              class="specRadiobutton btn-default"
-            />
-            <label
-              for="characteristic_substantive_case_{{item.name}}"
-              class="btn btn-default "
-              title="{{item.name_rus}}"
-              >{{item.name_rus_short}}</label
-            >
-          </element-container>
-        </div>
-
-        <div class="col-md-3">
-          <h6>атрибуты</h6>
-          <div>
-            <div>
+              <input
+                type="radio"
+                name="characteristic_substantive_case"
+                ng-model="$ctrl.entity.characteristic_substantive_case"
+                value="{{item.name}}"
+                id="characteristic_substantive_case_{{item.name}}"
+                class="specRadiobutton btn-default"
+              />
               <label
-                >Характеристика
-                <element-container
-                  data-ng-if="$ctrl.entity.characteristic_quantity == '3xmem' || $ctrl.entity.characteristic_relation_to_main == 'interpos'"
-                >
-                  <span class="blue">первого</span>
-                </element-container>
-                атрибута
-              </label>
-              <select
-                ng-model="$ctrl.entity.characteristic_attr1"
-                class="form-control"
-                ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'attribute'"
+                for="characteristic_substantive_case_{{item.name}}"
+                class="btn btn-default "
+                title="{{item.name_rus}}"
+                >{{item.name_rus_short}}</label
               >
-              </select>
-            </div>
+            </element-container>
+          </div>
+
+          <div class="col-md-3">
+            <h6>атрибуты</h6>
             <div>
-              <br />
-              <label class="red">Дополнение*</label>
-              <select
-                ng-model="$ctrl.entity.characteristic_attr1_addition"
-                class="form-control"
-                ng-options="item.id as item.expansion for item in $ctrl.characteristicThreeList | filter: characteristicThreeFilter1"
-              >
-              </select>
-            </div>
-
-            <hr />
-
-            <content-container
-              ng-if="$ctrl.entity.characteristic_quantity == '3xmem' || $ctrl.entity.characteristic_relation_to_main == 'interpos' "
-            >
               <div>
                 <label
                   >Характеристика
-                  <span class="blue">второго</span> атрибута</label
-                >
+                  <element-container
+                    data-ng-if="$ctrl.entity.characteristic_quantity == '3xmem' || $ctrl.entity.characteristic_relation_to_main == 'interpos'"
+                  >
+                    <span class="blue">первого</span>
+                  </element-container>
+                  атрибута
+                </label>
                 <select
-                  ng-model="$ctrl.entity.characteristic_attr2"
+                  ng-model="$ctrl.entity.characteristic_attr1"
                   class="form-control"
                   ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'attribute'"
                 >
@@ -519,30 +497,58 @@
                 <br />
                 <label class="red">Дополнение*</label>
                 <select
-                  ng-model="$ctrl.entity.characteristic_attr2_addition"
+                  ng-model="$ctrl.entity.characteristic_attr1_addition"
                   class="form-control"
-                  ng-options="item.id as item.expansion for item in $ctrl.characteristicThreeList | filter: characteristicThreeFilter2"
+                  ng-options="item.id as item.expansion for item in $ctrl.characteristicThreeList | filter: characteristicThreeFilter1"
                 >
                 </select>
               </div>
-            </content-container>
 
-            <div
-              ng-if="$ctrl.entity.characteristic_relation_to_main == 'distant_prepos' || $ctrl.entity.characteristic_relation_to_main == 'distant_postpos' "
-            >
               <hr />
-              <label>Характеристика разделителя</label>
-              <select
-                ng-model="$ctrl.entity.characteristic_divider"
-                class="form-control"
-                ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'divider'"
-              >
-              </select>
-            </div>
-          </div>
 
-          <!--For Testing-->
-          <!--
+              <content-container
+                ng-if="$ctrl.entity.characteristic_quantity == '3xmem' || $ctrl.entity.characteristic_relation_to_main == 'interpos' "
+              >
+                <div>
+                  <label
+                    >Характеристика
+                    <span class="blue">второго</span> атрибута</label
+                  >
+                  <select
+                    ng-model="$ctrl.entity.characteristic_attr2"
+                    class="form-control"
+                    ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'attribute'"
+                  >
+                  </select>
+                </div>
+                <div>
+                  <br />
+                  <label class="red">Дополнение*</label>
+                  <select
+                    ng-model="$ctrl.entity.characteristic_attr2_addition"
+                    class="form-control"
+                    ng-options="item.id as item.expansion for item in $ctrl.characteristicThreeList | filter: characteristicThreeFilter2"
+                  >
+                  </select>
+                </div>
+              </content-container>
+
+              <div
+                ng-if="$ctrl.entity.characteristic_relation_to_main == 'distant_prepos' || $ctrl.entity.characteristic_relation_to_main == 'distant_postpos' "
+              >
+                <hr />
+                <label>Характеристика разделителя</label>
+                <select
+                  ng-model="$ctrl.entity.characteristic_divider"
+                  class="form-control"
+                  ng-options="item.id as item.characteristic for item in $ctrl.characteristicTwoList | filter:'divider'"
+                >
+                </select>
+              </div>
+            </div>
+
+            <!--For Testing-->
+            <!--
                     <br>
                     <pre>{{$ctrl.entity | json}}</pre>
                     <pre>characteristic_attr1: {{$ctrl.entity.characteristic_attr1}}</pre>
@@ -550,89 +556,94 @@
                     <pre>characteristicAttr1: {{$ctrl.characteristicAttr1}}</pre>
                     <pre>characteristicAttr2: {{$ctrl.characteristicAttr2}}</pre>
                     -->
+          </div>
         </div>
-      </div>
 
-      <hr />
+        <hr />
 
-      <!--<button type="button" title="Остались незаполненные обязательные поля!" class="btn btn-default btn-lg disabled" value="добавить"  ng-show="form.$error.required">добавить</button>-->
+        <!--<button type="button" title="Остались незаполненные обязательные поля!" class="btn btn-default btn-lg disabled" value="добавить"  ng-show="form.$error.required">добавить</button>-->
 
-      <!--ToDo: improve Notifies-->
-      <div data-ng-if="$ctrl.entityId == undefined">
-        <button
-          type="submit"
-          title="Остались незаполненные обязательные поля!"
-          class="btn btn-default btn-lg"
-          value="добавить"
-          ng-class="{'disabled':form.$error.required}"
-          ng-disabled="form.$error.required"
-          ng-if="!$ctrl.bulk.mode"
-        >
-          добавить
-        </button>
+        <!--ToDo: improve Notifies-->
+        <div data-ng-if="$ctrl.entityId == undefined">
+          <button
+            type="submit"
+            title="Остались незаполненные обязательные поля!"
+            class="btn btn-default btn-lg"
+            value="добавить"
+            ng-class="{'disabled':form.$error.required}"
+            ng-disabled="form.$error.required"
+            ng-if="!$ctrl.bulk.mode"
+          >
+            добавить
+          </button>
 
-        <!--Bulk Mode-->
-        <button
-          type="submit"
-          title="Остались незаполненные обязательные поля!"
-          class="btn btn-default btn-lg"
-          value="добавить"
-          ng-class="{'disabled':form.$error.required}"
-          ng-disabled="form.$error.required"
-          ng-if="$ctrl.bulk.mode"
-        >
-          добавить {{$ctrl.resulting.length}} СС
-        </button>
-        <!---->
+          <!--Bulk Mode-->
+          <button
+            type="submit"
+            title="Остались незаполненные обязательные поля!"
+            class="btn btn-default btn-lg"
+            value="добавить"
+            ng-class="{'disabled':form.$error.required}"
+            ng-disabled="form.$error.required"
+            ng-if="$ctrl.bulk.mode"
+          >
+            добавить {{$ctrl.resulting.length}} СС
+          </button>
+          <!---->
 
-        <div
-          class="animation_appearance notification  text-success"
-          data-ng-if="$ctrl.sended"
-        >
-          <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-          Добавлено
+          <div
+            class="animation_appearance notification  text-success"
+            data-ng-if="$ctrl.sended"
+          >
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            Добавлено
+          </div>
+          <div
+            class="animation_appearance notification  text-danger"
+            data-ng-if="$ctrl.sendingError"
+          >
+            <span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
+            Произошла ошибка! {{$ctrl.notificationMessage}}
+          </div>
         </div>
-        <div
-          class="animation_appearance notification  text-danger"
-          data-ng-if="$ctrl.sendingError"
-        >
-          <span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
-          Произошла ошибка! {{$ctrl.notificationMessage}}
+        <div data-ng-if="$ctrl.entityId != undefined">
+          <button
+            type="submit"
+            title="Остались незаполненные обязательные поля!"
+            class="btn btn-default btn-lg"
+            value="добавить"
+            ng-class="{'disabled':form.$error.required}"
+          >
+            изменить
+          </button>
+          <div
+            class="animation_appearance notification text-success"
+            data-ng-if="$ctrl.sended"
+          >
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            Изменено
+          </div>
+          <div
+            class="animation_appearance notification text-danger"
+            data-ng-if="$ctrl.sendingError"
+          >
+            <span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
+            Произошла ошибка! {{$ctrl.notificationMessage}}
+          </div>
         </div>
-      </div>
-      <div data-ng-if="$ctrl.entityId != undefined">
-        <button
-          type="submit"
-          title="Остались незаполненные обязательные поля!"
-          class="btn btn-default btn-lg"
-          value="добавить"
-          ng-class="{'disabled':form.$error.required}"
-        >
-          изменить
-        </button>
-        <div
-          class="animation_appearance notification text-success"
-          data-ng-if="$ctrl.sended"
-        >
-          <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-          Изменено
-        </div>
-        <div
-          class="animation_appearance notification text-danger"
-          data-ng-if="$ctrl.sendingError"
-        >
-          <span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
-          Произошла ошибка! {{$ctrl.notificationMessage}}
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
+    <!----------------- message if no texts found ------------------->
+    <div class="text-message" ng-show="$ctrl.textsList.length == '0'">
+      <p>
+        Сейчас в базе нет ни одного текста.<br />
+        Чтобы добавить словосочетание - должен быть хотя бы один текст.<br />
+        <a href="#/texts/new">Добавить текст</a>
+      </p>
+    </div>
   </div>
-  <!----------------- message if no texts found ------------------->
-  <div class="text-message" ng-show="$ctrl.textsList.length == '0'">
-    <p>
-      Сейчас в базе нет ни одного текста.<br />
-      Чтобы добавить словосочетание - должен быть хотя бы один текст.<br />
-      <a href="#/texts/new">Добавить текст</a>
-    </p>
-  </div>
+</div>
+
+<div data-ng-if="!$ctrl.isAdmin">
+  <h1>Доступ запрещен</h1>
 </div>

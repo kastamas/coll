@@ -8,26 +8,18 @@ angular
     "$http",
     "$location",
     "$routeParams",
-    function($scope, $http, $location, $routeParams) {
+    "$window",
+    function($scope, $http, $location, $routeParams, $window) {
       const ctrl = this;
       $scope.title = "Текст c id = ";
       ctrl.textId = $routeParams.textId;
       console.log($routeParams);
 
+      ctrl.isAdmin = $window.localStorage.getItem('isAdmin');
+
       $http
         .get("/api/texts/" + ctrl.textId)
-        .success(function(data, status, headers, config) {
-          console.log(
-            "This is Data:",
-            data,
-            "\n\n This is Status:",
-            status,
-            "\n\nTHIS is headers:",
-            headers,
-            "\n\nThisIs Config:",
-            config,
-            "\n\n"
-          );
+        .success(function(data) {
           ctrl.entity = data;
         })
         .error(function() {});

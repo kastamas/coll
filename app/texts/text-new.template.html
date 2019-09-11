@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <h2 class="page-header">Добавление текста</h2>
 
-      <form novalidate ng-submit="$ctrl.sending()">
+      <form novalidate ng-submit="$ctrl.sending()" data-ng-if="$ctrl.isAdmin">
         <div class="row">
           <div class="col-md-5">
             <label for="textName" class="red">Название*</label> <br />
@@ -71,7 +71,9 @@
         </div>
       </form>
 
-      <!--<pre>{{$ctrl.entity | json}}</pre>-->
+      <div data-ng-if="!$ctrl.isAdmin">
+        <h1>Доступ запрещен</h1>
+      </div>
     </div>
   </div>
 </div>

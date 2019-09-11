@@ -67,7 +67,7 @@
               <td>{{item.number_of_collocations}}</td>
 
               <td><a href="#/texts/{{item.id}}">посмотреть</a></td>
-              <td><a href="#/texts/edit/{{item.id}}">редактировать</a></td>
+              <td><a href="#/texts/edit/{{item.id}}" data-ng-if="$ctrl.isAdmin">редактировать</a></td>
               <td class="d">
                 {{item.created_at | limitTo:'10' | date:'dd/MM/yyyy'}}
               </td>

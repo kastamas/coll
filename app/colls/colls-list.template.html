@@ -396,10 +396,10 @@
                 {{item.collocation}}
               </div>
             </td>
-            <td title="редактировать">
+            <td title="редактировать" data-ng-if="$ctrl.isAdmin">
               <a href="#/colls/edit/{{item.id}}">ред.</a>
             </td>
-            <td title="удалить" class="red">
+            <td title="удалить" class="red" data-ng-if="$ctrl.isAdmin">
               <a class="red" ng-click="$ctrl.delete(item.id, item.collocation)"
                 >уд.</a
               >
