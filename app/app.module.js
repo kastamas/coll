@@ -63,7 +63,6 @@ angular
       $httpProvider.interceptors.push($q => {
         return {
           request: function(config) {
-            console.log(config);
             const baseUrl = "http://92.63.104.247/";
             // return {...config, url: `${baseUrl}${config.url}`};
             return config;

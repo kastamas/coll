@@ -8,14 +8,10 @@ angular
     "$http",
     "$location",
     "$routeParams",
-    "$window",
-    function($scope, $http, $location, $routeParams, $window) {
+    function($scope, $http, $location, $routeParams) {
       const ctrl = this;
       $scope.title = "Текст c id = ";
       ctrl.textId = $routeParams.textId;
-      console.log($routeParams);
-
-      ctrl.isAdmin = $window.localStorage.getItem('isAdmin');
 
       $http
         .get("/api/texts/" + ctrl.textId)

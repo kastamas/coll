@@ -1,31 +1,7 @@
 <div class="container" >
   <div class="row">
     <div class="col-md-12">
-      <div data-ng-if="$ctrl.isAdmin">
         <h2 class="page-header">{{$ctrl.entity.title}}</h2>
-
-        <!--  Todelete
-                     <div class="row">
-                          <div class="col-md-5">
-                              <label for="textName">Название*</label>  <br>
-                              <input class="text form-control" ng-model="$ctrl.entity.title" name="title" id="textName" type="text" required/> <br>
-                          </div>
-                          <div class="col-md-5">
-                              <label for="textStatus">Текущий статус*</label>  <br>
-                              <select id="textStatus" ng-model="$ctrl.entity.status" class="form-control">
-                                  <option value="u">Не разобран</option>
-                                  <option value="d">Разобран</option>
-                                  <option value="a">Разобран не до конца</option>
-                              </select>  <br><br>
-                          </div>
-                          <div class="col-md-2">
-                              <div style="margin: 24px 0px">
-                                  <button type="submit" value="добавить" class="btn btn-default">изменить</button>
-                                  <div class="notification" ng-style="" >{{$ctrl.notificationMessage}}</div>
-                              </div>
-                          </div>
-                      </div>-->
-
         <div class="row">
           <div class="col-md-12">
             <textarea readonly class="form-control" resize="vertical">
@@ -41,10 +17,7 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <div data-ng-if="!$ctrl.isAdmin">
       <h1>Доступ запрещен</h1>
-    </div>
   </div>
 </div>
